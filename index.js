@@ -9,10 +9,8 @@ document.addEventListener("dragLeaveHandler", dragLeaveHandler);
 
 // linesToDraw will toggle showing/hiding lines groups
 const linesToDraw = new Set();
-let data;
 
 async function dropHandler(ev) {
-  console.log("zomg zee filez dropped");
   // avoid default behavior (e.g. file from being opened)
   ev.preventDefault();
 
@@ -32,7 +30,6 @@ async function dropHandler(ev) {
   }
 }
 function dragOverHandler(ev) {
-  console.log("zomg welcome 2 tha drop zone!");
   // prevent default behavior (e.g. file from being opened with browser)
   ev.preventDefault();
 
@@ -90,6 +87,9 @@ async function processDataFile(blob) {
 
 function renderLegend(data) {
   const legend = document.getElementById("legend");
+
+  // clear any previous content.
+  legend.innerHTML = "";
 
   // create checkboxes with labels with data keys
   Object.keys(data).forEach((k) => {
@@ -158,18 +158,33 @@ function renderLinez(data) {
   const marginBottom = 30;
   const marginLeft = 40;
 
-  // #TODO: get x & y domain ranges from data
+  // init x & y domains
+  // note; using null place holders so something from the data is set as these values
+  const y_domain = [null, null];
+  const x_domain = [null, null];
+  // try to get x & y domain ranges from data
+  Object.entries(data).forEach(([title, values]) => {
+    if (linesToDraw.has(title)) {
+      values.forEach((v) => {
+        // try to automagically infer x & y axis domains
+        if (v.millis < x_domain[0] || x_domain[0] === null) x_domain[0] = v.millis;
+        if (v.millis > x_domain[1] || x_domain[1] === null) x_domain[1] = v.millis;
+        if (v.v < y_domain[0] || y_domain[0] === null) y_domain[0] = v.v;
+        if (v.v > y_domain[1] || y_domain[1] === null) y_domain[1] = v.v;
+      });
+    }
+  });
 
   // x axis horizontal position scale
   const x = d3
     .scaleLinear()
-    .domain([0, 1_512_302])
+    .domain(x_domain) // [0, 1_139_906]
     .range([marginLeft, width - marginRight]);
 
   // y axis vertical position scale
   const y = d3
     .scaleLinear()
-    .domain([-15, 35]) //[-110, 50]
+    .domain(y_domain) //[-110, 50] [-15, 35]
     .range([height - marginBottom, marginTop]);
 
   // SVG container.
@@ -190,15 +205,14 @@ function renderLinez(data) {
   svg.append("g").attr("transform", `translate(${marginLeft},0)`).call(d3.axisLeft(y));
 
   // Compute the points in pixel space as [x, y, z], where z is the name of the series.
-
-  // #todo: use an array of selected keys to enable showing (or hiding) lines
   let points = [];
   Object.entries(data).forEach(([title, values]) => {
     if (linesToDraw.has(title)) {
+      // kinda sloppy array, here, but also tack on the edn .millis and .v
+      // to be referenced later when showing a tooltip popever
       points = [...points, ...values.map((v) => [x(v.millis), y(v.v), title, v.millis, v.v])];
     }
   });
-
   // group the points
   const groups = d3.rollup(
     points,
@@ -210,7 +224,7 @@ function renderLinez(data) {
   const path = svg
     .append("g")
     .attr("fill", "none")
-    .attr("stroke", "red")
+    .attr("stroke", "hotpink")
     .attr("stroke-width", 1.5)
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
@@ -223,7 +237,7 @@ function renderLinez(data) {
   // invisible layer for the interactive tip.
   const dot = svg.append("g").attr("display", "none");
 
-  dot.append("circle").attr("r", 2.5);
+  dot.append("circle").attr("r", 2.5).attr("fill", "white");
 
   dot.append("text").attr("text-anchor", "middle").attr("y", -8);
 
@@ -250,7 +264,7 @@ function renderLinez(data) {
       svg.property("value", k).dispatch("input", { bubbles: true });
     })
     .on("pointerleave", () => {
-      path.style("mix-blend-mode", "lighten").style("stroke", "red");
+      path.style("mix-blend-mode", "lighten").style("stroke", "hotpink");
       dot.attr("display", "none");
       svg.node().value = null;
       svg.dispatch("input", { bubbles: true });

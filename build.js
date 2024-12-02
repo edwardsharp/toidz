@@ -3397,7 +3397,6 @@
   document.addEventListener("dragLeaveHandler", dragLeaveHandler);
   var linesToDraw = /* @__PURE__ */ new Set();
   async function dropHandler(ev) {
-    console.log("zomg zee filez dropped");
     ev.preventDefault();
     if (ev.dataTransfer.items) {
       const item = ev.dataTransfer.items[0];
@@ -3413,7 +3412,6 @@
     }
   }
   function dragOverHandler(ev) {
-    console.log("zomg welcome 2 tha drop zone!");
     ev.preventDefault();
     filedrop.style.display = "flex";
   }
@@ -3449,6 +3447,7 @@
   }
   function renderLegend(data) {
     const legend = document.getElementById("legend");
+    legend.innerHTML = "";
     Object.keys(data).forEach((k) => {
       const checkboxen = document.createElement("div");
       const checkbox = document.createElement("input");
@@ -3491,8 +3490,20 @@
     const marginRight = 20;
     const marginBottom = 30;
     const marginLeft = 40;
-    const x2 = linear2().domain([0, 1512302]).range([marginLeft, width - marginRight]);
-    const y2 = linear2().domain([-15, 35]).range([height - marginBottom, marginTop]);
+    const y_domain = [null, null];
+    const x_domain = [null, null];
+    Object.entries(data).forEach(([title, values]) => {
+      if (linesToDraw.has(title)) {
+        values.forEach((v) => {
+          if (v.millis < x_domain[0] || x_domain[0] === null) x_domain[0] = v.millis;
+          if (v.millis > x_domain[1] || x_domain[1] === null) x_domain[1] = v.millis;
+          if (v.v < y_domain[0] || y_domain[0] === null) y_domain[0] = v.v;
+          if (v.v > y_domain[1] || y_domain[1] === null) y_domain[1] = v.v;
+        });
+      }
+    });
+    const x2 = linear2().domain(x_domain).range([marginLeft, width - marginRight]);
+    const y2 = linear2().domain(y_domain).range([height - marginBottom, marginTop]);
     const svg = create_default("svg").attr("width", width).attr("height", height);
     svg.append("g").attr("transform", `translate(0,${height - marginBottom})`).call(
       axisBottom(x2).tickFormat((milliseconds) => {
@@ -3512,9 +3523,9 @@
       (d) => d[2]
     );
     const line = line_default();
-    const path2 = svg.append("g").attr("fill", "none").attr("stroke", "red").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
+    const path2 = svg.append("g").attr("fill", "none").attr("stroke", "hotpink").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
     const dot = svg.append("g").attr("display", "none");
-    dot.append("circle").attr("r", 2.5);
+    dot.append("circle").attr("r", 2.5).attr("fill", "white");
     dot.append("text").attr("text-anchor", "middle").attr("y", -8);
     svg.on("pointerenter", () => {
       path2.style("mix-blend-mode", null).style("stroke", "#efefef");
@@ -3528,7 +3539,7 @@
       dot.select("text").text(`${k} [${formatMillisecondsToMinSec(millis)} ${v}]`).style("fill", "white");
       svg.property("value", k).dispatch("input", { bubbles: true });
     }).on("pointerleave", () => {
-      path2.style("mix-blend-mode", "lighten").style("stroke", "red");
+      path2.style("mix-blend-mode", "lighten").style("stroke", "hotpink");
       dot.attr("display", "none");
       svg.node().value = null;
       svg.dispatch("input", { bubbles: true });
