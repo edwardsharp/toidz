@@ -1,0 +1,49 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>midi2cv-d3linez</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100dvh;
+    width: 100dvw;
+    background: black;
+    color: white;
+  }
+  #filedrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+  }
+  #filedrop p {
+    margin: 1em;
+    padding: 1em;
+    border: 5px dashed white;
+    width: 100%;
+  }
+  #legend {
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-height: 50vh;
+    padding: 2em;
+  }
+  #legend button {
+    max-width: 200px;
+  }
+</style>
+<body>
+  <div id="filedrop">
+    <p>drag data file to this <i>drop zone</i>.</p>
+  </div>
+  <div id="legend"></div>
+  <div id="linez"></div>
+  <script type="module" src="build.js"></script>
+</body>
