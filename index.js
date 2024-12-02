@@ -2,10 +2,22 @@ import * as d3 from "d3";
 
 //ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
 const filedrop = document.getElementById("filedrop");
+const fileinput = document.getElementById("fileinput");
 
 document.addEventListener("drop", dropHandler);
 document.addEventListener("dragover", dragOverHandler);
 document.addEventListener("dragLeaveHandler", dragLeaveHandler);
+fileinput.addEventListener("change", async (event) => {
+  console.log("zomg fileinput change event.target.files:", event.target.files[0]);
+  try {
+    const file = event.target.files[0];
+    console.log(`…FILEINPUT! file[0].name = ${file.name}`);
+    await processDataFile(file);
+  } catch (e) {
+    //o noz!
+    console.warn("fileinput change error:", e);
+  }
+});
 
 // linesToDraw will toggle showing/hiding lines groups
 const linesToDraw = new Set();
@@ -219,7 +231,17 @@ function renderLinez(data) {
     (v) => Object.assign(v, { z: v[0][2] }),
     (d) => d[2],
   );
-  // Draw the lines.
+
+  // draw a line for x-axis zero
+  svg
+    .append("line")
+    .attr("x1", marginLeft)
+    .attr("x2", width - (marginLeft + marginRight))
+    .attr("y1", y(0))
+    .attr("y2", y(0))
+    .style("stroke", "dimgray");
+
+  // draw the data lines
   const line = d3.line();
   const path = svg
     .append("g")

@@ -3392,9 +3392,20 @@
 
   // index.js
   var filedrop = document.getElementById("filedrop");
+  var fileinput = document.getElementById("fileinput");
   document.addEventListener("drop", dropHandler);
   document.addEventListener("dragover", dragOverHandler);
   document.addEventListener("dragLeaveHandler", dragLeaveHandler);
+  fileinput.addEventListener("change", async (event) => {
+    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
+    try {
+      const file = event.target.files[0];
+      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
+      await processDataFile(file);
+    } catch (e) {
+      console.warn("fileinput change error:", e);
+    }
+  });
   var linesToDraw = /* @__PURE__ */ new Set();
   async function dropHandler(ev) {
     ev.preventDefault();
@@ -3522,6 +3533,7 @@
       (v) => Object.assign(v, { z: v[0][2] }),
       (d) => d[2]
     );
+    svg.append("line").attr("x1", marginLeft).attr("x2", width - (marginLeft + marginRight)).attr("y1", y2(0)).attr("y2", y2(0)).style("stroke", "dimgray");
     const line = line_default();
     const path2 = svg.append("g").attr("fill", "none").attr("stroke", "hotpink").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
     const dot = svg.append("g").attr("display", "none");

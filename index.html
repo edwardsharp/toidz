@@ -23,9 +23,15 @@
     justify-content: center;
   }
   #filedrop p {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+    font-size: 4em;
     margin: 1em;
     padding: 1em;
-    border: 5px dashed white;
+    border: 1em dashed white;
     width: 100%;
   }
   #legend {
@@ -42,7 +48,11 @@
 </style>
 <body>
   <div id="filedrop">
-    <p>drag data file to this <i>drop zone</i>.</p>
+    <p>
+      drag data file to this drop zone.
+
+      <input type="file" id="fileinput" />
+    </p>
   </div>
   <div id="legend"></div>
   <div id="linez"></div>
