@@ -411,6 +411,12 @@ scene.add(model);
 
 camera.position.z = 5;
 // camera.position.set(0, 5, 10); // Set an initial camera position
+// control toggle to follow cube
+let followCube = false;
+
+// Define a fixed offset for the camera relative to the cube
+const cameraOffsetBack = new THREE.Vector3(0, 10, 20); // behind cube.
+const cameraOffsetFront = new THREE.Vector3(0, 10, -20); // in front of the cube
 
 // OrbitControls setup
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -419,8 +425,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; // Smooth motion
 controls.dampingFactor = 0.1;
 // controls.screenSpacePanning = false; // Restrict panning to XY plane
-controls.minDistance = 2; // Minimum zoom distance
-// controls.maxDistance = 10000; // Maximum zoom distance
+// controls.minDistance = 2; // Minimum zoom distance. default is zero
+// controls.maxDistance = 10000; // Maximum zoom distance. default is infinity.
 // controls.maxPolarAngle = Math.PI / 2; // Limit vertical rotation to "top view"
 
 // path trace stuff
@@ -471,6 +477,9 @@ function updatePath(quaternion, acceleration, currentTimestamp) {
 
   // Update the line geometry
   pathGeometry.setFromPoints(pathPositions);
+
+  // MOVE DA CUBE, MA!
+  model.position.copy(currentPosition);
 }
 
 // animation Playback variables
@@ -534,6 +543,8 @@ function animate() {
 
   controls.update(); // Only required if damping is enabled
 
+  if (followCube) goToCube();
+
   renderer.render(scene, camera);
 }
 
@@ -545,4 +556,59 @@ function startAnimation() {
   isAnimating = true;
   startTime = Date.now();
   animate();
+}
+
+const followCubeCheckbox = document.getElementById("follow-cube");
+const goToCubeBtn = document.getElementById("go-to-cube");
+const setCameraViewTopBtn = document.getElementById("set-camera-view-top");
+const setCameraViewBottomBtn = document.getElementById("set-camera-view-bottom");
+const setCameraViewLeftBtn = document.getElementById("set-camera-view-left");
+const setCameraViewRightBtn = document.getElementById("set-camera-view-right");
+const setCameraViewBackBtn = document.getElementById("set-camera-view-back");
+const setCameraViewFrontBtn = document.getElementById("set-camera-view-front");
+
+followCubeCheckbox.addEventListener("change", (event) => (followCube = event.target.checked));
+goToCubeBtn.addEventListener("click", goToCube);
+setCameraViewTopBtn.addEventListener("click", () => setCameraView("top"));
+setCameraViewBottomBtn.addEventListener("click", () => setCameraView("bottom"));
+setCameraViewLeftBtn.addEventListener("click", () => setCameraView("left"));
+setCameraViewRightBtn.addEventListener("click", () => setCameraView("right"));
+setCameraViewBackBtn.addEventListener("click", () => setCameraView("back"));
+setCameraViewFrontBtn.addEventListener("click", () => setCameraView("front"));
+
+function goToCube() {
+  // Update the camera's position to follow the cube
+  const cameraPosition = model.position.clone().add(cameraOffsetFront); // or cameraOffsetBack...
+  camera.position.copy(cameraPosition);
+  // Make the camera look at the cube
+  camera.lookAt(model.position);
+}
+
+function setCameraView(view) {
+  switch (view) {
+    case "top":
+      camera.position.set(model.position.x, model.position.y + 10, model.position.z);
+      break;
+    case "bottom":
+      camera.position.set(model.position.x, model.position.y - 10, model.position.z);
+      break;
+    case "front":
+      camera.position.set(model.position.x, model.position.y, model.position.z + 10);
+      break;
+    case "back":
+      camera.position.set(model.position.x, model.position.y, model.position.z - 10);
+      break;
+    case "left":
+      camera.position.set(model.position.x - 10, model.position.y, model.position.z);
+      break;
+    case "right":
+      camera.position.set(model.position.x + 10, model.position.y, model.position.z);
+      break;
+    default:
+      console.warn("Unknown view:", view);
+      return;
+  }
+
+  // Make the camera look at the cube's position
+  camera.lookAt(model.position);
 }

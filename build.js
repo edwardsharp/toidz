@@ -24082,10 +24082,12 @@ void main() {
   var model = new Mesh(geometry, material);
   scene.add(model);
   camera.position.z = 5;
+  var followCube = false;
+  var cameraOffsetBack = new Vector3(0, 10, 20);
+  var cameraOffsetFront = new Vector3(0, 10, -20);
   var controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.1;
-  controls.minDistance = 2;
   var pathPositions = [];
   var pathGeometry = new BufferGeometry();
   var MAX_POINTS = 1e4;
@@ -24111,6 +24113,7 @@ void main() {
     currentPosition.addScaledVector(velocity, deltaTime);
     pathPositions.push(currentPosition.clone());
     pathGeometry.setFromPoints(pathPositions);
+    model.position.copy(currentPosition);
   }
   var playbackSpeed = 1;
   var startTime = Date.now();
@@ -24146,6 +24149,7 @@ void main() {
       updatePath(out.quaternion, out.acceleration, elapsedTime);
     }
     controls.update();
+    if (followCube) goToCube();
     renderer.render(scene, camera);
   }
   function stopAnimation() {
@@ -24155,6 +24159,53 @@ void main() {
     isAnimating = true;
     startTime = Date.now();
     animate();
+  }
+  var followCubeCheckbox = document.getElementById("follow-cube");
+  var goToCubeBtn = document.getElementById("go-to-cube");
+  var setCameraViewTopBtn = document.getElementById("set-camera-view-top");
+  var setCameraViewBottomBtn = document.getElementById("set-camera-view-bottom");
+  var setCameraViewLeftBtn = document.getElementById("set-camera-view-left");
+  var setCameraViewRightBtn = document.getElementById("set-camera-view-right");
+  var setCameraViewBackBtn = document.getElementById("set-camera-view-back");
+  var setCameraViewFrontBtn = document.getElementById("set-camera-view-front");
+  followCubeCheckbox.addEventListener("change", (event) => followCube = event.target.checked);
+  goToCubeBtn.addEventListener("click", goToCube);
+  setCameraViewTopBtn.addEventListener("click", () => setCameraView("top"));
+  setCameraViewBottomBtn.addEventListener("click", () => setCameraView("bottom"));
+  setCameraViewLeftBtn.addEventListener("click", () => setCameraView("left"));
+  setCameraViewRightBtn.addEventListener("click", () => setCameraView("right"));
+  setCameraViewBackBtn.addEventListener("click", () => setCameraView("back"));
+  setCameraViewFrontBtn.addEventListener("click", () => setCameraView("front"));
+  function goToCube() {
+    const cameraPosition = model.position.clone().add(cameraOffsetFront);
+    camera.position.copy(cameraPosition);
+    camera.lookAt(model.position);
+  }
+  function setCameraView(view) {
+    switch (view) {
+      case "top":
+        camera.position.set(model.position.x, model.position.y + 10, model.position.z);
+        break;
+      case "bottom":
+        camera.position.set(model.position.x, model.position.y - 10, model.position.z);
+        break;
+      case "front":
+        camera.position.set(model.position.x, model.position.y, model.position.z + 10);
+        break;
+      case "back":
+        camera.position.set(model.position.x, model.position.y, model.position.z - 10);
+        break;
+      case "left":
+        camera.position.set(model.position.x - 10, model.position.y, model.position.z);
+        break;
+      case "right":
+        camera.position.set(model.position.x + 10, model.position.y, model.position.z);
+        break;
+      default:
+        console.warn("Unknown view:", view);
+        return;
+    }
+    camera.lookAt(model.position);
   }
 })();
 /*! Bundled license information:
