@@ -56,5 +56,18 @@
   </div>
   <div id="legend"></div>
   <div id="linez"></div>
+  <div id="three-controls">
+    <button id="three-start-animate">animate!</button>
+    <button id="three-stop-animate">stop!</button>
+
+    <input id="three-playback-speed" type="range" min="0.5" max="10" step="0.5" />
+    <p>playback speed: <output id="three-playback-speed-value"></output></p>
+
+    <div>
+      <span>elapsed time: </span><span id="elapsed-time">0</span> <span>playback time: </span
+      ><span id="playback-time">0</span>
+    </div>
+  </div>
+  <div id="three-container"></div>
   <script type="module" src="build.js"></script>
 </body>

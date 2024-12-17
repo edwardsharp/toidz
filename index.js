@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import * as THREE from "three";
 
 //ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
 const filedrop = document.getElementById("filedrop");
@@ -95,6 +96,7 @@ async function processDataFile(blob) {
 
   renderLegend(out);
   renderLinez(out);
+  loadQuaternionData(out);
 }
 
 function renderLegend(data) {
@@ -190,13 +192,13 @@ function renderLinez(data) {
   // x axis horizontal position scale
   const x = d3
     .scaleLinear()
-    .domain(x_domain) // [0, 1_139_906]
+    .domain(x_domain)
     .range([marginLeft, width - marginRight]);
 
   // y axis vertical position scale
   const y = d3
     .scaleLinear()
-    .domain(y_domain) //[-110, 50] [-15, 35]
+    .domain(y_domain)
     .range([height - marginBottom, marginTop]);
 
   // SVG container.
@@ -242,7 +244,9 @@ function renderLinez(data) {
     .style("stroke", "dimgray");
 
   // draw the data lines
-  const line = d3.line();
+  // note: .curve(d3.curveStepAfter) makes the lines more like a square wave
+  // (vs. without, which is more sawtooth)
+  const line = d3.line().curve(d3.curveStepAfter);
   const path = svg
     .append("g")
     .attr("fill", "none")
@@ -307,4 +311,135 @@ function formatMillisecondsToMinSec(milliseconds) {
   const formattedSeconds = seconds.toString().padStart(2, "0");
 
   return `${minutes}:${formattedSeconds}`;
+}
+
+// THREE.JS STUFF!
+let quaternionData = [
+  { time: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
+  { time: 500, q: { x: 0.1, y: 0.2, z: 0.3, w: 0.9 } },
+  { time: 1000, q: { x: 0.2, y: 0.3, z: 0.4, w: 0.8 } },
+  // etc...
+];
+
+function loadQuaternionData(rawData) {
+  // GameRotationVector-real
+  // GameRotationVector-i
+  // GameRotationVector-j
+  // GameRotationVector-k
+  // okay assume all these arrays are the same length
+
+  quaternionData = [];
+  for (let i = 0; i < rawData["GameRotationVector-real"].length - 1; i++) {
+    const real = rawData["GameRotationVector-real"][i];
+    const w = real.v;
+    const x = rawData["GameRotationVector-i"][i].v;
+    const y = rawData["GameRotationVector-j"][i].v;
+    const z = rawData["GameRotationVector-k"][i].v;
+    if (!real || !w || !x || !y || !z) continue;
+
+    quaternionData.push({
+      time: real.millis,
+      q: { x, y, z, w },
+    });
+  }
+
+  console.log("zomg quaternionData:", quaternionData);
+}
+
+// Three.js scene setup
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const threeContainer = document.getElementById("three-container");
+threeContainer.appendChild(renderer.domElement);
+
+// animation controlz
+const threeStartAnimateBtn = document.getElementById("three-start-animate");
+threeStartAnimateBtn.addEventListener("click", startAnimation);
+
+const threeStopAnimateBtn = document.getElementById("three-stop-animate");
+threeStopAnimateBtn.addEventListener("click", stopAnimation);
+
+const elapsedTimeContainer = document.getElementById("elapsed-time");
+const playbackTimeContainer = document.getElementById("playback-time");
+
+const playbackSpeedSlider = document.getElementById("three-playback-speed");
+const playbackSpeedValue = document.getElementById("three-playback-speed-value");
+playbackSpeedSlider.addEventListener("input", (event) => {
+  playbackSpeed = parseFloat(event.target.value);
+  playbackSpeedValue.textContent = playbackSpeed;
+});
+
+// Model
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshNormalMaterial();
+const model = new THREE.Mesh(geometry, material);
+scene.add(model);
+
+camera.position.z = 5;
+
+// Playback variables
+let playbackSpeed = 1.0; // 1x real-time, 0.5x = half-speed, 2x = double-speed
+let startTime = Date.now();
+
+// animation control
+let isAnimating = false;
+
+// Find quaternion at specific time
+function interpolateQuaternion(elapsedTime) {
+  // Adjust for playback speed
+  const playbackTime = elapsedTime * playbackSpeed;
+  playbackTimeContainer.innerText = formatMillisecondsToMinSec(playbackTime);
+
+  // Find surrounding data points
+  for (let i = 0; i < quaternionData.length - 1; i++) {
+    const curr = quaternionData[i];
+    const next = quaternionData[i + 1];
+
+    if (playbackTime >= curr.time && playbackTime <= next.time) {
+      const alpha = (playbackTime - curr.time) / (next.time - curr.time);
+
+      // Spherical Linear Interpolation (SLERP)
+      const q1 = new THREE.Quaternion(curr.q.x, curr.q.y, curr.q.z, curr.q.w);
+      const q2 = new THREE.Quaternion(next.q.x, next.q.y, next.q.z, next.q.w);
+
+      const interpolatedQ = new THREE.Quaternion();
+      interpolatedQ.slerpQuaternions(q1, q2, alpha);
+
+      return interpolatedQ;
+    }
+  }
+  return null;
+}
+
+// Animation loop
+function animate() {
+  if (!isAnimating) return;
+
+  requestAnimationFrame(animate);
+
+  // Elapsed time since playback start
+  const elapsedTime = Date.now() - startTime;
+
+  elapsedTimeContainer.innerText = formatMillisecondsToMinSec(elapsedTime);
+
+  // Get interpolated quaternion
+  const quaternion = interpolateQuaternion(elapsedTime);
+  if (quaternion) {
+    model.quaternion.copy(quaternion);
+  }
+
+  renderer.render(scene, camera);
+}
+
+// playback ctrl
+function stopAnimation() {
+  isAnimating = false;
+}
+function startAnimation() {
+  isAnimating = true;
+  startTime = Date.now();
+  animate();
 }

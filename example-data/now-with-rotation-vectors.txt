@@ -1,0 +1,844 @@
+1734361072 14985 StabilityClassification:InMotion
+1734361073 15095 Gravity-x:-0.07, y:-7.48, z:6.45
+1734361073 15229 StabilityClassification:InMotion
+1734361073 15332 StabilityClassification:InMotion
+1734361073 15455 RotationVector-real:0.83, i:-0.47, j:-0.16, k:0.27
+1734361073 15525 LinearAcceration-x:-0.41, y:0.93, z:-0.19
+1734361073 15647 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 190car: 0bike: 176foot: 10still: 193tilt: 0walk: 64run: 96stair: 64
+1734361073 15751 LinearAcceration-x:-0.18, y:-0.00, z:0.05
+1734361073 15878 StabilityClassification:InMotion
+1734361073 15981 Gravity-x:-0.02, y:-9.61, z:2.23
+1734361074 16105 StabilityClassification:InMotion
+1734361074 16207 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 191car: 0bike: 112foot: 28still: 193tilt: 0walk: 160run: 131stair: 64
+1734361074 16330 Gravity-x:-0.27, y:-8.71, z:4.55
+1734361074 16439 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 3still: 66tilt: 0walk: 0run: 77stair: 193
+1734361074 16567 LinearAcceration-x:0.43, y:-0.17, z:-0.48
+1734361074 16671 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 222still: 65tilt: 0walk: 128run: 160stair: 193
+1734361074 16794 GameRotationVector-real:0.92, i:-0.35, j:-0.07, k:0.17
+1734361074 16865 Gyro-x:0.57, y:0.82, z:-0.02
+1734361074 16988 Gyro-x:-0.36, y:-0.42, z:0.14
+1734361075 17093 Gravity-x:-0.43, y:-8.20, z:5.47
+1734361075 17219 RotationVector-real:0.79, i:-0.46, j:-0.19, k:0.35
+1734361075 17290 GameRotationVector-real:0.81, i:-0.59, j:-0.03, k:0.05
+1734361075 17382 MagneticField-x:14.00, y:43.19, z:10.31
+1734361075 17486 Gyro-x:-1.23, y:1.03, z:0.38
+1734361075 17609 StabilityClassification:InMotion
+1734361075 17713 StabilityClassification:InMotion
+1734361075 17836 RotationVector-real:0.74, i:-0.64, j:-0.11, k:0.20
+1734361075 17908 Accelerometer-x:-1.40, y:-10.27, z:0.52
+1734361075 18033 RotationVector-real:0.64, i:-0.74, j:-0.12, k:0.17
+1734361076 18105 Gravity-x:-1.66, y:-8.74, z:-4.32
+1734361076 18226 StabilityClassification:InMotion
+1734361076 18330 StabilityClassification:InMotion
+1734361076 18452 RotationVector-real:0.16, i:0.98, j:0.03, k:-0.04
+1734361076 18523 StabilityClassification:InMotion
+1734361076 18646 StabilityClassification:InMotion
+1734361076 18750 Gyro-x:2.77, y:0.16, z:-1.17
+1734361076 18872 RotationVector-real:0.04, i:0.98, j:0.18, k:-0.09
+1734361076 18947 StabilityClassification:InMotion
+1734361077 19069 RotationVector-real:0.52, i:-0.76, j:-0.32, k:0.23
+1734361077 19141 GameRotationVector-real:0.79, i:-0.58, j:-0.17, k:0.06
+1734361077 19232 RotationVector-real:0.81, i:-0.38, j:-0.32, k:0.31
+1734361077 19304 StabilityClassification:InMotion
+1734361077 19426 StabilityClassification:InMotion
+1734361077 19529 Gyro-x:1.38, y:-1.65, z:-4.01
+1734361077 19653 Gyro-x:1.93, y:0.62, z:-3.98
+1734361077 19758 Gravity-x:7.10, y:-0.36, z:6.75
+1734361077 19882 StabilityClassification:InMotion
+1734361077 19986 Accelerometer-x:6.14, y:1.83, z:6.68
+1734361078 20108 RotationVector-real:0.88, i:0.10, j:-0.39, k:-0.24
+1734361078 20180 GameRotationVector-real:0.71, i:0.06, j:-0.47, k:-0.51
+1734361078 20270 RotationVector-real:0.76, i:0.20, j:-0.43, k:-0.45
+1734361078 20342 Gravity-x:3.13, y:7.85, z:5.02
+1734361078 20465 RotationVector-real:0.67, i:0.31, j:-0.40, k:-0.55
+1734361078 20537 StabilityClassification:InMotion
+1734361078 20658 StepCounter-steps:0, latency:49567
+1734361078 20830 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 191car: 0bike: 144foot: 16still: 65tilt: 0walk: 64run: 15stair: 64
+1734361078 20953 StabilityClassification:InMotion
+1734361079 21058 MagneticField-x:-6.81, y:-42.75, z:-10.56
+1734361079 21180 MagneticField-x:-7.88, y:-44.31, z:-9.13
+1734361079 21285 Gyro-x:0.15, y:-0.05, z:-0.55
+1734361079 21407 Gravity-x:-2.28, y:9.32, z:1.82
+1734361079 21513 StepCounter-steps:0, latency:27756
+1734361079 21702 GameRotationVector-real:0.39, i:0.48, j:-0.30, k:-0.73
+1734361079 21776 GameRotationVector-real:0.41, i:0.49, j:-0.21, k:-0.74
+1734361079 21865 StabilityClassification:InMotion
+1734361079 21970 StepCounter-steps:0, latency:9822
+1734361080 22156 Gyro-x:0.97, y:1.81, z:-0.69
+1734361080 22261 GameRotationVector-real:0.31, i:0.67, j:-0.02, k:-0.67
+1734361080 22350 StabilityClassification:InMotion
+1734361080 22454 RotationVector-real:0.34, i:0.69, j:0.44, k:-0.45
+1734361080 22543 GameRotationVector-real:0.15, i:0.81, j:0.16, k:-0.54
+1734361080 22619 StabilityClassification:InMotion
+1734361080 22738 StabilityClassification:InMotion
+1734361080 22845 GameRotationVector-real:0.35, i:0.69, j:0.13, k:-0.62
+1734361080 22933 GameRotationVector-real:0.44, i:0.61, j:0.07, k:-0.65
+1734361080 23006 StabilityClassification:InMotion
+1734361081 23127 StabilityClassification:InMotion
+1734361081 23232 StabilityClassification:InMotion
+1734361081 23352 Gyro-x:-0.74, y:-1.34, z:1.20
+1734361081 23458 Gravity-x:0.34, y:5.82, z:7.70
+1734361081 23582 GameRotationVector-real:0.71, i:0.14, j:-0.27, k:-0.63
+1734361081 23655 MagneticField-x:-26.81, y:2.25, z:-39.31
+1734361081 23777 GameRotationVector-real:0.79, i:-0.10, j:-0.34, k:-0.50
+1734361081 23850 GameRotationVector-real:0.80, i:-0.19, j:-0.36, k:-0.44
+1734361081 23939 StabilityClassification:InMotion
+1734361081 24044 GameRotationVector-real:0.80, i:-0.34, j:-0.36, k:-0.34
+1734361082 24133 GameRotationVector-real:0.79, i:-0.37, j:-0.36, k:-0.32
+1734361082 24208 StepCounter-steps:0, latency:12080
+1734361082 24394 GameRotationVector-real:0.71, i:-0.65, j:-0.19, k:-0.16
+1734361082 24466 RotationVector-real:0.60, i:-0.62, j:-0.46, k:0.21
+1734361082 24554 GameRotationVector-real:0.57, i:-0.81, j:-0.10, k:-0.07
+1734361082 24627 GameRotationVector-real:0.53, i:-0.84, j:-0.07, k:-0.07
+1734361082 24716 GameRotationVector-real:0.48, i:-0.88, j:-0.04, k:-0.06
+1734361082 24789 StepCounter-steps:0, latency:33071
+1734361082 24975 StabilityClassification:InMotion
+1734361083 25083 MagneticField-x:7.00, y:17.69, z:44.63
+1734361083 25204 StabilityClassification:InMotion
+1734361083 25308 GameRotationVector-real:0.34, i:-0.87, j:0.26, k:-0.25
+1734361083 25398 GameRotationVector-real:0.34, i:-0.86, j:0.29, k:-0.25
+1734361083 25470 LinearAcceration-x:0.51, y:1.00, z:-0.57
+1734361083 25590 Accelerometer-x:2.35, y:-9.97, z:-6.84
+1734361083 25696 StabilityClassification:InMotion
+1734361083 25814 StabilityClassification:InMotion
+1734361083 25921 StepCounter-steps:0, latency:42800
+1734361084 26108 Gravity-x:-0.86, y:-9.74, z:0.53
+1734361084 26214 StepCounter-steps:0, latency:14272
+1734361084 26398 Accelerometer-x:-2.47, y:-9.39, z:4.19
+1734361084 26504 StabilityClassification:InMotion
+1734361084 26624 StabilityClassification:InMotion
+1734361084 26731 StabilityClassification:InMotion
+1734361084 26850 StabilityClassification:InMotion
+1734361084 26956 MagneticField-x:19.50, y:47.69, z:-7.06
+1734361085 27078 StabilityClassification:InMotion
+1734361085 27185 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 64car: 0bike: 128foot: 191still: 192tilt: 0walk: 64run: 20stair: 64
+1734361085 27307 Gravity-x:1.24, y:-9.41, z:2.48
+1734361085 27414 StabilityClassification:InMotion
+1734361085 27533 Gyro-x:0.36, y:0.20, z:0.34
+1734361085 27641 Accelerometer-x:-1.98, y:-10.09, z:2.93
+1734361085 27761 Gravity-x:-1.88, y:-9.07, z:3.09
+1734361085 27867 StabilityClassification:InMotion
+1734361085 27988 Gravity-x:-1.55, y:-9.23, z:2.93
+1734361086 28098 StabilityClassification:InMotion
+1734361086 28219 Gravity-x:-0.01, y:-9.52, z:2.57
+1734361086 28326 StabilityClassification:InMotion
+1734361086 28445 Gravity-x:0.20, y:-9.86, z:0.20
+1734361086 28552 RotationVector-real:0.60, i:-0.69, j:-0.24, k:0.33
+1734361086 28640 Gravity-x:-2.42, y:-9.50, z:0.10
+1734361086 28746 RotationVector-real:0.66, i:-0.62, j:-0.16, k:0.40
+1734361086 28833 Gyro-x:1.07, y:0.15, z:-0.83
+1734361086 28940 Gyro-x:0.64, y:-0.09, z:-0.67
+1734361087 29059 StabilityClassification:InMotion
+1734361087 29170 Gravity-x:-0.57, y:-9.27, z:3.29
+1734361087 29291 RotationVector-real:0.72, i:-0.55, j:-0.24, k:0.34
+1734361087 29366 Gravity-x:-1.40, y:-9.39, z:2.52
+1734361087 29486 StabilityClassification:InMotion
+1734361087 29592 Accelerometer-x:-3.28, y:-11.46, z:2.73
+1734361087 29712 StabilityClassification:InMotion
+1734361087 29819 Gravity-x:-1.55, y:-9.48, z:2.11
+1734361087 29939 StabilityClassification:InMotion
+1734361087 30048 Gravity-x:-1.55, y:-9.49, z:2.07
+1734361088 30169 RotationVector-real:0.70, i:-0.59, j:-0.18, k:0.36
+1734361088 30245 Gyro-x:0.44, y:-0.15, z:0.06
+1734361088 30365 StabilityClassification:InMotion
+1734361088 30472 StabilityClassification:InMotion
+1734361088 30591 StabilityClassification:InMotion
+1734361088 30699 Gravity-x:-1.35, y:-8.02, z:5.50
+1734361088 30818 StabilityClassification:InMotion
+1734361088 30925 LinearAcceration-x:3.59, y:3.57, z:1.60
+1734361088 31045 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:bike, Confidences:?: 193car: 0bike: 32foot: 43still: 193tilt: 0walk: 64run: 205stair: 64
+1734361089 31155 Accelerometer-x:1.63, y:-3.00, z:7.22
+1734361089 31274 StabilityClassification:InMotion
+1734361089 31382 StabilityClassification:InMotion
+1734361089 31501 RotationVector-real:0.70, i:-0.30, j:-0.16, k:0.62
+1734361089 31577 Gravity-x:-2.02, y:-6.16, z:7.41
+1734361089 31696 StabilityClassification:InMotion
+1734361089 31804 LinearAcceration-x:-0.30, y:-0.10, z:0.20
+1734361089 31923 StabilityClassification:InMotion
+1734361089 32034 Gravity-x:-2.36, y:-6.41, z:7.10
+1734361090 32154 StabilityClassification:InMotion
+1734361090 32261 StepCounter-steps:0, latency:59864
+1734361090 32445 RotationVector-real:0.70, i:-0.35, j:-0.14, k:0.60
+1734361090 32521 Gravity-x:-2.41, y:-6.57, z:7.09
+1734361090 32641 StabilityClassification:InMotion
+1734361090 32749 Gravity-x:-2.49, y:-6.64, z:6.98
+1734361090 32868 RotationVector-real:0.73, i:-0.36, j:-0.14, k:0.56
+1734361090 32944 Gyro-x:-1.31, y:0.18, z:5.54
+1734361091 33067 MagneticField-x:28.31, y:31.88, z:-23.56
+1734361091 33174 Gravity-x:-1.44, y:-5.86, z:7.88
+1734361091 33294 StabilityClassification:InMotion
+1734361091 33401 Gravity-x:-2.72, y:-5.54, z:7.76
+1734361091 33520 StabilityClassification:InMotion
+1734361091 33627 Gravity-x:-3.15, y:-5.37, z:7.71
+1734361091 33746 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 192car: 0bike: 32foot: 178still: 192tilt: 0walk: 0run: 242stair: 64
+1734361091 33854 LinearAcceration-x:0.39, y:0.20, z:0.04
+1734361091 33971 StabilityClassification:InMotion
+1734361092 34080 Gravity-x:-2.94, y:-6.40, z:6.95
+1734361092 34200 RotationVector-real:0.73, i:-0.37, j:-0.10, k:0.57
+1734361092 34275 Gyro-x:0.16, y:-0.39, z:-1.73
+1734361092 34395 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 191car: 0bike: 224foot: 225still: 192tilt: 0walk: 32run: 231stair: 64
+1734361092 34502 Gravity-x:-0.84, y:-6.36, z:7.52
+1734361092 34622 StabilityClassification:InMotion
+1734361092 34732 Gravity-x:-0.60, y:-6.27, z:7.63
+1734361092 34851 StabilityClassification:InMotion
+1734361092 34959 StabilityClassification:InMotion
+1734361093 35078 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 190car: 0bike: 0foot: 194still: 192tilt: 0walk: 160run: 245stair: 64
+1734361093 35186 Accelerometer-x:-0.52, y:-6.21, z:7.87
+1734361093 35306 StabilityClassification:InMotion
+1734361093 35413 Gravity-x:-0.48, y:-6.30, z:7.63
+1734361093 35536 StabilityClassification:InMotion
+1734361093 35644 Gravity-x:-0.59, y:-6.33, z:7.59
+1734361093 35764 StabilityClassification:InMotion
+1734361093 35873 Gravity-x:-0.29, y:-5.98, z:7.88
+1734361093 35993 StabilityClassification:InMotion
+1734361094 36101 Gravity-x:-0.89, y:-5.38, z:8.27
+1734361094 36220 RotationVector-real:0.79, i:-0.26, j:-0.13, k:0.53
+1734361094 36295 Accelerometer-x:-0.75, y:-5.53, z:8.25
+1734361094 36415 StabilityClassification:InMotion
+1734361094 36523 Gravity-x:-0.80, y:-5.59, z:8.16
+1734361094 36646 RotationVector-real:0.79, i:-0.27, j:-0.13, k:0.54
+1734361094 36721 Gravity-x:-0.78, y:-5.60, z:8.16
+1734361094 36840 StabilityClassification:InMotion
+1734361094 36947 Accelerometer-x:-0.71, y:-5.60, z:8.21
+1734361095 37067 StabilityClassification:InMotion
+1734361095 37174 Gravity-x:-0.73, y:-5.45, z:8.27
+1734361095 37294 StabilityClassification:InMotion
+1734361095 37402 Gravity-x:-0.72, y:-5.49, z:8.25
+1734361095 37521 Gyro-x:0.02, y:-0.00, z:0.06
+1734361095 37631 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 190car: 0bike: 0foot: 194still: 192tilt: 0walk: 32run: 2stair: 65
+1734361095 37751 Gravity-x:-1.00, y:-5.65, z:8.11
+1734361095 37857 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 191car: 0bike: 192foot: 181still: 192tilt: 0walk: 128run: 244stair: 64
+1734361095 37977 Gravity-x:-1.15, y:-5.64, z:8.11
+1734361096 38083 StabilityClassification:InMotion
+1734361096 38207 Gravity-x:-1.18, y:-5.66, z:8.09
+1734361096 38313 RotationVector-real:0.78, i:-0.28, j:-0.12, k:0.55
+1734361096 38401 Gyro-x:-0.05, y:0.02, z:0.02
+1734361096 38507 StepCounter-steps:0, latency:4880
+1734361096 38693 StabilityClassification:InMotion
+1734361096 38798 LinearAcceration-x:-0.05, y:-0.07, z:-0.11
+1734361096 38918 StabilityClassification:InMotion
+1734361096 39024 LinearAcceration-x:0.14, y:-0.02, z:-0.01
+1734361097 39144 StabilityClassification:InMotion
+1734361097 39252 StepCounter-steps:0, latency:34510
+1734361097 39440 StabilityClassification:InMotion
+1734361097 39545 StabilityClassification:InMotion
+1734361097 39665 StabilityClassification:InMotion
+1734361097 39770 StabilityClassification:InMotion
+1734361097 39890 StabilityClassification:InMotion
+1734361097 39996 LinearAcceration-x:-0.01, y:0.04, z:-0.11
+1734361098 40116 StabilityClassification:InMotion
+1734361098 40223 StabilityClassification:InMotion
+1734361098 40343 Accelerometer-x:-1.36, y:-5.57, z:7.52
+1734361098 40452 StabilityClassification:InMotion
+1734361098 40571 Accelerometer-x:-1.55, y:-5.60, z:7.87
+1734361098 40677 StabilityClassification:InMotion
+1734361098 40796 Gravity-x:-1.37, y:-5.55, z:8.11
+1734361098 40903 RotationVector-real:0.76, i:-0.28, j:-0.12, k:0.57
+1734361098 40991 Accelerometer-x:-1.25, y:-5.60, z:7.99
+1734361099 41097 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 191car: 0bike: 128foot: 180still: 192tilt: 0walk: 192run: 2stair: 65
+1734361099 41220 Gravity-x:-1.21, y:-5.66, z:8.05
+1734361099 41326 RotationVector-real:0.76, i:-0.28, j:-0.13, k:0.57
+1734361099 41413 Accelerometer-x:-1.05, y:-5.95, z:8.09
+1734361099 41519 StabilityClassification:InMotion
+1734361099 41639 Gravity-x:-1.13, y:-5.63, z:8.09
+1734361099 41746 RotationVector-real:0.76, i:-0.28, j:-0.14, k:0.57
+1734361099 41834 Gravity-x:-1.13, y:-5.71, z:8.03
+1734361099 41941 RotationVector-real:0.76, i:-0.28, j:-0.14, k:0.57
+1734361099 42028 Gravity-x:-1.09, y:-5.71, z:8.03
+1734361100 42137 RotationVector-real:0.76, i:-0.28, j:-0.14, k:0.57
+1734361100 42226 Accelerometer-x:-2.55, y:-5.60, z:9.21
+1734361100 42332 StabilityClassification:InMotion
+1734361100 42453 Gravity-x:-1.34, y:-5.68, z:8.02
+1734361100 42559 RotationVector-real:0.76, i:-0.29, j:-0.14, k:0.57
+1734361100 42647 Accelerometer-x:0.40, y:-3.77, z:-0.25
+1734361100 42754 StabilityClassification:InMotion
+1734361100 42874 StabilityClassification:InMotion
+1734361100 42985 RotationVector-real:0.77, i:-0.29, j:-0.12, k:0.56
+1734361101 43074 Gravity-x:-0.80, y:-5.73, z:8.11
+1734361101 43180 StabilityClassification:InMotion
+1734361101 43300 Gravity-x:-1.65, y:-6.02, z:7.78
+1734361101 43407 RotationVector-real:0.74, i:-0.35, j:-0.14, k:0.56
+1734361101 43495 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 191car: 0bike: 192foot: 181still: 192tilt: 0walk: 128run: 228stair: 64
+1734361101 43601 StabilityClassification:InMotion
+1734361101 43721 Gravity-x:-1.52, y:-6.73, z:7.20
+1734361101 43831 RotationVector-real:0.71, i:-0.39, j:-0.16, k:0.56
+1734361101 43919 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:stair, Confidences:?: 192car: 0bike: 32foot: 205still: 192tilt: 0walk: 128run: 179stair: 64
+1734361101 44026 LinearAcceration-x:-0.13, y:0.18, z:-0.51
+1734361102 44145 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 4still: 66tilt: 0walk: 128run: 243stair: 193
+1734361102 44251 LinearAcceration-x:-1.68, y:1.02, z:-2.55
+1734361102 44374 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 190car: 0bike: 0foot: 152still: 187tilt: 0walk: 64run: 70stair: 61
+1734361102 44480 LinearAcceration-x:3.91, y:2.35, z:1.27
+1734361102 44601 StabilityClassification:InMotion
+1734361102 44707 StabilityClassification:InMotion
+1734361102 44827 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 224still: 65tilt: 0walk: 128run: 217stair: 193
+1734361102 44935 StabilityClassification:InMotion
+1734361103 45055 StabilityClassification:InMotion
+1734361103 45160 Gravity-x:-1.66, y:-5.38, z:8.21
+1734361103 45281 StabilityClassification:InMotion
+1734361103 45387 LinearAcceration-x:-0.17, y:2.13, z:-1.76
+1734361103 45506 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 192car: 0bike: 96foot: 239still: 192tilt: 0walk: 0run: 121stair: 63
+1734361103 45613 MagneticField-x:34.75, y:34.50, z:-12.63
+1734361103 45735 StabilityClassification:InMotion
+1734361103 45841 StabilityClassification:InMotion
+1734361103 45962 StabilityClassification:InMotion
+1734361104 46068 StabilityClassification:InMotion
+1734361104 46188 StabilityClassification:InMotion
+1734361104 46293 MagneticField-x:21.13, y:37.63, z:-17.50
+1734361104 46413 GameRotationVector-real:0.83, i:-0.55, j:0.12, k:0.07
+1734361104 46486 StabilityClassification:InMotion
+1734361104 46606 Accelerometer-x:-11.86, y:-1.20, z:-3.82
+1734361104 46714 GameRotationVector-real:0.48, i:-0.63, j:0.48, k:0.38
+1734361104 46804 StabilityClassification:InMotion
+1734361104 46909 StabilityClassification:InMotion
+1734361104 47028 Gyro-x:-2.13, y:2.93, z:-2.52
+1734361105 47134 StabilityClassification:InMotion
+1734361105 47255 Gyro-x:6.44, y:0.15, z:-4.35
+1734361105 47361 Gravity-x:-5.62, y:-7.63, z:-2.99
+1734361105 47481 Accelerometer-x:-4.08, y:-0.24, z:8.29
+1734361105 47587 StepCounter-steps:0, latency:57379
+1734361105 47772 GameRotationVector-real:0.39, i:-0.48, j:0.61, k:0.50
+1734361105 47848 GameRotationVector-real:0.15, i:-0.69, j:0.46, k:0.53
+1734361105 47937 Gravity-x:-5.86, y:-3.20, z:-7.25
+1734361105 48042 RotationVector-real:0.48, i:-0.82, j:-0.03, k:0.33
+1734361106 48131 StabilityClassification:InMotion
+1734361106 48236 StabilityClassification:InMotion
+1734361106 48357 GameRotationVector-real:0.24, i:-0.49, j:0.78, k:0.29
+1734361106 48430 StabilityClassification:InMotion
+1734361106 48550 GameRotationVector-real:0.03, i:-0.87, j:0.31, k:0.38
+1734361106 48626 RotationVector-real:0.14, i:-0.89, j:-0.23, k:0.37
+1734361106 48714 GameRotationVector-real:0.57, i:-0.77, j:0.27, k:0.14
+1734361106 48788 StabilityClassification:InMotion
+1734361106 48909 StabilityClassification:InMotion
+1734361106 49014 RotationVector-real:0.02, i:-0.83, j:0.41, k:0.39
+1734361107 49102 GameRotationVector-real:0.03, i:-0.65, j:0.59, k:0.47
+1734361107 49174 GameRotationVector-real:0.09, i:-0.80, j:0.33, k:0.49
+1734361107 49265 GameRotationVector-real:0.22, i:-0.84, j:0.22, k:0.44
+1734361107 49340 StepCounter-steps:0, latency:29536
+1734361107 49526 GameRotationVector-real:0.71, i:-0.65, j:0.16, k:0.24
+1734361107 49599 Accelerometer-x:1.78, y:-1.12, z:13.00
+1734361107 49721 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 192car: 0bike: 32foot: 162still: 192tilt: 0walk: 16run: 53stair: 65
+1734361107 49826 StepCounter-steps:2, latency:83
+1734361107 50011 GameRotationVector-real:0.93, i:-0.25, j:0.08, k:0.25
+1734361108 50087 StabilityClassification:InMotion
+1734361108 50207 GameRotationVector-real:0.81, i:-0.54, j:0.05, k:0.21
+1734361108 50279 StabilityClassification:InMotion
+1734361108 50398 RotationVector-real:0.62, i:-0.39, j:-0.16, k:0.66
+1734361108 50471 GameRotationVector-real:0.90, i:-0.39, j:0.05, k:0.16
+1734361108 50560 StabilityClassification:InMotion
+1734361108 50665 GameRotationVector-real:0.86, i:-0.39, j:0.06, k:0.32
+1734361108 50755 GameRotationVector-real:0.92, i:-0.34, j:0.02, k:0.19
+1734361108 50830 StabilityClassification:InMotion
+1734361108 50951 GameRotationVector-real:0.87, i:-0.36, j:0.08, k:0.34
+1734361108 51023 StepCounter-steps:4, latency:38
+1734361109 51210 GameRotationVector-real:0.90, i:-0.36, j:0.08, k:0.25
+1734361109 51282 GameRotationVector-real:0.88, i:-0.39, j:0.09, k:0.25
+1734361109 51371 GameRotationVector-real:0.86, i:-0.43, j:0.11, k:0.27
+1734361109 51444 GameRotationVector-real:0.86, i:-0.43, j:0.11, k:0.27
+1734361109 51534 GameRotationVector-real:0.86, i:-0.43, j:0.11, k:0.26
+1734361109 51609 GameRotationVector-real:0.86, i:-0.42, j:0.11, k:0.27
+1734361109 51699 GameRotationVector-real:0.88, i:-0.38, j:0.11, k:0.27
+1734361109 51771 StabilityClassification:InMotion
+1734361109 51891 StepCounter-steps:4, latency:38
+1734361110 52061 GameRotationVector-real:0.82, i:-0.54, j:0.16, k:0.12
+1734361110 52149 GameRotationVector-real:0.89, i:-0.43, j:0.11, k:0.12
+1734361110 52222 GameRotationVector-real:0.88, i:-0.36, j:0.11, k:0.29
+1734361110 52310 StabilityClassification:InMotion
+1734361110 52418 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 190car: 0bike: 192foot: 117still: 189tilt: 0walk: 188run: 41stair: 63
+1734361110 52538 StabilityClassification:InMotion
+1734361110 52643 GameRotationVector-real:0.90, i:-0.27, j:0.17, k:0.30
+1734361110 52733 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 192car: 0bike: 64foot: 184still: 192tilt: 0walk: 64run: 8stair: 65
+1734361110 52841 Gravity-x:-4.57, y:-4.52, z:7.37
+1734361110 52963 StabilityClassification:InMotion
+1734361111 53068 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 0car: 6bike: 0foot: 219still: 192tilt: 0walk: 192run: 240stair: 64
+1734361111 53191 StabilityClassification:InMotion
+1734361111 53295 MagneticField-x:35.50, y:32.31, z:-20.13
+1734361111 53416 StabilityClassification:InMotion
+1734361111 53521 StepCounter-steps:6, latency:44
+1734361111 53708 GameRotationVector-real:1.00, i:-0.03, j:0.06, k:0.04
+1734361111 53784 StepCounter-steps:6, latency:44
+1734361111 53971 StabilityClassification:InMotion
+1734361112 54076 StepCounter-steps:6, latency:44
+1734361112 54263 StabilityClassification:InMotion
+1734361112 54367 GameRotationVector-real:1.00, i:0.01, j:0.00, k:-0.06
+1734361112 54458 GameRotationVector-real:1.00, i:0.01, j:0.00, k:-0.06
+1734361112 54531 StabilityClassification:InMotion
+1734361112 54651 MagneticField-x:16.13, y:17.56, z:-42.50
+1734361112 54757 StabilityClassification:InMotion
+1734361112 54880 StabilityClassification:InMotion
+1734361112 54986 Gyro-x:-0.26, y:1.35, z:0.78
+1734361113 55107 StabilityClassification:InMotion
+1734361113 55212 GameRotationVector-real:0.97, i:-0.21, j:-0.07, k:-0.10
+1734361113 55301 GameRotationVector-real:1.00, i:-0.06, j:0.02, k:-0.01
+1734361113 55374 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 189car: 0bike: 0foot: 163still: 191tilt: 0walk: 32run: 210stair: 64
+1734361113 55499 StabilityClassification:InMotion
+1734361113 55604 StepCounter-steps:6, latency:44
+1734361113 55791 StabilityClassification:InMotion
+1734361113 55897 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 188car: 0bike: 0foot: 64still: 188tilt: 0walk: 128run: 28stair: 65
+1734361113 56018 StepCounter-steps:6, latency:44
+1734361114 56188 Gravity-x:0.12, y:0.14, z:9.83
+1734361114 56310 GameRotationVector-real:1.00, i:0.01, j:-0.01, k:-0.08
+1734361114 56384 GameRotationVector-real:1.00, i:0.01, j:-0.01, k:-0.08
+1734361114 56475 StabilityClassification:InMotion
+1734361114 56580 StepCounter-steps:6, latency:44
+1734361114 56767 GameRotationVector-real:1.00, i:0.01, j:-0.01, k:-0.08
+1734361114 56841 StabilityClassification:InMotion
+1734361114 56962 GameRotationVector-real:1.00, i:0.01, j:-0.00, k:-0.08
+1734361114 57035 StabilityClassification:InMotion
+1734361115 57156 StepCounter-steps:6, latency:44
+1734361115 57325 MagneticField-x:13.19, y:8.94, z:-46.75
+1734361115 57450 StabilityClassification:OnTable
+1734361115 57967 StabilityClassification:InMotion
+1734361116 58095 Gyro-x:0.13, y:0.48, z:0.36
+1734361116 58201 Accelerometer-x:-3.39, y:-4.64, z:7.71
+1734361116 58323 GameRotationVector-real:0.93, i:-0.18, j:0.27, k:-0.18
+1734361116 58395 StabilityClassification:InMotion
+1734361116 58517 Accelerometer-x:-4.73, y:-4.38, z:5.34
+1734361116 58623 LinearAcceration-x:0.35, y:1.04, z:-0.93
+1734361116 58745 GameRotationVector-real:0.79, i:-0.27, j:0.52, k:-0.15
+1734361116 58818 StabilityClassification:InMotion
+1734361116 58942 Gyro-x:-0.09, y:-1.13, z:0.92
+1734361116 59048 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 0car: 6bike: 0foot: 228still: 192tilt: 0walk: 0run: 8stair: 62
+1734361117 59169 StabilityClassification:InMotion
+1734361117 59274 StabilityClassification:InMotion
+1734361117 59395 GameRotationVector-real:0.94, i:0.04, j:0.16, k:0.31
+1734361117 59467 StabilityClassification:InMotion
+1734361117 59588 StepCounter-steps:6, latency:44
+1734361117 59757 StepCounter-steps:6, latency:44
+1734361117 59945 GameRotationVector-real:0.69, i:0.52, j:-0.06, k:0.50
+1734361117 60018 GameRotationVector-real:0.59, i:0.67, j:0.05, k:0.45
+1734361118 60106 Accelerometer-x:0.75, y:9.26, z:4.50
+1734361118 60212 StabilityClassification:InMotion
+1734361118 60333 Gyro-x:-2.67, y:-0.10, z:-1.48
+1734361118 60439 StabilityClassification:InMotion
+1734361118 60560 GameRotationVector-real:0.99, i:0.04, j:-0.01, k:0.15
+1734361118 60632 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 64car: 0bike: 0foot: 234still: 63tilt: 0walk: 160run: 31stair: 65
+1734361118 60755 GameRotationVector-real:0.92, i:0.15, j:-0.35, k:0.10
+1734361118 60828 Gyro-x:-1.87, y:-0.01, z:1.94
+1734361118 60949 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 2still: 191tilt: 0walk: 64run: 140stair: 64
+1734361119 61054 StepCounter-steps:6, latency:44
+1734361119 61241 StabilityClassification:InMotion
+1734361119 61349 MagneticField-x:-18.44, y:17.06, z:-38.19
+1734361119 61471 Gravity-x:5.44, y:-5.27, z:6.09
+1734361119 61577 MagneticField-x:-6.94, y:35.31, z:-31.13
+1734361119 61699 GameRotationVector-real:0.78, i:-0.43, j:-0.38, k:0.25
+1734361119 61772 StabilityClassification:InMotion
+1734361119 61892 Gyro-x:-3.09, y:-0.78, z:-2.06
+1734361119 62000 Gravity-x:9.04, y:-3.45, z:-0.02
+1734361120 62120 GameRotationVector-real:0.60, i:-0.52, j:-0.50, k:-0.36
+1734361120 62192 StepCounter-steps:6, latency:44
+1734361120 62382 StabilityClassification:InMotion
+1734361120 62487 GameRotationVector-real:0.32, i:-0.54, j:-0.25, k:-0.74
+1734361120 62576 GameRotationVector-real:0.42, i:-0.56, j:-0.36, k:-0.61
+1734361120 62649 GameRotationVector-real:0.55, i:-0.56, j:-0.46, k:-0.42
+1734361120 62738 MagneticField-x:-36.69, y:34.13, z:-0.75
+1734361120 62844 MagneticField-x:-32.06, y:43.44, z:-0.56
+1734361120 62967 StabilityClassification:InMotion
+1734361121 63073 MagneticField-x:-17.63, y:48.38, z:10.50
+1734361121 63195 StabilityClassification:InMotion
+1734361121 63303 GameRotationVector-real:0.47, i:-0.75, j:-0.30, k:-0.35
+1734361121 63392 StabilityClassification:InMotion
+1734361121 63498 StabilityClassification:InMotion
+1734361121 63619 GameRotationVector-real:0.48, i:-0.51, j:-0.49, k:-0.52
+1734361121 63692 GameRotationVector-real:0.47, i:-0.41, j:-0.53, k:-0.58
+1734361121 63782 StabilityClassification:InMotion
+1734361121 63887 LinearAcceration-x:-1.60, y:-4.29, z:-2.62
+1734361121 64010 Gravity-x:9.79, y:0.90, z:1.43
+1734361122 64118 StabilityClassification:InMotion
+1734361122 64239 Gyro-x:-0.79, y:-1.72, z:2.42
+1734361122 64345 StabilityClassification:InMotion
+1734361122 64467 GameRotationVector-real:0.47, i:-0.81, j:-0.26, k:-0.23
+1734361122 64540 GameRotationVector-real:0.45, i:-0.82, j:-0.26, k:-0.26
+1734361122 64629 StabilityClassification:InMotion
+1734361122 64734 StepCounter-steps:9, latency:85
+1734361122 64920 StepCounter-steps:9, latency:85
+1734361123 65089 Accelerometer-x:10.93, y:-3.73, z:-1.36
+1734361123 65214 StepCounter-steps:9, latency:85
+1734361123 65385 MagneticField-x:-46.56, y:6.69, z:-14.81
+1734361123 65506 Gravity-x:9.78, y:-1.37, z:0.70
+1734361123 65611 StabilityClassification:InMotion
+1734361123 65733 GameRotationVector-real:0.47, i:-0.80, j:-0.25, k:-0.28
+1734361123 65806 MagneticField-x:-9.81, y:38.63, z:30.69
+1734361123 65927 StabilityClassification:InMotion
+1734361123 66032 StepCounter-steps:10, latency:80
+1734361124 66218 StabilityClassification:InMotion
+1734361124 66324 StepCounter-steps:11, latency:87
+1734361124 66513 StabilityClassification:InMotion
+1734361124 66618 RotationVector-real:0.77, i:0.14, j:-0.63, k:-0.03
+1734361124 66705 GameRotationVector-real:0.55, i:-0.48, j:-0.46, k:-0.50
+1734361124 66779 Accelerometer-x:12.93, y:-4.49, z:-1.21
+1734361124 66901 GameRotationVector-real:0.49, i:-0.73, j:-0.29, k:-0.39
+1734361124 66974 StabilityClassification:InMotion
+1734361125 67095 StepCounter-steps:12, latency:79
+1734361125 67265 MagneticField-x:-14.31, y:28.38, z:38.25
+1734361125 67389 StabilityClassification:InMotion
+1734361125 67495 StabilityClassification:InMotion
+1734361125 67615 Accelerometer-x:10.89, y:-3.57, z:-1.29
+1734361125 67722 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:car, Confidences:?: 63car: 0bike: 128foot: 81still: 63tilt: 0walk: 128run: 56stair: 191
+1734361125 67842 Gravity-x:9.33, y:1.77, z:2.89
+1734361125 67949 StabilityClassification:InMotion
+1734361126 68069 Gravity-x:9.61, y:-2.05, z:0.92
+1734361126 68176 StabilityClassification:InMotion
+1734361126 68294 Accelerometer-x:10.59, y:-3.34, z:-0.75
+1734361126 68400 StabilityClassification:InMotion
+1734361126 68521 StabilityClassification:InMotion
+1734361126 68626 LinearAcceration-x:2.07, y:0.39, z:3.25
+1734361126 68748 StabilityClassification:InMotion
+1734361126 68854 StepCounter-steps:15, latency:83
+1734361126 69039 Gravity-x:9.68, y:0.10, z:2.13
+1734361127 69145 StabilityClassification:InMotion
+1734361127 69265 Accelerometer-x:9.60, y:-3.00, z:-1.02
+1734361127 69374 StepCounter-steps:16, latency:82
+1734361127 69542 MagneticField-x:-27.06, y:35.69, z:22.81
+1734361127 69669 StepCounter-steps:16, latency:82
+1734361127 69837 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 44stair: 191
+1734361127 69963 StepCounter-steps:17, latency:82
+1734361128 70137 GameRotationVector-real:0.47, i:-0.58, j:-0.35, k:-0.56
+1734361128 70230 StepCounter-steps:17, latency:82
+1734361128 70402 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:foot, Confidences:?: 65car: 0bike: 0foot: 32still: 192tilt: 0walk: 0run: 93stair: 191
+1734361128 70528 StepCounter-steps:17, latency:82
+1734361128 70696 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 110still: 192tilt: 0walk: 128run: 130stair: 191
+1734361128 70822 StepCounter-steps:18, latency:80
+1734361128 70991 GameRotationVector-real:0.33, i:-0.83, j:-0.24, k:-0.37
+1734361129 71086 StepCounter-steps:18, latency:80
+1734361129 71254 MagneticField-x:-34.56, y:28.44, z:15.44
+1734361129 71381 StepCounter-steps:19, latency:83
+1734361129 71550 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 64foot: 49still: 192tilt: 0walk: 0run: 113stair: 191
+1734361129 71677 StepCounter-steps:19, latency:83
+1734361129 71846 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 78still: 192tilt: 0walk: 128run: 130stair: 191
+1734361129 71974 StepCounter-steps:20, latency:81
+1734361130 72143 GameRotationVector-real:0.38, i:-0.79, j:-0.26, k:-0.41
+1734361130 72237 StepCounter-steps:20, latency:81
+1734361130 72405 MagneticField-x:-28.44, y:29.75, z:26.50
+1734361130 72530 StepCounter-steps:20, latency:81
+1734361130 72698 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 81still: 192tilt: 0walk: 0run: 145stair: 191
+1734361130 72828 StepCounter-steps:21, latency:84
+1734361130 72996 StabilityClassification:InMotion
+1734361131 73121 StepCounter-steps:21, latency:84
+1734361131 73289 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 88still: 192tilt: 0walk: 0run: 113stair: 191
+1734361131 73415 StepCounter-steps:22, latency:80
+1734361131 73584 GameRotationVector-real:0.34, i:-0.81, j:-0.25, k:-0.40
+1734361131 73675 StepCounter-steps:22, latency:80
+1734361131 73847 GameRotationVector-real:0.42, i:-0.70, j:-0.30, k:-0.48
+1734361131 73939 StepCounter-steps:23, latency:86
+1734361132 74107 StabilityClassification:InMotion
+1734361132 74234 StepCounter-steps:23, latency:86
+1734361132 74403 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 64foot: 71still: 192tilt: 0walk: 128run: 130stair: 191
+1734361132 74529 StepCounter-steps:24, latency:82
+1734361132 74698 StabilityClassification:InMotion
+1734361132 74825 StepCounter-steps:24, latency:82
+1734361132 74995 GameRotationVector-real:0.38, i:-0.77, j:-0.27, k:-0.44
+1734361133 75089 StepCounter-steps:24, latency:82
+1734361133 75257 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 73still: 192tilt: 0walk: 0run: 135stair: 191
+1734361133 75383 StepCounter-steps:24, latency:82
+1734361133 75552 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 64foot: 44still: 192tilt: 0walk: 0run: 93stair: 191
+1734361133 75680 StepCounter-steps:24, latency:82
+1734361133 75848 StabilityClassification:InMotion
+1734361133 75972 StepCounter-steps:24, latency:82
+1734361134 76141 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 64foot: 44still: 192tilt: 0walk: 0run: 15stair: 191
+1734361134 76266 StepCounter-steps:24, latency:82
+1734361134 76436 Gyro-x:0.93, y:1.15, z:-0.62
+1734361134 76560 StepCounter-steps:24, latency:82
+1734361134 76732 StabilityClassification:InMotion
+1734361134 76857 StepCounter-steps:24, latency:82
+1734361134 77027 MagneticField-x:-40.38, y:26.44, z:-0.13
+1734361135 77154 StepCounter-steps:24, latency:82
+1734361135 77322 StabilityClassification:InMotion
+1734361135 77448 StepCounter-steps:24, latency:82
+1734361135 77617 RotationVector-real:0.62, i:-0.19, j:-0.75, k:0.06
+1734361135 77709 StepCounter-steps:24, latency:82
+1734361135 77878 GameRotationVector-real:0.47, i:-0.60, j:-0.32, k:-0.56
+1734361135 77973 StepCounter-steps:24, latency:82
+1734361136 78142 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 103stair: 191
+1734361136 78266 StepCounter-steps:24, latency:82
+1734361136 78435 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 68still: 192tilt: 0walk: 0run: 74stair: 191
+1734361136 78561 StepCounter-steps:24, latency:82
+1734361136 78733 Gravity-x:8.67, y:-3.52, z:-3.23
+1734361136 78858 StepCounter-steps:24, latency:82
+1734361136 79027 Gyro-x:0.66, y:0.96, z:-0.59
+1734361137 79153 StepCounter-steps:24, latency:82
+1734361137 79322 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 64foot: 49still: 192tilt: 0walk: 0run: 103stair: 191
+1734361137 79449 StepCounter-steps:24, latency:82
+1734361137 79618 Gyro-x:-0.81, y:-0.88, z:0.65
+1734361137 79744 StepCounter-steps:24, latency:82
+1734361137 79916 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 46still: 192tilt: 0walk: 0run: 44stair: 191
+1734361137 80042 StepCounter-steps:24, latency:82
+1734361138 80211 LinearAcceration-x:0.73, y:0.08, z:0.54
+1734361138 80338 StepCounter-steps:24, latency:82
+1734361138 80508 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 103stair: 191
+1734361138 80636 StepCounter-steps:24, latency:82
+1734361138 80805 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 64still: 192tilt: 0walk: 0run: 113stair: 191
+1734361138 80930 StepCounter-steps:24, latency:82
+1734361139 81099 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 54stair: 191
+1734361139 81226 StepCounter-steps:24, latency:82
+1734361139 81398 MagneticField-x:-35.13, y:29.69, z:14.31
+1734361139 81524 StepCounter-steps:24, latency:82
+1734361139 81693 StabilityClassification:Stable
+1734361139 81817 StepCounter-steps:24, latency:82
+1734361139 81985 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 103stair: 191
+1734361140 82111 StepCounter-steps:24, latency:82
+1734361140 82280 MagneticField-x:-37.50, y:28.19, z:11.63
+1734361140 82410 StepCounter-steps:24, latency:82
+1734361140 82578 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 84stair: 191
+1734361140 82704 StepCounter-steps:24, latency:82
+1734361140 82872 GameRotationVector-real:0.45, i:-0.65, j:-0.30, k:-0.53
+1734361140 82965 StepCounter-steps:24, latency:82
+1734361141 83134 MagneticField-x:-42.38, y:24.19, z:-6.88
+1734361141 83260 StepCounter-steps:24, latency:82
+1734361141 83431 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 59still: 192tilt: 0walk: 0run: 103stair: 191
+1734361141 83558 StepCounter-steps:24, latency:82
+1734361141 83727 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 51still: 192tilt: 0walk: 0run: 35stair: 191
+1734361141 83852 StepCounter-steps:24, latency:82
+1734361141 84021 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 93stair: 191
+1734361142 84151 StepCounter-steps:24, latency:82
+1734361142 84319 MagneticField-x:-42.81, y:25.44, z:-4.25
+1734361142 84447 StepCounter-steps:24, latency:82
+1734361142 84615 MagneticField-x:-41.19, y:26.06, z:0.31
+1734361142 84741 StepCounter-steps:24, latency:82
+1734361142 84910 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 74stair: 191
+1734361142 85039 StepCounter-steps:24, latency:82
+1734361143 85209 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 59still: 192tilt: 0walk: 0run: 84stair: 191
+1734361143 85335 StepCounter-steps:24, latency:82
+1734361143 85505 GameRotationVector-real:0.46, i:-0.63, j:-0.31, k:-0.55
+1734361143 85599 StepCounter-steps:24, latency:82
+1734361143 85767 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 103stair: 191
+1734361143 85896 StepCounter-steps:24, latency:82
+1734361144 86064 GameRotationVector-real:0.42, i:-0.70, j:-0.28, k:-0.50
+1734361144 86158 StepCounter-steps:24, latency:82
+1734361144 86326 LinearAcceration-x:0.41, y:0.60, z:1.38
+1734361144 86453 StepCounter-steps:24, latency:82
+1734361144 86621 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 84stair: 191
+1734361144 86750 StepCounter-steps:24, latency:82
+1734361144 86919 MagneticField-x:-42.38, y:24.44, z:-1.69
+1734361144 87045 StepCounter-steps:24, latency:82
+1734361145 87214 GameRotationVector-real:0.44, i:-0.67, j:-0.30, k:-0.52
+1734361145 87308 StepCounter-steps:24, latency:82
+1734361145 87477 GameRotationVector-real:0.41, i:-0.73, j:-0.27, k:-0.48
+1734361145 87568 StepCounter-steps:24, latency:82
+1734361145 87736 GameRotationVector-real:0.43, i:-0.71, j:-0.28, k:-0.49
+1734361145 87831 StepCounter-steps:24, latency:82
+1734361145 87999 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 59still: 192tilt: 0walk: 0run: 93stair: 191
+1734361146 88124 StepCounter-steps:24, latency:82
+1734361146 88293 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 93stair: 191
+1734361146 88419 StepCounter-steps:24, latency:82
+1734361146 88591 LinearAcceration-x:0.27, y:0.14, z:0.59
+1734361146 88718 StepCounter-steps:24, latency:82
+1734361146 88887 GameRotationVector-real:0.42, i:-0.72, j:-0.27, k:-0.48
+1734361146 88980 StepCounter-steps:24, latency:82
+1734361147 89149 StabilityClassification:Stable
+1734361147 89274 StepCounter-steps:24, latency:82
+1734361147 89443 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 84stair: 191
+1734361147 89574 StepCounter-steps:24, latency:82
+1734361147 89743 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 84stair: 191
+1734361147 89869 StepCounter-steps:24, latency:82
+1734361147 90039 LinearAcceration-x:0.43, y:0.41, z:0.98
+1734361148 90166 StepCounter-steps:24, latency:82
+1734361148 90334 MagneticField-x:-38.00, y:29.38, z:7.38
+1734361148 90463 StepCounter-steps:24, latency:82
+1734361148 90634 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 103stair: 191
+1734361148 90759 StepCounter-steps:24, latency:82
+1734361148 90928 GameRotationVector-real:0.44, i:-0.66, j:-0.30, k:-0.53
+1734361148 91022 StepCounter-steps:24, latency:82
+1734361149 91190 LinearAcceration-x:0.12, y:0.23, z:0.80
+1734361149 91315 StepCounter-steps:24, latency:82
+1734361149 91483 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 64stair: 191
+1734361149 91611 StepCounter-steps:24, latency:82
+1734361149 91779 GameRotationVector-real:0.45, i:-0.65, j:-0.30, k:-0.53
+1734361149 91872 StepCounter-steps:24, latency:82
+1734361149 92041 MagneticField-x:-41.63, y:25.00, z:0.06
+1734361150 92168 StepCounter-steps:24, latency:82
+1734361150 92336 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 59still: 192tilt: 0walk: 0run: 84stair: 191
+1734361150 92465 StepCounter-steps:24, latency:82
+1734361150 92633 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 74stair: 191
+1734361150 92758 StepCounter-steps:24, latency:82
+1734361150 92927 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 84stair: 191
+1734361151 93056 StepCounter-steps:24, latency:82
+1734361151 93226 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 84stair: 191
+1734361151 93352 StepCounter-steps:24, latency:82
+1734361151 93520 GameRotationVector-real:0.43, i:-0.68, j:-0.29, k:-0.52
+1734361151 93614 StepCounter-steps:24, latency:82
+1734361151 93783 StabilityClassification:Stable
+1734361151 93909 StepCounter-steps:24, latency:82
+1734361152 94081 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 51still: 192tilt: 0walk: 0run: 64stair: 191
+1734361152 94206 StepCounter-steps:24, latency:82
+1734361152 94375 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 103stair: 191
+1734361152 94501 StepCounter-steps:24, latency:82
+1734361152 94670 GameRotationVector-real:0.44, i:-0.66, j:-0.30, k:-0.53
+1734361152 94766 StepCounter-steps:24, latency:82
+1734361152 94934 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 51still: 192tilt: 0walk: 0run: 54stair: 191
+1734361153 95060 StepCounter-steps:24, latency:82
+1734361153 95230 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 51still: 192tilt: 0walk: 0run: 93stair: 191
+1734361153 95356 StepCounter-steps:24, latency:82
+1734361153 95528 LinearAcceration-x:-0.21, y:0.00, z:-0.29
+1734361153 95655 StepCounter-steps:24, latency:82
+1734361153 95824 MagneticField-x:-39.56, y:26.50, z:3.13
+1734361153 95950 StepCounter-steps:24, latency:82
+1734361154 96119 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 84stair: 191
+1734361154 96244 StepCounter-steps:24, latency:82
+1734361154 96413 Gravity-x:9.30, y:-3.15, z:-1.27
+1734361154 96539 StepCounter-steps:24, latency:82
+1734361154 96711 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 46still: 192tilt: 0walk: 0run: 54stair: 191
+1734361154 96836 StepCounter-steps:24, latency:82
+1734361154 97005 LinearAcceration-x:-0.31, y:-0.28, z:-0.51
+1734361155 97131 StepCounter-steps:24, latency:82
+1734361155 97300 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 46still: 192tilt: 0walk: 0run: 64stair: 191
+1734361155 97430 StepCounter-steps:24, latency:82
+1734361155 97598 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 84stair: 191
+1734361155 97723 StepCounter-steps:24, latency:82
+1734361155 97892 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 59still: 192tilt: 0walk: 0run: 103stair: 191
+1734361155 98020 StepCounter-steps:24, latency:82
+1734361156 98192 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 192foot: 51still: 192tilt: 0walk: 0run: 84stair: 191
+1734361156 98319 StepCounter-steps:24, latency:82
+1734361156 98487 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 74stair: 191
+1734361156 98613 StepCounter-steps:24, latency:82
+1734361156 98783 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 93stair: 191
+1734361156 98912 StepCounter-steps:24, latency:82
+1734361157 99081 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 103stair: 191
+1734361157 99207 StepCounter-steps:24, latency:82
+1734361157 99375 GameRotationVector-real:0.42, i:-0.67, j:-0.27, k:-0.54
+1734361157 99468 StepCounter-steps:24, latency:82
+1734361157 99640 LinearAcceration-x:-0.15, y:-0.16, z:-0.33
+1734361157 99765 StepCounter-steps:24, latency:82
+1734361157 99935 GameRotationVector-real:0.41, i:-0.70, j:-0.26, k:-0.53
+1734361157 100028 StepCounter-steps:24, latency:82
+1734361158 100197 GameRotationVector-real:0.41, i:-0.70, j:-0.26, k:-0.52
+1734361158 100288 StepCounter-steps:24, latency:82
+1734361158 100457 StabilityClassification:Stable
+1734361158 100584 StepCounter-steps:24, latency:82
+1734361158 100753 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 84stair: 191
+1734361158 100882 StepCounter-steps:24, latency:82
+1734361159 101051 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 74stair: 191
+1734361159 101176 StepCounter-steps:24, latency:82
+1734361159 101345 GameRotationVector-real:0.41, i:-0.70, j:-0.26, k:-0.52
+1734361159 101442 StepCounter-steps:24, latency:82
+1734361159 101610 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 84stair: 191
+1734361159 101736 StepCounter-steps:24, latency:82
+1734361159 101905 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 84stair: 191
+1734361159 102032 StepCounter-steps:24, latency:82
+1734361160 102204 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 93stair: 191
+1734361160 102329 StepCounter-steps:24, latency:82
+1734361160 102498 GameRotationVector-real:0.41, i:-0.70, j:-0.26, k:-0.53
+1734361160 102591 StepCounter-steps:24, latency:82
+1734361160 102759 Gravity-x:9.38, y:-2.99, z:-1.05
+1734361160 102886 StepCounter-steps:24, latency:82
+1734361161 103055 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 64still: 192tilt: 0walk: 0run: 103stair: 191
+1734361161 103184 StepCounter-steps:24, latency:82
+1734361161 103353 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 59still: 192tilt: 0walk: 0run: 84stair: 191
+1734361161 103480 StepCounter-steps:24, latency:82
+1734361161 103649 GameRotationVector-real:0.42, i:-0.69, j:-0.26, k:-0.53
+1734361161 103741 StepCounter-steps:24, latency:82
+1734361161 103912 GameRotationVector-real:0.41, i:-0.69, j:-0.26, k:-0.53
+1734361161 104006 StepCounter-steps:24, latency:82
+1734361162 104175 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 103stair: 191
+1734361162 104419 StepCounter-steps:24, latency:82
+1734361162 104837 Gyro-x:-0.06, y:-0.10, z:-0.01
+1734361163 105112 StepCounter-steps:24, latency:82
+1734361163 105282 StabilityClassification:Stable
+1734361163 105411 StepCounter-steps:24, latency:82
+1734361163 105580 GameRotationVector-real:0.42, i:-0.67, j:-0.27, k:-0.54
+1734361163 105672 StepCounter-steps:24, latency:82
+1734361163 105841 Gravity-x:9.52, y:-2.69, z:-0.48
+1734361163 105966 StepCounter-steps:24, latency:82
+1734361164 106135 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 74stair: 191
+1734361164 106260 StepCounter-steps:24, latency:82
+1734361164 106433 GameRotationVector-real:0.42, i:-0.69, j:-0.27, k:-0.53
+1734361164 106526 StepCounter-steps:24, latency:82
+1734361164 106695 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 74stair: 191
+1734361164 106821 StepCounter-steps:24, latency:82
+1734361164 106990 Gyro-x:-0.00, y:0.01, z:-0.01
+1734361165 107116 StepCounter-steps:24, latency:82
+1734361165 107284 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 74stair: 191
+1734361165 107415 StepCounter-steps:24, latency:82
+1734361165 107584 LinearAcceration-x:0.14, y:0.05, z:0.01
+1734361165 107709 StepCounter-steps:24, latency:82
+1734361165 107879 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 56still: 192tilt: 0walk: 0run: 93stair: 191
+1734361165 108005 StepCounter-steps:24, latency:82
+1734361166 108177 Gravity-x:9.48, y:-2.76, z:-0.64
+1734361166 108302 StepCounter-steps:24, latency:82
+1734361166 108471 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 128foot: 61still: 192tilt: 0walk: 0run: 84stair: 191
+1734361166 108598 StepCounter-steps:24, latency:82
+1734361166 108767 MagneticField-x:-38.75, y:27.19, z:6.94
+1734361166 108893 StepCounter-steps:24, latency:82
+1734361167 109062 GameRotationVector-real:0.42, i:-0.69, j:-0.27, k:-0.53
+1734361167 109158 StepCounter-steps:24, latency:82
+1734361167 109329 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 0foot: 54still: 192tilt: 0walk: 0run: 93stair: 191
+1734361167 109455 StepCounter-steps:24, latency:82
+1734361167 109624 GameRotationVector-real:0.42, i:-0.68, j:-0.27, k:-0.53
+1734361167 109715 StepCounter-steps:24, latency:82
+1734361167 109884 GameRotationVector-real:0.42, i:-0.69, j:-0.27, k:-0.53
+1734361167 109977 StepCounter-steps:24, latency:82
+1734361168 110148 GameRotationVector-real:0.42, i:-0.69, j:-0.27, k:-0.53
+1734361168 110240 StepCounter-steps:24, latency:82
+1734361168 110409 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 65car: 0bike: 64foot: 76still: 192tilt: 0walk: 0run: 74stair: 191
+1734361168 110533 StepCounter-steps:24, latency:4571
+1734361168 110703 RotationVector-real:0.68, i:-0.03, j:-0.73, k:0.10
+1734361168 110796 StepCounter-steps:24, latency:48
+1734361168 110965 GameRotationVector-real:0.60, i:-0.55, j:-0.39, k:-0.43
+1734361169 111061 StepCounter-steps:24, latency:48
+1734361169 111229 StabilityClassification:InMotion
+1734361169 111354 StepCounter-steps:24, latency:48
+1734361169 111524 RotationVector-real:0.59, i:0.13, j:-0.25, k:0.75
+1734361169 111619 StepCounter-steps:24, latency:94
+1734361169 111787 StabilityClassification:InMotion
+1734361169 111913 StepCounter-steps:24, latency:94
+1734361170 112081 StabilityClassification:InMotion
+1734361170 112207 StepCounter-steps:24, latency:94
+1734361170 112380 LinearAcceration-x:1.66, y:-1.16, z:-2.66
+1734361170 112505 StepCounter-steps:24, latency:94
+1734361170 112675 Gyro-x:0.00, y:0.00, z:0.00
+1734361170 112800 StepCounter-steps:24, latency:94
+1734361170 112969 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361171 113094 StepCounter-steps:24, latency:94
+1734361171 113263 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361171 113392 StepCounter-steps:24, latency:94
+1734361171 113561 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 208run: 29stair: 65
+1734361171 113687 StepCounter-steps:24, latency:94
+1734361171 113855 RotationVector-real:0.70, i:0.00, j:0.01, k:0.71
+1734361171 113949 StepCounter-steps:24, latency:94
+1734361172 114120 GameRotationVector-real:1.00, i:0.00, j:0.00, k:-0.01
+1734361172 114213 StepCounter-steps:24, latency:94
+1734361172 114381 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 216still: 61tilt: 0walk: 240run: 27stair: 65
+1734361172 114507 StepCounter-steps:24, latency:94
+1734361172 114676 GameRotationVector-real:1.00, i:0.00, j:-0.00, k:-0.01
+1734361172 114770 StepCounter-steps:24, latency:94
+1734361172 114938 GameRotationVector-real:1.00, i:0.00, j:-0.00, k:-0.01
+1734361172 115028 StepCounter-steps:24, latency:94
+1734361173 115198 GameRotationVector-real:1.00, i:0.00, j:-0.00, k:-0.01
+1734361173 115291 StepCounter-steps:24, latency:94
+1734361173 115460 Gravity-x:0.01, y:0.06, z:9.82
+1734361173 115586 StepCounter-steps:24, latency:94
+1734361173 115755 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 188car: 0bike: 0foot: 136still: 61tilt: 0walk: 48run: 29stair: 65
+1734361173 115885 StepCounter-steps:24, latency:94
+1734361174 116054 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361174 116180 StepCounter-steps:24, latency:94
+1734361174 116349 GameRotationVector-real:1.00, i:0.00, j:-0.00, k:-0.01
+1734361174 116441 StepCounter-steps:24, latency:94
+1734361174 116610 Gravity-x:0.02, y:0.06, z:9.81
+1734361174 116734 StepCounter-steps:24, latency:94
+1734361174 116914 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 61car: 0bike: 0foot: 224still: 60tilt: 0walk: 192run: 29stair: 65
+1734361174 117040 StepCounter-steps:24, latency:94
+1734361175 117211 GameRotationVector-real:1.00, i:0.00, j:-0.00, k:-0.01
+1734361175 117307 StepCounter-steps:24, latency:94
+1734361175 117479 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 208run: 29stair: 65
+1734361175 117610 StepCounter-steps:24, latency:94
+1734361175 117782 GameRotationVector-real:1.00, i:0.00, j:-0.00, k:-0.01
+1734361175 117876 StepCounter-steps:24, latency:94
+1734361176 118047 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361176 118175 StepCounter-steps:24, latency:94
+1734361176 118346 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361176 118477 StepCounter-steps:24, latency:94
+1734361176 118648 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361176 118776 StepCounter-steps:24, latency:94
+1734361176 118947 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 144run: 28stair: 65
+1734361177 119077 StepCounter-steps:24, latency:94
+1734361177 119247 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 61car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361177 119376 StepCounter-steps:24, latency:94
+1734361177 119547 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 61car: 0bike: 0foot: 136still: 61tilt: 0walk: 208run: 29stair: 65
+1734361177 119674 StepCounter-steps:24, latency:94
+1734361177 119848 MagneticField-x:12.63, y:4.25, z:-49.94
+1734361177 119977 StepCounter-steps:24, latency:94
+1734361178 120147 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361178 120276 StepCounter-steps:24, latency:94
+1734361178 120447 ShakeDetector-ShakeDetectedOnAxis:NoneActivityClassification-Mostlikely:?, Confidences:?: 60car: 0bike: 0foot: 136still: 61tilt: 0walk: 32run: 29stair: 65
+1734361178 120577 StepCounter-steps:24, latency:94
+1734361178 120747 StabilityClassification:OnTable
+
