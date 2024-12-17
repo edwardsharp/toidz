@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 //ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
 const filedrop = document.getElementById("filedrop");
@@ -376,8 +377,11 @@ function loadAccelerationData(rawData) {
 // Three.js scene setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+//const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// camera.position.set(0, 5, 10); // Set an initial camera position
+
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth - 10, window.innerHeight - 100);
 
 const threeContainer = document.getElementById("three-container");
 threeContainer.appendChild(renderer.domElement);
@@ -406,6 +410,18 @@ const model = new THREE.Mesh(geometry, material);
 scene.add(model);
 
 camera.position.z = 5;
+// camera.position.set(0, 5, 10); // Set an initial camera position
+
+// OrbitControls setup
+const controls = new OrbitControls(camera, renderer.domElement);
+
+// Optional: Set control parameters
+controls.enableDamping = true; // Smooth motion
+controls.dampingFactor = 0.1;
+// controls.screenSpacePanning = false; // Restrict panning to XY plane
+controls.minDistance = 2; // Minimum zoom distance
+// controls.maxDistance = 10000; // Maximum zoom distance
+// controls.maxPolarAngle = Math.PI / 2; // Limit vertical rotation to "top view"
 
 // path trace stuff
 // Array to store the path positions
@@ -515,6 +531,8 @@ function animate() {
   if (out && out.acceleration) {
     updatePath(out.quaternion, out.acceleration, elapsedTime);
   }
+
+  controls.update(); // Only required if damping is enabled
 
   renderer.render(scene, camera);
 }
