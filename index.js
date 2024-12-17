@@ -97,6 +97,7 @@ async function processDataFile(blob) {
   renderLegend(out);
   renderLinez(out);
   loadQuaternionData(out);
+  loadAccelerationData(out);
 }
 
 function renderLegend(data) {
@@ -320,7 +321,6 @@ let quaternionData = [
   { time: 1000, q: { x: 0.2, y: 0.3, z: 0.4, w: 0.8 } },
   // etc...
 ];
-
 function loadQuaternionData(rawData) {
   // GameRotationVector-real
   // GameRotationVector-i
@@ -329,6 +329,7 @@ function loadQuaternionData(rawData) {
   // okay assume all these arrays are the same length
 
   quaternionData = [];
+
   for (let i = 0; i < rawData["GameRotationVector-real"].length - 1; i++) {
     const real = rawData["GameRotationVector-real"][i];
     const w = real.v;
@@ -344,6 +345,32 @@ function loadQuaternionData(rawData) {
   }
 
   console.log("zomg quaternionData:", quaternionData);
+}
+
+let accelerationData = [
+  { x: 0.0, y: 0.0, z: -9.81 }, // Example gravity (constant downward)
+];
+function loadAccelerationData(rawData) {
+  // LinearAcceration-x
+  // LinearAcceration-y
+  // LinearAcceration-z
+  // okay assume all these arrays are the same length
+
+  accelerationData = [];
+
+  for (let i = 0; i < rawData["LinearAcceration-x"].length - 1; i++) {
+    const time = rawData["LinearAcceration-x"][i].millis;
+    const x = rawData["LinearAcceration-x"][i].v;
+    const y = rawData["LinearAcceration-y"][i].v;
+    const z = rawData["LinearAcceration-z"][i].v;
+    if (!time || !x || !y || !z) continue;
+    accelerationData.push({
+      time,
+      a: { x, y, z },
+    });
+  }
+
+  console.log("zomg accelerationData:", accelerationData);
 }
 
 // Three.js scene setup
@@ -372,7 +399,7 @@ playbackSpeedSlider.addEventListener("input", (event) => {
   playbackSpeedValue.textContent = playbackSpeed;
 });
 
-// Model
+// cube Model
 const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshNormalMaterial();
 const model = new THREE.Mesh(geometry, material);
@@ -380,7 +407,57 @@ scene.add(model);
 
 camera.position.z = 5;
 
-// Playback variables
+// path trace stuff
+// Array to store the path positions
+const pathPositions = [];
+
+// Path line setup
+const pathGeometry = new THREE.BufferGeometry();
+// Pre-allocate the buffer
+const MAX_POINTS = 10000; // Maximum number of points in the path
+const positions = new Float32Array(MAX_POINTS * 3); // Each point has (x, y, z)
+pathGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+const pathMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 }); // Red line
+const pathLine = new THREE.Line(pathGeometry, pathMaterial);
+scene.add(pathLine);
+
+// Physics variables
+let currentPosition = new THREE.Vector3(0, 0, 0); // Start at origin
+let velocity = new THREE.Vector3(0, 0, 0); // Initial velocity is zero
+let lastTimestamp = null; // Track time between frames
+
+// Update the path using linear acceleration and orientation
+function updatePath(quaternion, acceleration, currentTimestamp) {
+  if (!lastTimestamp) {
+    lastTimestamp = currentTimestamp; // Initialize the first timestamp
+    return;
+  }
+
+  // keep pathPositions constrained...
+  if (pathPositions.length > MAX_POINTS) pathPositions.shift();
+
+  // Calculate delta time (in seconds)
+  const deltaTime = (currentTimestamp - lastTimestamp) / 1000.0; // ms -> s
+  lastTimestamp = currentTimestamp;
+
+  // Transform the acceleration vector into world space using the quaternion
+  const accelVector = new THREE.Vector3(acceleration.x, acceleration.y, acceleration.z);
+  accelVector.applyQuaternion(quaternion);
+
+  // Integrate acceleration to compute velocity
+  velocity.addScaledVector(accelVector, deltaTime); // v = v + a * dt
+
+  // Integrate velocity to compute position
+  currentPosition.addScaledVector(velocity, deltaTime); // p = p + v * dt
+
+  // Store the new position in the path
+  pathPositions.push(currentPosition.clone());
+
+  // Update the line geometry
+  pathGeometry.setFromPoints(pathPositions);
+}
+
+// animation Playback variables
 let playbackSpeed = 1.0; // 1x real-time, 0.5x = half-speed, 2x = double-speed
 let startTime = Date.now();
 
@@ -388,7 +465,7 @@ let startTime = Date.now();
 let isAnimating = false;
 
 // Find quaternion at specific time
-function interpolateQuaternion(elapsedTime) {
+function interpolateQuaternionAndAcceleration(elapsedTime) {
   // Adjust for playback speed
   const playbackTime = elapsedTime * playbackSpeed;
   playbackTimeContainer.innerText = formatMillisecondsToMinSec(playbackTime);
@@ -397,6 +474,8 @@ function interpolateQuaternion(elapsedTime) {
   for (let i = 0; i < quaternionData.length - 1; i++) {
     const curr = quaternionData[i];
     const next = quaternionData[i + 1];
+
+    const acceleration = accelerationData[i] && accelerationData[i].a ? accelerationData[i].a : null;
 
     if (playbackTime >= curr.time && playbackTime <= next.time) {
       const alpha = (playbackTime - curr.time) / (next.time - curr.time);
@@ -408,7 +487,8 @@ function interpolateQuaternion(elapsedTime) {
       const interpolatedQ = new THREE.Quaternion();
       interpolatedQ.slerpQuaternions(q1, q2, alpha);
 
-      return interpolatedQ;
+      // acceleration
+      return { quaternion: interpolatedQ, acceleration };
     }
   }
   return null;
@@ -426,9 +506,14 @@ function animate() {
   elapsedTimeContainer.innerText = formatMillisecondsToMinSec(elapsedTime);
 
   // Get interpolated quaternion
-  const quaternion = interpolateQuaternion(elapsedTime);
-  if (quaternion) {
-    model.quaternion.copy(quaternion);
+  const out = interpolateQuaternionAndAcceleration(elapsedTime);
+  if (out && out.quaternion) {
+    model.quaternion.copy(out.quaternion);
+  }
+
+  // path stuff
+  if (out && out.acceleration) {
+    updatePath(out.quaternion, out.acceleration, elapsedTime);
   }
 
   renderer.render(scene, camera);

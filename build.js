@@ -11239,6 +11239,162 @@
       return new this.constructor().copy(this);
     }
   };
+  var LineBasicMaterial = class extends Material {
+    constructor(parameters) {
+      super();
+      this.isLineBasicMaterial = true;
+      this.type = "LineBasicMaterial";
+      this.color = new Color2(16777215);
+      this.map = null;
+      this.linewidth = 1;
+      this.linecap = "round";
+      this.linejoin = "round";
+      this.fog = true;
+      this.setValues(parameters);
+    }
+    copy(source) {
+      super.copy(source);
+      this.color.copy(source.color);
+      this.map = source.map;
+      this.linewidth = source.linewidth;
+      this.linecap = source.linecap;
+      this.linejoin = source.linejoin;
+      this.fog = source.fog;
+      return this;
+    }
+  };
+  var _vStart = /* @__PURE__ */ new Vector3();
+  var _vEnd = /* @__PURE__ */ new Vector3();
+  var _inverseMatrix$1 = /* @__PURE__ */ new Matrix4();
+  var _ray$1 = /* @__PURE__ */ new Ray();
+  var _sphere$1 = /* @__PURE__ */ new Sphere();
+  var _intersectPointOnRay = /* @__PURE__ */ new Vector3();
+  var _intersectPointOnSegment = /* @__PURE__ */ new Vector3();
+  var Line = class extends Object3D {
+    constructor(geometry2 = new BufferGeometry(), material2 = new LineBasicMaterial()) {
+      super();
+      this.isLine = true;
+      this.type = "Line";
+      this.geometry = geometry2;
+      this.material = material2;
+      this.updateMorphTargets();
+    }
+    copy(source, recursive) {
+      super.copy(source, recursive);
+      this.material = Array.isArray(source.material) ? source.material.slice() : source.material;
+      this.geometry = source.geometry;
+      return this;
+    }
+    computeLineDistances() {
+      const geometry2 = this.geometry;
+      if (geometry2.index === null) {
+        const positionAttribute = geometry2.attributes.position;
+        const lineDistances = [0];
+        for (let i = 1, l = positionAttribute.count; i < l; i++) {
+          _vStart.fromBufferAttribute(positionAttribute, i - 1);
+          _vEnd.fromBufferAttribute(positionAttribute, i);
+          lineDistances[i] = lineDistances[i - 1];
+          lineDistances[i] += _vStart.distanceTo(_vEnd);
+        }
+        geometry2.setAttribute("lineDistance", new Float32BufferAttribute(lineDistances, 1));
+      } else {
+        console.warn("THREE.Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry.");
+      }
+      return this;
+    }
+    raycast(raycaster, intersects) {
+      const geometry2 = this.geometry;
+      const matrixWorld = this.matrixWorld;
+      const threshold = raycaster.params.Line.threshold;
+      const drawRange = geometry2.drawRange;
+      if (geometry2.boundingSphere === null) geometry2.computeBoundingSphere();
+      _sphere$1.copy(geometry2.boundingSphere);
+      _sphere$1.applyMatrix4(matrixWorld);
+      _sphere$1.radius += threshold;
+      if (raycaster.ray.intersectsSphere(_sphere$1) === false) return;
+      _inverseMatrix$1.copy(matrixWorld).invert();
+      _ray$1.copy(raycaster.ray).applyMatrix4(_inverseMatrix$1);
+      const localThreshold = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
+      const localThresholdSq = localThreshold * localThreshold;
+      const step = this.isLineSegments ? 2 : 1;
+      const index2 = geometry2.index;
+      const attributes = geometry2.attributes;
+      const positionAttribute = attributes.position;
+      if (index2 !== null) {
+        const start2 = Math.max(0, drawRange.start);
+        const end = Math.min(index2.count, drawRange.start + drawRange.count);
+        for (let i = start2, l = end - 1; i < l; i += step) {
+          const a = index2.getX(i);
+          const b = index2.getX(i + 1);
+          const intersect = checkIntersection(this, raycaster, _ray$1, localThresholdSq, a, b);
+          if (intersect) {
+            intersects.push(intersect);
+          }
+        }
+        if (this.isLineLoop) {
+          const a = index2.getX(end - 1);
+          const b = index2.getX(start2);
+          const intersect = checkIntersection(this, raycaster, _ray$1, localThresholdSq, a, b);
+          if (intersect) {
+            intersects.push(intersect);
+          }
+        }
+      } else {
+        const start2 = Math.max(0, drawRange.start);
+        const end = Math.min(positionAttribute.count, drawRange.start + drawRange.count);
+        for (let i = start2, l = end - 1; i < l; i += step) {
+          const intersect = checkIntersection(this, raycaster, _ray$1, localThresholdSq, i, i + 1);
+          if (intersect) {
+            intersects.push(intersect);
+          }
+        }
+        if (this.isLineLoop) {
+          const intersect = checkIntersection(this, raycaster, _ray$1, localThresholdSq, end - 1, start2);
+          if (intersect) {
+            intersects.push(intersect);
+          }
+        }
+      }
+    }
+    updateMorphTargets() {
+      const geometry2 = this.geometry;
+      const morphAttributes = geometry2.morphAttributes;
+      const keys = Object.keys(morphAttributes);
+      if (keys.length > 0) {
+        const morphAttribute = morphAttributes[keys[0]];
+        if (morphAttribute !== void 0) {
+          this.morphTargetInfluences = [];
+          this.morphTargetDictionary = {};
+          for (let m = 0, ml = morphAttribute.length; m < ml; m++) {
+            const name = morphAttribute[m].name || String(m);
+            this.morphTargetInfluences.push(0);
+            this.morphTargetDictionary[name] = m;
+          }
+        }
+      }
+    }
+  };
+  function checkIntersection(object, raycaster, ray, thresholdSq, a, b) {
+    const positionAttribute = object.geometry.attributes.position;
+    _vStart.fromBufferAttribute(positionAttribute, a);
+    _vEnd.fromBufferAttribute(positionAttribute, b);
+    const distSq = ray.distanceSqToSegment(_vStart, _vEnd, _intersectPointOnRay, _intersectPointOnSegment);
+    if (distSq > thresholdSq) return;
+    _intersectPointOnRay.applyMatrix4(object.matrixWorld);
+    const distance = raycaster.ray.origin.distanceTo(_intersectPointOnRay);
+    if (distance < raycaster.near || distance > raycaster.far) return;
+    return {
+      distance,
+      // What do we want? intersection point on the ray or on the segment??
+      // point: raycaster.ray.at( distance ),
+      point: _intersectPointOnSegment.clone().applyMatrix4(object.matrixWorld),
+      index: a,
+      face: null,
+      faceIndex: null,
+      barycoord: null,
+      object
+    };
+  }
   var Group = class extends Object3D {
     constructor() {
       super();
@@ -22764,6 +22920,7 @@ void main() {
     renderLegend(out);
     renderLinez(out);
     loadQuaternionData(out);
+    loadAccelerationData(out);
   }
   function renderLegend(data) {
     const legend = document.getElementById("legend");
@@ -22896,6 +23053,25 @@ void main() {
     }
     console.log("zomg quaternionData:", quaternionData);
   }
+  var accelerationData = [
+    { x: 0, y: 0, z: -9.81 }
+    // Example gravity (constant downward)
+  ];
+  function loadAccelerationData(rawData) {
+    accelerationData = [];
+    for (let i = 0; i < rawData["LinearAcceration-x"].length - 1; i++) {
+      const time = rawData["LinearAcceration-x"][i].millis;
+      const x2 = rawData["LinearAcceration-x"][i].v;
+      const y2 = rawData["LinearAcceration-y"][i].v;
+      const z = rawData["LinearAcceration-z"][i].v;
+      if (!time || !x2 || !y2 || !z) continue;
+      accelerationData.push({
+        time,
+        a: { x: x2, y: y2, z }
+      });
+    }
+    console.log("zomg accelerationData:", accelerationData);
+  }
   var scene = new Scene();
   var camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1e3);
   var renderer = new WebGLRenderer();
@@ -22919,22 +23095,49 @@ void main() {
   var model = new Mesh(geometry, material);
   scene.add(model);
   camera.position.z = 5;
+  var pathPositions = [];
+  var pathGeometry = new BufferGeometry();
+  var MAX_POINTS = 1e4;
+  var positions = new Float32Array(MAX_POINTS * 3);
+  pathGeometry.setAttribute("position", new BufferAttribute(positions, 3));
+  var pathMaterial = new LineBasicMaterial({ color: 16711680 });
+  var pathLine = new Line(pathGeometry, pathMaterial);
+  scene.add(pathLine);
+  var currentPosition = new Vector3(0, 0, 0);
+  var velocity = new Vector3(0, 0, 0);
+  var lastTimestamp = null;
+  function updatePath(quaternion, acceleration, currentTimestamp) {
+    if (!lastTimestamp) {
+      lastTimestamp = currentTimestamp;
+      return;
+    }
+    if (pathPositions.length > MAX_POINTS) pathPositions.shift();
+    const deltaTime = (currentTimestamp - lastTimestamp) / 1e3;
+    lastTimestamp = currentTimestamp;
+    const accelVector = new Vector3(acceleration.x, acceleration.y, acceleration.z);
+    accelVector.applyQuaternion(quaternion);
+    velocity.addScaledVector(accelVector, deltaTime);
+    currentPosition.addScaledVector(velocity, deltaTime);
+    pathPositions.push(currentPosition.clone());
+    pathGeometry.setFromPoints(pathPositions);
+  }
   var playbackSpeed = 1;
   var startTime = Date.now();
   var isAnimating = false;
-  function interpolateQuaternion(elapsedTime) {
+  function interpolateQuaternionAndAcceleration(elapsedTime) {
     const playbackTime = elapsedTime * playbackSpeed;
     playbackTimeContainer.innerText = formatMillisecondsToMinSec(playbackTime);
     for (let i = 0; i < quaternionData.length - 1; i++) {
       const curr = quaternionData[i];
       const next = quaternionData[i + 1];
+      const acceleration = accelerationData[i] && accelerationData[i].a ? accelerationData[i].a : null;
       if (playbackTime >= curr.time && playbackTime <= next.time) {
         const alpha = (playbackTime - curr.time) / (next.time - curr.time);
         const q1 = new Quaternion(curr.q.x, curr.q.y, curr.q.z, curr.q.w);
         const q2 = new Quaternion(next.q.x, next.q.y, next.q.z, next.q.w);
         const interpolatedQ = new Quaternion();
         interpolatedQ.slerpQuaternions(q1, q2, alpha);
-        return interpolatedQ;
+        return { quaternion: interpolatedQ, acceleration };
       }
     }
     return null;
@@ -22944,9 +23147,12 @@ void main() {
     requestAnimationFrame(animate);
     const elapsedTime = Date.now() - startTime;
     elapsedTimeContainer.innerText = formatMillisecondsToMinSec(elapsedTime);
-    const quaternion = interpolateQuaternion(elapsedTime);
-    if (quaternion) {
-      model.quaternion.copy(quaternion);
+    const out = interpolateQuaternionAndAcceleration(elapsedTime);
+    if (out && out.quaternion) {
+      model.quaternion.copy(out.quaternion);
+    }
+    if (out && out.acceleration) {
+      updatePath(out.quaternion, out.acceleration, elapsedTime);
     }
     renderer.render(scene, camera);
   }
