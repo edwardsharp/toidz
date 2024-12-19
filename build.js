@@ -23841,7 +23841,13 @@ void main() {
     }
   }
 
-  // index.js
+  // src/three-stuff.js
+  function testThreeStuff() {
+    console.log("zomg hi i has three stuff, here!");
+  }
+
+  // src/index.js
+  testThreeStuff();
   var filedrop = document.getElementById("filedrop");
   var fileinput = document.getElementById("fileinput");
   document.addEventListener("drop", dropHandler);
@@ -24089,11 +24095,12 @@ void main() {
   controls.enableDamping = true;
   controls.dampingFactor = 0.1;
   var pathPositions = [];
+  var currentPathIndex = 0;
   var pathGeometry = new BufferGeometry();
-  var MAX_POINTS = 1e4;
+  var MAX_POINTS = 1e5;
   var positions = new Float32Array(MAX_POINTS * 3);
   pathGeometry.setAttribute("position", new BufferAttribute(positions, 3));
-  var pathMaterial = new LineBasicMaterial({ color: 16711680 });
+  var pathMaterial = new LineBasicMaterial({ color: 16716287 });
   var pathLine = new Line(pathGeometry, pathMaterial);
   scene.add(pathLine);
   var currentPosition = new Vector3(0, 0, 0);
@@ -24111,8 +24118,14 @@ void main() {
     accelVector.applyQuaternion(quaternion);
     velocity.addScaledVector(accelVector, deltaTime);
     currentPosition.addScaledVector(velocity, deltaTime);
+    if (currentPathIndex >= MAX_POINTS) return;
     pathPositions.push(currentPosition.clone());
-    pathGeometry.setFromPoints(pathPositions);
+    positions[currentPathIndex * 3] = currentPosition.x;
+    positions[currentPathIndex * 3 + 1] = currentPosition.y;
+    positions[currentPathIndex * 3 + 2] = currentPosition.z;
+    currentPathIndex++;
+    pathGeometry.setDrawRange(0, currentPathIndex);
+    pathGeometry.attributes.position.needsUpdate = true;
     model.position.copy(currentPosition);
   }
   var playbackSpeed = 1;

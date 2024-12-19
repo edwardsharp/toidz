@@ -4,7 +4,7 @@
   "description": "viz 4 midi2cv bno08x sensorz",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild index.js --bundle --platform=browser --outfile=build.js"
+    "build": "esbuild src/index.js --bundle --platform=browser --outfile=build.js"
   },
   "author": "3dwardsharp",
   "license": "ISC",

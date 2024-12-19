@@ -2,6 +2,10 @@ import * as d3 from "d3";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
+import { testThreeStuff } from "./three-stuff.js";
+
+testThreeStuff();
+
 //ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
 const filedrop = document.getElementById("filedrop");
 const fileinput = document.getElementById("fileinput");
@@ -432,14 +436,15 @@ controls.dampingFactor = 0.1;
 // path trace stuff
 // Array to store the path positions
 const pathPositions = [];
+let currentPathIndex = 0; // Tracks the number of points in the path
 
 // Path line setup
 const pathGeometry = new THREE.BufferGeometry();
 // Pre-allocate the buffer
-const MAX_POINTS = 10000; // Maximum number of points in the path
+const MAX_POINTS = 1_00_000; // Maximum number of points in the path
 const positions = new Float32Array(MAX_POINTS * 3); // Each point has (x, y, z)
 pathGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-const pathMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 }); // Red line
+const pathMaterial = new THREE.LineBasicMaterial({ color: 0xff11ff }); // pink line!
 const pathLine = new THREE.Line(pathGeometry, pathMaterial);
 scene.add(pathLine);
 
@@ -473,10 +478,25 @@ function updatePath(quaternion, acceleration, currentTimestamp) {
   currentPosition.addScaledVector(velocity, deltaTime); // p = p + v * dt
 
   // Store the new position in the path
-  pathPositions.push(currentPosition.clone());
+  // pathPositions.push(currentPosition.clone());
 
   // Update the line geometry
-  pathGeometry.setFromPoints(pathPositions);
+  // pathGeometry.setFromPoints(pathPositions);
+
+  /// hmmmm
+  if (currentPathIndex >= MAX_POINTS) return; // Avoid overflow
+  // Add the current position to the pathPositions array
+  pathPositions.push(currentPosition.clone());
+  // Update the pre-allocated buffer
+  positions[currentPathIndex * 3] = currentPosition.x;
+  positions[currentPathIndex * 3 + 1] = currentPosition.y;
+  positions[currentPathIndex * 3 + 2] = currentPosition.z;
+  currentPathIndex++; // Move to the next point
+  // Update the geometry's draw range to include only the new segment
+  pathGeometry.setDrawRange(0, currentPathIndex);
+  // Mark the position attribute for updates
+  pathGeometry.attributes.position.needsUpdate = true;
+  // /hmmmmmm
 
   // MOVE DA CUBE, MA!
   model.position.copy(currentPosition);
