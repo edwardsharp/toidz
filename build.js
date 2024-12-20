@@ -24166,7 +24166,14 @@ void main() {
     return `${minutes}:${formattedSeconds}`;
   }
 
-  // src/index.js
+  // src/file-input-etl.js
+  var callbacks = [];
+  function registerCallback(callback) {
+    callbacks.push(callback);
+  }
+  function callbackWithData(data) {
+    callbacks.forEach((cb) => cb(data));
+  }
   var filedrop2 = document.getElementById("filedrop");
   var fileinput = document.getElementById("fileinput");
   document.addEventListener("drop", dropHandler);
@@ -24228,9 +24235,12 @@ void main() {
       }
       return acc;
     }, {});
-    renderD3GraphStuff(out);
-    renderThreeStuff(out);
+    callbackWithData(out);
   }
+
+  // src/index.js
+  registerCallback(renderD3GraphStuff);
+  registerCallback(renderThreeStuff);
 })();
 /*! Bundled license information:
 
