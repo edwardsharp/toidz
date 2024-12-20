@@ -3440,6 +3440,122 @@
     return node.__zoom;
   }
 
+  // src/d3-graph-stuff.js
+  function renderD3GraphStuff(data) {
+    renderLegend(data);
+    renderLinez(data);
+  }
+  var linesToDraw = /* @__PURE__ */ new Set();
+  function renderLegend(data) {
+    const legend = document.getElementById("legend");
+    legend.innerHTML = "";
+    Object.keys(data).forEach((k) => {
+      const checkboxen = document.createElement("div");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = k;
+      checkbox.value = k;
+      checkbox.checked = true;
+      linesToDraw.add(k);
+      checkbox.addEventListener("change", (ev) => {
+        if (ev.target.checked) {
+          linesToDraw.add(k);
+        } else {
+          linesToDraw.delete(k);
+        }
+        renderLinez(data);
+      });
+      const label = document.createElement("label");
+      label.htmlFor = k;
+      label.textContent = k;
+      checkboxen.appendChild(checkbox);
+      checkboxen.appendChild(label);
+      legend.appendChild(checkboxen);
+    });
+    const button = document.createElement("button");
+    button.innerText = "un-check everything";
+    button.addEventListener("click", (ev) => {
+      linesToDraw.clear();
+      document.querySelectorAll("#legend input").forEach((el) => el.checked = false);
+    });
+    legend.appendChild(button);
+  }
+  function renderLinez(data) {
+    console.log("zomg renderLinez data:", data);
+    filedrop.style.display = "none";
+    const container = document.getElementById("linez");
+    container.innerHTML = "";
+    const width = window.innerWidth;
+    const height = window.innerHeight - 5;
+    const marginTop = 20;
+    const marginRight = 20;
+    const marginBottom = 30;
+    const marginLeft = 40;
+    const y_domain = [null, null];
+    const x_domain = [null, null];
+    Object.entries(data).forEach(([title, values]) => {
+      if (linesToDraw.has(title)) {
+        values.forEach((v) => {
+          if (v.millis < x_domain[0] || x_domain[0] === null) x_domain[0] = v.millis;
+          if (v.millis > x_domain[1] || x_domain[1] === null) x_domain[1] = v.millis;
+          if (v.v < y_domain[0] || y_domain[0] === null) y_domain[0] = v.v;
+          if (v.v > y_domain[1] || y_domain[1] === null) y_domain[1] = v.v;
+        });
+      }
+    });
+    const x2 = linear2().domain(x_domain).range([marginLeft, width - marginRight]);
+    const y2 = linear2().domain(y_domain).range([height - marginBottom, marginTop]);
+    const svg = create_default("svg").attr("width", width).attr("height", height);
+    svg.append("g").attr("transform", `translate(0,${height - marginBottom})`).call(
+      axisBottom(x2).tickFormat((milliseconds) => {
+        return `${Math.floor(milliseconds / 6e4)}m`;
+      })
+    );
+    svg.append("g").attr("transform", `translate(${marginLeft},0)`).call(axisLeft(y2));
+    let points = [];
+    Object.entries(data).forEach(([title, values]) => {
+      if (linesToDraw.has(title)) {
+        points = [...points, ...values.map((v) => [x2(v.millis), y2(v.v), title, v.millis, v.v])];
+      }
+    });
+    const groups2 = rollup(
+      points,
+      (v) => Object.assign(v, { z: v[0][2] }),
+      (d) => d[2]
+    );
+    svg.append("line").attr("x1", marginLeft).attr("x2", width - (marginLeft + marginRight)).attr("y1", y2(0)).attr("y2", y2(0)).style("stroke", "dimgray");
+    const line = line_default().curve(stepAfter);
+    const path2 = svg.append("g").attr("fill", "none").attr("stroke", "hotpink").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
+    const dot = svg.append("g").attr("display", "none");
+    dot.append("circle").attr("r", 2.5).attr("fill", "white");
+    dot.append("text").attr("text-anchor", "middle").attr("y", -8);
+    svg.on("pointerenter", () => {
+      path2.style("mix-blend-mode", null).style("stroke", "#efefef");
+      dot.attr("display", null);
+    }).on("pointermove", (event) => {
+      const [xm, ym] = pointer_default(event);
+      const i = leastIndex(points, ([x4, y4]) => Math.hypot(x4 - xm, y4 - ym));
+      const [x3, y3, k, millis, v] = points[i];
+      path2.style("stroke", ({ z }) => z === k ? null : "DimGray").filter(({ z }) => z === k).raise();
+      dot.attr("transform", `translate(${x3},${y3})`);
+      dot.select("text").text(`${k} [${formatMillisecondsToMinSec(millis)} ${v}]`).style("fill", "white");
+      svg.property("value", k).dispatch("input", { bubbles: true });
+    }).on("pointerleave", () => {
+      path2.style("mix-blend-mode", "lighten").style("stroke", "hotpink");
+      dot.attr("display", "none");
+      svg.node().value = null;
+      svg.dispatch("input", { bubbles: true });
+    }).on("touchstart", (event) => event.preventDefault());
+    container.append(svg.node());
+  }
+  function formatMillisecondsToMinSec(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1e3);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+    return `${minutes}:${formattedSeconds}`;
+  }
+
   // node_modules/three/build/three.core.js
   var REVISION = "171";
   var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
@@ -23842,187 +23958,9 @@ void main() {
   }
 
   // src/three-stuff.js
-  function testThreeStuff() {
-    console.log("zomg hi i has three stuff, here!");
-  }
-
-  // src/index.js
-  testThreeStuff();
-  var filedrop = document.getElementById("filedrop");
-  var fileinput = document.getElementById("fileinput");
-  document.addEventListener("drop", dropHandler);
-  document.addEventListener("dragover", dragOverHandler);
-  document.addEventListener("dragLeaveHandler", dragLeaveHandler);
-  fileinput.addEventListener("change", async (event) => {
-    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
-    try {
-      const file = event.target.files[0];
-      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
-      await processDataFile(file);
-    } catch (e) {
-      console.warn("fileinput change error:", e);
-    }
-  });
-  var linesToDraw = /* @__PURE__ */ new Set();
-  async function dropHandler(ev) {
-    ev.preventDefault();
-    if (ev.dataTransfer.items) {
-      const item = ev.dataTransfer.items[0];
-      if (item.kind === "file") {
-        const file = item.getAsFile();
-        console.log(`\u2026ITEM! file[0].name = ${file.name}`);
-        await processDataFile(file);
-      }
-    } else {
-      const file = ev.dataTransfer.files[0];
-      console.log(`\u2026FILE! file[0].name = ${file.name}`);
-      await processDataFile(firstFile);
-    }
-  }
-  function dragOverHandler(ev) {
-    ev.preventDefault();
-    filedrop.style.display = "flex";
-  }
-  function dragLeaveHandler(ev) {
-    ev.preventDefault();
-    filedrop.style.display = "none";
-  }
-  async function processDataFile(blob) {
-    const text = await blob.text();
-    const filelinez = text.split("\n");
-    console.log("zomg blob.text() first line:", filelinez[0]);
-    const out = filelinez.reduce((acc, line) => {
-      const [unixts, millis, ...rest] = line.split(" ");
-      const rest_str = rest.join(" ");
-      if (rest_str.includes("-") && rest_str.includes(":")) {
-        const [title, ...values] = rest_str.split("-");
-        const values_str = values.join("-");
-        values_str.split(",").forEach((val) => {
-          const [axis2, v] = val.split(":");
-          if (!isNaN(parseFloat(v))) {
-            const accKey = `${title}-${axis2.trim()}`;
-            if (!acc[accKey]) {
-              acc[accKey] = [];
-            }
-            acc[accKey].push({ millis: parseInt(millis), v: parseFloat(v) });
-          }
-        });
-      }
-      return acc;
-    }, {});
-    renderLegend(out);
-    renderLinez(out);
-    loadQuaternionData(out);
-    loadAccelerationData(out);
-  }
-  function renderLegend(data) {
-    const legend = document.getElementById("legend");
-    legend.innerHTML = "";
-    Object.keys(data).forEach((k) => {
-      const checkboxen = document.createElement("div");
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = k;
-      checkbox.value = k;
-      checkbox.checked = true;
-      linesToDraw.add(k);
-      checkbox.addEventListener("change", (ev) => {
-        if (ev.target.checked) {
-          linesToDraw.add(k);
-        } else {
-          linesToDraw.delete(k);
-        }
-        renderLinez(data);
-      });
-      const label = document.createElement("label");
-      label.htmlFor = k;
-      label.textContent = k;
-      checkboxen.appendChild(checkbox);
-      checkboxen.appendChild(label);
-      legend.appendChild(checkboxen);
-    });
-    const button = document.createElement("button");
-    button.innerText = "un-check everything";
-    button.addEventListener("click", (ev) => {
-      linesToDraw.clear();
-      document.querySelectorAll("#legend input").forEach((el) => el.checked = false);
-    });
-    legend.appendChild(button);
-  }
-  function renderLinez(data) {
-    console.log("zomg renderLinez data:", data);
-    filedrop.style.display = "none";
-    const container = document.getElementById("linez");
-    container.innerHTML = "";
-    const width = window.innerWidth;
-    const height = window.innerHeight - 5;
-    const marginTop = 20;
-    const marginRight = 20;
-    const marginBottom = 30;
-    const marginLeft = 40;
-    const y_domain = [null, null];
-    const x_domain = [null, null];
-    Object.entries(data).forEach(([title, values]) => {
-      if (linesToDraw.has(title)) {
-        values.forEach((v) => {
-          if (v.millis < x_domain[0] || x_domain[0] === null) x_domain[0] = v.millis;
-          if (v.millis > x_domain[1] || x_domain[1] === null) x_domain[1] = v.millis;
-          if (v.v < y_domain[0] || y_domain[0] === null) y_domain[0] = v.v;
-          if (v.v > y_domain[1] || y_domain[1] === null) y_domain[1] = v.v;
-        });
-      }
-    });
-    const x2 = linear2().domain(x_domain).range([marginLeft, width - marginRight]);
-    const y2 = linear2().domain(y_domain).range([height - marginBottom, marginTop]);
-    const svg = create_default("svg").attr("width", width).attr("height", height);
-    svg.append("g").attr("transform", `translate(0,${height - marginBottom})`).call(
-      axisBottom(x2).tickFormat((milliseconds) => {
-        return `${Math.floor(milliseconds / 6e4)}m`;
-      })
-    );
-    svg.append("g").attr("transform", `translate(${marginLeft},0)`).call(axisLeft(y2));
-    let points = [];
-    Object.entries(data).forEach(([title, values]) => {
-      if (linesToDraw.has(title)) {
-        points = [...points, ...values.map((v) => [x2(v.millis), y2(v.v), title, v.millis, v.v])];
-      }
-    });
-    const groups2 = rollup(
-      points,
-      (v) => Object.assign(v, { z: v[0][2] }),
-      (d) => d[2]
-    );
-    svg.append("line").attr("x1", marginLeft).attr("x2", width - (marginLeft + marginRight)).attr("y1", y2(0)).attr("y2", y2(0)).style("stroke", "dimgray");
-    const line = line_default().curve(stepAfter);
-    const path2 = svg.append("g").attr("fill", "none").attr("stroke", "hotpink").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
-    const dot = svg.append("g").attr("display", "none");
-    dot.append("circle").attr("r", 2.5).attr("fill", "white");
-    dot.append("text").attr("text-anchor", "middle").attr("y", -8);
-    svg.on("pointerenter", () => {
-      path2.style("mix-blend-mode", null).style("stroke", "#efefef");
-      dot.attr("display", null);
-    }).on("pointermove", (event) => {
-      const [xm, ym] = pointer_default(event);
-      const i = leastIndex(points, ([x4, y4]) => Math.hypot(x4 - xm, y4 - ym));
-      const [x3, y3, k, millis, v] = points[i];
-      path2.style("stroke", ({ z }) => z === k ? null : "DimGray").filter(({ z }) => z === k).raise();
-      dot.attr("transform", `translate(${x3},${y3})`);
-      dot.select("text").text(`${k} [${formatMillisecondsToMinSec(millis)} ${v}]`).style("fill", "white");
-      svg.property("value", k).dispatch("input", { bubbles: true });
-    }).on("pointerleave", () => {
-      path2.style("mix-blend-mode", "lighten").style("stroke", "hotpink");
-      dot.attr("display", "none");
-      svg.node().value = null;
-      svg.dispatch("input", { bubbles: true });
-    }).on("touchstart", (event) => event.preventDefault());
-    container.append(svg.node());
-  }
-  function formatMillisecondsToMinSec(milliseconds) {
-    const totalSeconds = Math.floor(milliseconds / 1e3);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const formattedSeconds = seconds.toString().padStart(2, "0");
-    return `${minutes}:${formattedSeconds}`;
+  function renderThreeStuff(data) {
+    loadQuaternionData(data);
+    loadAccelerationData(data);
   }
   var quaternionData = [
     { time: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
@@ -24133,7 +24071,7 @@ void main() {
   var isAnimating = false;
   function interpolateQuaternionAndAcceleration(elapsedTime) {
     const playbackTime = elapsedTime * playbackSpeed;
-    playbackTimeContainer.innerText = formatMillisecondsToMinSec(playbackTime);
+    playbackTimeContainer.innerText = formatMillisecondsToMinSec2(playbackTime);
     for (let i = 0; i < quaternionData.length - 1; i++) {
       const curr = quaternionData[i];
       const next = quaternionData[i + 1];
@@ -24153,7 +24091,7 @@ void main() {
     if (!isAnimating) return;
     requestAnimationFrame(animate);
     const elapsedTime = Date.now() - startTime;
-    elapsedTimeContainer.innerText = formatMillisecondsToMinSec(elapsedTime);
+    elapsedTimeContainer.innerText = formatMillisecondsToMinSec2(elapsedTime);
     const out = interpolateQuaternionAndAcceleration(elapsedTime);
     if (out && out.quaternion) {
       model.quaternion.copy(out.quaternion);
@@ -24219,6 +24157,79 @@ void main() {
         return;
     }
     camera.lookAt(model.position);
+  }
+  function formatMillisecondsToMinSec2(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1e3);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+    return `${minutes}:${formattedSeconds}`;
+  }
+
+  // src/index.js
+  var filedrop2 = document.getElementById("filedrop");
+  var fileinput = document.getElementById("fileinput");
+  document.addEventListener("drop", dropHandler);
+  document.addEventListener("dragover", dragOverHandler);
+  document.addEventListener("dragLeaveHandler", dragLeaveHandler);
+  fileinput.addEventListener("change", async (event) => {
+    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
+    try {
+      const file = event.target.files[0];
+      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
+      await processDataFile(file);
+    } catch (e) {
+      console.warn("fileinput change error:", e);
+    }
+  });
+  async function dropHandler(ev) {
+    ev.preventDefault();
+    if (ev.dataTransfer.items) {
+      const item = ev.dataTransfer.items[0];
+      if (item.kind === "file") {
+        const file = item.getAsFile();
+        console.log(`\u2026ITEM! file[0].name = ${file.name}`);
+        await processDataFile(file);
+      }
+    } else {
+      const file = ev.dataTransfer.files[0];
+      console.log(`\u2026FILE! file[0].name = ${file.name}`);
+      await processDataFile(firstFile);
+    }
+  }
+  function dragOverHandler(ev) {
+    ev.preventDefault();
+    filedrop2.style.display = "flex";
+  }
+  function dragLeaveHandler(ev) {
+    ev.preventDefault();
+    filedrop2.style.display = "none";
+  }
+  async function processDataFile(blob) {
+    const text = await blob.text();
+    const filelinez = text.split("\n");
+    console.log("zomg blob.text() first line:", filelinez[0]);
+    const out = filelinez.reduce((acc, line) => {
+      const [unixts, millis, ...rest] = line.split(" ");
+      const rest_str = rest.join(" ");
+      if (rest_str.includes("-") && rest_str.includes(":")) {
+        const [title, ...values] = rest_str.split("-");
+        const values_str = values.join("-");
+        values_str.split(",").forEach((val) => {
+          const [axis2, v] = val.split(":");
+          if (!isNaN(parseFloat(v))) {
+            const accKey = `${title}-${axis2.trim()}`;
+            if (!acc[accKey]) {
+              acc[accKey] = [];
+            }
+            acc[accKey].push({ millis: parseInt(millis), v: parseFloat(v) });
+          }
+        });
+      }
+      return acc;
+    }, {});
+    renderD3GraphStuff(out);
+    renderThreeStuff(out);
   }
 })();
 /*! Bundled license information:
