@@ -1,12 +1,23 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
+// THREE.JS ANIMATION STUFF!
+// ...so this will take rotation (quaternion) & linear acceleration data
+// to make a 3d cube move thru 3d space, leaving a pink trailing line,
+// there's a couple camera controls to help keep it all in view.
+// "follow cube" will lock the camera in front, looking back at the cube and line
+// otherwise mouse orbit controls to zoom, rotate, and pan around the scene.
+//
+// note: MAX_POINTS is probably wrong. the line only will get so long,
+// so i guess it's kinda broken, dunno, it needz some love :/
+
 export function renderThreeStuff(data) {
   loadQuaternionData(data);
   loadAccelerationData(data);
 }
 
-// THREE.JS STUFF!
+// note: initalizing here, with some very basic example data
+// quaternionData should otherwise get updated with data from user file input (see: loadQuaternionData)
 let quaternionData = [
   { time: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
   { time: 500, q: { x: 0.1, y: 0.2, z: 0.3, w: 0.9 } },
@@ -164,14 +175,13 @@ function updatePath(quaternion, acceleration, currentTimestamp) {
   // Integrate velocity to compute position
   currentPosition.addScaledVector(velocity, deltaTime); // p = p + v * dt
 
-  // Store the new position in the path
-  // pathPositions.push(currentPosition.clone());
-
-  // Update the line geometry
+  // note: so using setFromPoints will cause a closed path to get drawn
+  // i.e. there will also be a line from the cube, back to the first point
+  // which isn't desireable :(
   // pathGeometry.setFromPoints(pathPositions);
 
-  /// hmmmm
-  if (currentPathIndex >= MAX_POINTS) return; // Avoid overflow
+  /// instead of setFromPoints do this:
+  if (currentPathIndex >= MAX_POINTS) return; // avoid overflow
   // Add the current position to the pathPositions array
   pathPositions.push(currentPosition.clone());
   // Update the pre-allocated buffer

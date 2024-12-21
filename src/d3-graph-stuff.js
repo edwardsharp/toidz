@@ -127,12 +127,12 @@ function renderLinez(data) {
   // add the y-axis.
   svg.append("g").attr("transform", `translate(${marginLeft},0)`).call(d3.axisLeft(y));
 
-  // Compute the points in pixel space as [x, y, z], where z is the name of the series.
+  // points in pixel space as [x, y, z], where z is the name of the series.
   let points = [];
   Object.entries(data).forEach(([title, values]) => {
     if (linesToDraw.has(title)) {
-      // kinda sloppy array, here, but also tack on the edn .millis and .v
-      // to be referenced later when showing a tooltip popever
+      // kinda sloppy array, here, but also tack on the end data for .millis and .v
+      // ...will looks this up later when showing a tooltip popever
       points = [...points, ...values.map((v) => [x(v.millis), y(v.v), title, v.millis, v.v])];
     }
   });
@@ -176,7 +176,7 @@ function renderLinez(data) {
 
   dot.append("text").attr("text-anchor", "middle").attr("y", -8);
 
-  // when the pointer moves, find the closest point, update the interactive tip, and highlight
+  // when the pointer moves, find the closest point, update the interactive tooltip, and highlight
   // the corresponding line
   svg
     .on("pointerenter", () => {

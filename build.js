@@ -1,4 +1,76 @@
 (() => {
+  // src/file-input-etl.js
+  var callbacks = [];
+  function registerCallback(callback) {
+    callbacks.push(callback);
+  }
+  function callbackWithData(data) {
+    callbacks.forEach((cb) => cb(data));
+  }
+  var filedrop2 = document.getElementById("filedrop");
+  var fileinput = document.getElementById("fileinput");
+  document.addEventListener("drop", dropHandler);
+  document.addEventListener("dragover", dragOverHandler);
+  document.addEventListener("dragLeaveHandler", dragLeaveHandler);
+  fileinput.addEventListener("change", async (event) => {
+    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
+    try {
+      const file = event.target.files[0];
+      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
+      await processDataFile(file);
+    } catch (e) {
+      console.warn("fileinput change error:", e);
+    }
+  });
+  async function dropHandler(ev) {
+    ev.preventDefault();
+    if (ev.dataTransfer.items) {
+      const item = ev.dataTransfer.items[0];
+      if (item.kind === "file") {
+        const file = item.getAsFile();
+        console.log(`\u2026ITEM! file[0].name = ${file.name}`);
+        await processDataFile(file);
+      }
+    } else {
+      const file = ev.dataTransfer.files[0];
+      console.log(`\u2026FILE! file[0].name = ${file.name}`);
+      await processDataFile(firstFile);
+    }
+  }
+  function dragOverHandler(ev) {
+    ev.preventDefault();
+    filedrop2.style.display = "flex";
+  }
+  function dragLeaveHandler(ev) {
+    ev.preventDefault();
+    filedrop2.style.display = "none";
+  }
+  async function processDataFile(blob) {
+    const text = await blob.text();
+    const filelinez = text.split("\n");
+    console.log("zomg blob.text() first line:", filelinez[0]);
+    const out = filelinez.reduce((acc, line) => {
+      const [unixts, millis, ...rest] = line.split(" ");
+      const rest_str = rest.join(" ");
+      if (rest_str.includes("-") && rest_str.includes(":")) {
+        const [title, ...values] = rest_str.split("-");
+        const values_str = values.join("-");
+        values_str.split(",").forEach((val) => {
+          const [axis2, v] = val.split(":");
+          if (!isNaN(parseFloat(v))) {
+            const accKey = `${title}-${axis2.trim()}`;
+            if (!acc[accKey]) {
+              acc[accKey] = [];
+            }
+            acc[accKey].push({ millis: parseInt(millis), v: parseFloat(v) });
+          }
+        });
+      }
+      return acc;
+    }, {});
+    callbackWithData(out);
+  }
+
   // node_modules/d3-array/src/ascending.js
   function ascending(a, b) {
     return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -24164,78 +24236,6 @@ void main() {
     const seconds = totalSeconds % 60;
     const formattedSeconds = seconds.toString().padStart(2, "0");
     return `${minutes}:${formattedSeconds}`;
-  }
-
-  // src/file-input-etl.js
-  var callbacks = [];
-  function registerCallback(callback) {
-    callbacks.push(callback);
-  }
-  function callbackWithData(data) {
-    callbacks.forEach((cb) => cb(data));
-  }
-  var filedrop2 = document.getElementById("filedrop");
-  var fileinput = document.getElementById("fileinput");
-  document.addEventListener("drop", dropHandler);
-  document.addEventListener("dragover", dragOverHandler);
-  document.addEventListener("dragLeaveHandler", dragLeaveHandler);
-  fileinput.addEventListener("change", async (event) => {
-    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
-    try {
-      const file = event.target.files[0];
-      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
-      await processDataFile(file);
-    } catch (e) {
-      console.warn("fileinput change error:", e);
-    }
-  });
-  async function dropHandler(ev) {
-    ev.preventDefault();
-    if (ev.dataTransfer.items) {
-      const item = ev.dataTransfer.items[0];
-      if (item.kind === "file") {
-        const file = item.getAsFile();
-        console.log(`\u2026ITEM! file[0].name = ${file.name}`);
-        await processDataFile(file);
-      }
-    } else {
-      const file = ev.dataTransfer.files[0];
-      console.log(`\u2026FILE! file[0].name = ${file.name}`);
-      await processDataFile(firstFile);
-    }
-  }
-  function dragOverHandler(ev) {
-    ev.preventDefault();
-    filedrop2.style.display = "flex";
-  }
-  function dragLeaveHandler(ev) {
-    ev.preventDefault();
-    filedrop2.style.display = "none";
-  }
-  async function processDataFile(blob) {
-    const text = await blob.text();
-    const filelinez = text.split("\n");
-    console.log("zomg blob.text() first line:", filelinez[0]);
-    const out = filelinez.reduce((acc, line) => {
-      const [unixts, millis, ...rest] = line.split(" ");
-      const rest_str = rest.join(" ");
-      if (rest_str.includes("-") && rest_str.includes(":")) {
-        const [title, ...values] = rest_str.split("-");
-        const values_str = values.join("-");
-        values_str.split(",").forEach((val) => {
-          const [axis2, v] = val.split(":");
-          if (!isNaN(parseFloat(v))) {
-            const accKey = `${title}-${axis2.trim()}`;
-            if (!acc[accKey]) {
-              acc[accKey] = [];
-            }
-            acc[accKey].push({ millis: parseInt(millis), v: parseFloat(v) });
-          }
-        });
-      }
-      return acc;
-    }, {});
-    callbackWithData(out);
   }
 
   // src/index.js

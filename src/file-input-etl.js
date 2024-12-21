@@ -1,3 +1,8 @@
+// so attempt to:
+// extract data using browser's file input
+// transform "log format" text file to js obj
+// load data into registered callback functions (in this case: d3 and three stuff).
+
 let callbacks = [];
 export function registerCallback(callback) {
   callbacks.push(callback);
