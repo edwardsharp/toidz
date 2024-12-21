@@ -4020,14 +4020,16 @@
     const heading = document.createElement("h2");
     heading.innerText = "graph controls";
     legend.appendChild(heading);
-    Object.keys(data).forEach((k) => {
+    Object.keys(data).sort().forEach((k) => {
       const checkboxen = document.createElement("div");
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.id = k;
       checkbox.value = k;
-      checkbox.checked = true;
-      linesToDraw.add(k);
+      if (!k.startsWith("StepCounter")) {
+        checkbox.checked = true;
+        linesToDraw.add(k);
+      }
       checkbox.addEventListener("change", (ev) => {
         if (ev.target.checked) {
           linesToDraw.add(k);

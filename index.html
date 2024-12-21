@@ -89,17 +89,24 @@
   <div id="intro">
     <h1>bno08xviz</h1>
     <blockquote>...what is this?</blockquote>
-    <p>been hackin' on this bno08x sensor logger thingy.</p>
+    <p>been hackin' on this <i>bno08x</i> sensor logger thingy, based on a rp2040 microcontroller.</p>
 
     <p>
-      the <a href="https://www.adafruit.com/product/4754">bno08x sensor</a>
+      so the <a href="https://www.adafruit.com/product/4754">bno08x sensor</a>
       does neat stuff like xyz accelerometer & gyro, step and tap detection, and some motion detection like
       walking/climbing stairz/in a car; and some more esoteric stuff like a circle gesture.
     </p>
+    <p>
+      a little electronic component that outputs a bunch of numbers over time. i'd like to think i can use this
+      time-series data to sequence sound/music stuff. the visualizations and tools on this page are some of the things i
+      explored along the way.
+    </p>
+
+    <p>...and so now i have a bunch of adafruit stuff, stuffed inna altoids tin!</p>
 
     <p>
-      has a battery (not in the picture below), a sd card for sensor logz, and an oled display and rotary encoder knob &
-      button for ui stuff ...all stuffed inna altoids tin.
+      on the top is an oled display and rotary encoder knob & button for ui stuff. inside is a adafruit feather rp2040,
+      the bno08x sensor, a battery (not in the picture below), a sd card for sensor logz, and a real time clock.
     </p>
 
     <p>
@@ -108,6 +115,8 @@
     </p>
 
     <img src="toidz.jpeg" />
+    <img src="toidz1.jpeg" />
+    <img src="toidz2.jpeg" />
 
     <p>okay, so this page, here. is some d3 graphs and three.js visualizations of that sensor data.</p>
 
@@ -129,7 +138,7 @@
       <b><i>-- or --</i></b>
     </p>
 
-    <p>try with some of these examples:</p>
+    <p>try with some of these examplez:</p>
 
     <ul id="examples">
       <li><button onclick="BNO08XVIZ.loadExample('walk2coffee.TXT')">walk2coffee.TXT</button></li>

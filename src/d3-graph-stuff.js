@@ -19,40 +19,45 @@ function renderLegend(data) {
   legend.appendChild(heading);
 
   // create checkboxes with labels with data keys
-  Object.keys(data).forEach((k) => {
-    // wrapper
-    const checkboxen = document.createElement("div");
+  Object.keys(data)
+    .sort() // simple alpha sort
+    .forEach((k) => {
+      // wrapper
+      const checkboxen = document.createElement("div");
 
-    // input
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = k;
-    checkbox.value = k;
-    checkbox.checked = true;
-    linesToDraw.add(k);
-
-    // toggle event
-    checkbox.addEventListener("change", (ev) => {
-      if (ev.target.checked) {
+      // input
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = k;
+      checkbox.value = k;
+      // initialy don't rander `StepCounter-` stuff
+      if (!k.startsWith("StepCounter")) {
+        checkbox.checked = true;
         linesToDraw.add(k);
-      } else {
-        linesToDraw.delete(k);
       }
-      renderLinez(data);
+
+      // toggle event
+      checkbox.addEventListener("change", (ev) => {
+        if (ev.target.checked) {
+          linesToDraw.add(k);
+        } else {
+          linesToDraw.delete(k);
+        }
+        renderLinez(data);
+      });
+
+      // label
+      const label = document.createElement("label");
+      label.htmlFor = k;
+      label.textContent = k;
+
+      // append the checkbox and label to the container
+      checkboxen.appendChild(checkbox);
+      checkboxen.appendChild(label);
+
+      // append the container to the legend
+      legend.appendChild(checkboxen);
     });
-
-    // label
-    const label = document.createElement("label");
-    label.htmlFor = k;
-    label.textContent = k;
-
-    // append the checkbox and label to the container
-    checkboxen.appendChild(checkbox);
-    checkboxen.appendChild(label);
-
-    // append the container to the legend
-    legend.appendChild(checkboxen);
-  });
 
   // uncheck all
   const button = document.createElement("button");
