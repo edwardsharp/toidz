@@ -263,7 +263,8 @@ function animate() {
     updatePath(out.quaternion, out.acceleration, elapsedTime);
   }
 
-  controls.update(); // Only required if damping is enabled
+  controls.update(); // only required if damping is enabled
+  //#TODO: use global state var to track controlsupdate()? also based on followCube
 
   if (followCube) goToCube();
 

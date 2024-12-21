@@ -24,9 +24,22 @@
     color: white;
   }
 
+  #intro p,
+  #intro ol,
+  #intro input,
+  #intro ul {
+    width: 70%;
+    margin: auto;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    display: block;
+  }
+  toidz-imgz {
+    width: 100%;
+  }
   img {
     max-height: 100dvh;
-    max-width: 100dvw;
+    max-width: 32%;
   }
 
   #examples {
@@ -114,9 +127,11 @@
       tin!)
     </p>
 
-    <img src="toidz.jpeg" />
-    <img src="toidz1.jpeg" />
-    <img src="toidz2.jpeg" />
+    <div id="toidz-imgz">
+      <img src="toidz.jpeg" />
+      <img src="toidz1.jpeg" />
+      <img src="toidz2.jpeg" />
+    </div>
 
     <p>okay, so this page, here. is some d3 graphs and three.js visualizations of that sensor data.</p>
 
