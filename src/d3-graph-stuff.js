@@ -169,6 +169,32 @@ function renderLinez(data) {
     .style("mix-blend-mode", "lighten")
     .attr("d", line);
 
+  // brush thing to enable selecting sub-sets of data along x axis
+  const brush = d3
+    .brushX()
+    .extent([
+      [marginLeft, marginTop],
+      [width - marginRight, height - marginBottom],
+    ]) // Confines the brush to the chart area
+    .on("end", (event) => {
+      if (!event.selection) return; // Ignore if the brush is cleared
+
+      // Get the selected range in pixels
+      const [x0, x1] = event.selection;
+
+      // Convert pixel range to data range
+      const timeRange = [x.invert(x0), x.invert(x1)];
+
+      console.log(
+        "selected range:",
+        `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`,
+      );
+
+      // Optionally: Highlight selected data, update other visuals, etc.
+    }); // Event handler for brush end
+
+  svg.append("g").attr("class", "brush").call(brush);
+
   // invisible layer for the interactive tip.
   const dot = svg.append("g").attr("display", "none");
 
