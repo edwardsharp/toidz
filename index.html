@@ -10,7 +10,37 @@
     background: black;
     color: white;
   }
+
+  #intro {
+    padding: 2em;
+  }
+  a:link,
+  a:visited,
+  a:active {
+    color: #ff11ff;
+  }
+
+  a:hover {
+    color: white;
+  }
+
+  img {
+    max-height: 100dvh;
+    max-width: 100dvw;
+  }
+
+  #examples {
+    list-style: none;
+  }
+  #examples li {
+    padding: 0.5em 0;
+  }
+
   #filedrop {
+    /* initial display: none
+       otherwise will be flex when shown */
+    display: none;
+
     position: fixed;
     top: 0;
     left: 0;
@@ -19,7 +49,6 @@
     background: black;
     height: 100vh;
     width: 100vw;
-    display: flex;
     justify-content: center;
   }
   #filedrop p {
@@ -45,20 +74,96 @@
   #legend button {
     max-width: 200px;
   }
+
+  #three-controls,
+  #three-container {
+    /* initialy hidden */
+    display: none;
+  }
+
+  #three-controls {
+    padding: 0 2em;
+  }
 </style>
 <body>
-  <div id="filedrop">
-    <p>
-      drag data file to this drop zone.
+  <div id="intro">
+    <h1>bno08xviz</h1>
+    <blockquote>...what is this?</blockquote>
+    <p>been hackin' on this bno08x sensor logger thingy.</p>
 
-      <input type="file" id="fileinput" />
+    <p>
+      the <a href="https://www.adafruit.com/product/4754">bno08x sensor</a>
+      does neat stuff like xyz accelerometer & gyro, step and tap detection, and some motion detection like
+      walking/climbing stairz/in a car; and some more esoteric stuff like a circle gesture.
     </p>
+
+    <p>
+      has a battery (not in the picture below), a sd card for sensor logz, and an oled display and rotary encoder knob &
+      button for ui stuff ...all stuffed inna altoids tin.
+    </p>
+
+    <p>
+      (square holez are hard; took two altoids tins and wayyyy longer than i expected to get it all stuffed into the
+      tin!)
+    </p>
+
+    <img src="toidz.jpeg" />
+
+    <p>okay, so this page, here. is some d3 graphs and three.js visualizations of that sensor data.</p>
+
+    <p>basically what's going on here is:</p>
+    <ol>
+      <li>load user data file; parse each line into a shared js obj.</li>
+      <li>d3 graph stuff to draw lines for each shared js obj key (and some html input controls)</li>
+      <li>three.js 3b cube and line animation using quaternion & linear acceleration data</li>
+    </ol>
+
+    <p>
+      so, to get started with some graphs and animations, load some data from a file; either drag & drop a file onto
+      this page, or use the file upload button below:
+    </p>
+
+    <input type="file" id="fileinput" />
+
+    <p>
+      <b><i>-- or --</i></b>
+    </p>
+
+    <p>try with some of these examples:</p>
+
+    <ul id="examples">
+      <li><button onclick="BNO08XVIZ.loadExample('walk2coffee.TXT')">walk2coffee.TXT</button></li>
+      <li>
+        <button onclick="BNO08XVIZ.loadExample('674DB7C1-walk2groccoffee.TXT')">674DB7C1-walk2groccoffee.TXT</button>
+      </li>
+      <li>
+        <button onclick="BNO08XVIZ.loadExample('dec4-train-walk2office-combo.TXT')">
+          dec4-train-walk2office-combo.TXT
+        </button>
+      </li>
+      <li><button onclick="BNO08XVIZ.loadExample('office2handm2trainhome.txt')">office2handm2trainhome.txt</button></li>
+      <li>
+        <button onclick="BNO08XVIZ.loadExample('now-with-rotation-vectors.txt')">now-with-rotation-vectors.txt</button>
+      </li>
+      <li>
+        <button onclick="BNO08XVIZ.loadExample('now-with-rotation-vector-walk2coffee.txt')">
+          now-with-rotation-vector-walk2coffee.txt
+        </button>
+      </li>
+    </ul>
   </div>
+  <div id="filedrop">
+    <p>drop yr file here!</p>
+  </div>
+
   <div id="legend"></div>
   <div id="linez"></div>
   <div id="three-controls">
-    <button id="three-start-animate">animate!</button>
-    <button id="three-stop-animate">stop!</button>
+    <h2>animation controls</h2>
+    <div>
+      <button id="three-start-animate">animate!</button>
+      <button id="three-stop-animate">stop!</button>
+    </div>
 
     <div>
       <span>playback speed: </span>

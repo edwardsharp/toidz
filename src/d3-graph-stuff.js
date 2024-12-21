@@ -14,6 +14,10 @@ function renderLegend(data) {
   // clear any previous content.
   legend.innerHTML = "";
 
+  const heading = document.createElement("h2");
+  heading.innerText = "graph controls";
+  legend.appendChild(heading);
+
   // create checkboxes with labels with data keys
   Object.keys(data).forEach((k) => {
     // wrapper
@@ -173,16 +177,16 @@ function renderLinez(data) {
   const brush = d3
     .brushX()
     .extent([
-      [marginLeft, marginTop],
-      [width - marginRight, height - marginBottom],
-    ]) // Confines the brush to the chart area
+      [marginLeft, marginTop], // x0, y0
+      [width - marginRight, height - marginBottom], // x1, y1
+    ]) // confine brush to the chart area
     .on("end", (event) => {
-      if (!event.selection) return; // Ignore if the brush is cleared
+      if (!event.selection) return; // bail if the brush is cleared
 
-      // Get the selected range in pixels
+      // selected range in pixels
       const [x0, x1] = event.selection;
 
-      // Convert pixel range to data range
+      // convert pixel range to data range
       const timeRange = [x.invert(x0), x.invert(x1)];
 
       console.log(
@@ -190,8 +194,8 @@ function renderLinez(data) {
         `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`,
       );
 
-      // Optionally: Highlight selected data, update other visuals, etc.
-    }); // Event handler for brush end
+      // #TODO: something meaningful
+    });
 
   svg.append("g").attr("class", "brush").call(brush);
 

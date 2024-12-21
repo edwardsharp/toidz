@@ -1,4 +1,4 @@
-import { registerCallback } from "./file-input-etl.js";
+import { registerCallback, processDataFile } from "./file-input-etl.js";
 import { renderD3GraphStuff } from "./d3-graph-stuff.js";
 import { renderThreeStuff } from "./three-stuff.js";
 
@@ -24,3 +24,20 @@ import { renderThreeStuff } from "./three-stuff.js";
 
 registerCallback(renderD3GraphStuff);
 registerCallback(renderThreeStuff);
+
+// some global functions for use with index.html elements
+window.BNO08XVIZ = {
+  loadExample: (href) => {
+    console.log("[loadExample] zomg fetch href:", `/example-data/${href}`);
+    fetch(`/example-data/${href}`)
+      .then((response) => response.text())
+      .then((text) => {
+        console.log("[loadExample] zomg fetch has text, gonna processDataFile()");
+        processDataFile(text);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("[loadExample] zomg error fetching example data:", error);
+      });
+  },
+};

@@ -14,6 +14,11 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 export function renderThreeStuff(data) {
   loadQuaternionData(data);
   loadAccelerationData(data);
+
+  const threeControls = document.getElementById("three-controls");
+  threeControls.style.display = "block";
+  const threeContainer = document.getElementById("three-container");
+  threeContainer.style.display = "block";
 }
 
 // note: initalizing here, with some very basic example data

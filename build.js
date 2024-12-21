@@ -1,54 +1,8 @@
 (() => {
   // src/file-input-etl.js
-  var callbacks = [];
-  function registerCallback(callback) {
-    callbacks.push(callback);
-  }
-  function callbackWithData(data) {
-    callbacks.forEach((cb) => cb(data));
-  }
-  var filedrop2 = document.getElementById("filedrop");
-  var fileinput = document.getElementById("fileinput");
-  document.addEventListener("drop", dropHandler);
-  document.addEventListener("dragover", dragOverHandler);
-  document.addEventListener("dragLeaveHandler", dragLeaveHandler);
-  fileinput.addEventListener("change", async (event) => {
-    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
-    try {
-      const file = event.target.files[0];
-      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
-      await processDataFile(file);
-    } catch (e) {
-      console.warn("fileinput change error:", e);
-    }
-  });
-  async function dropHandler(ev) {
-    ev.preventDefault();
-    if (ev.dataTransfer.items) {
-      const item = ev.dataTransfer.items[0];
-      if (item.kind === "file") {
-        const file = item.getAsFile();
-        console.log(`\u2026ITEM! file[0].name = ${file.name}`);
-        await processDataFile(file);
-      }
-    } else {
-      const file = ev.dataTransfer.files[0];
-      console.log(`\u2026FILE! file[0].name = ${file.name}`);
-      await processDataFile(firstFile);
-    }
-  }
-  function dragOverHandler(ev) {
-    ev.preventDefault();
-    filedrop2.style.display = "flex";
-  }
-  function dragLeaveHandler(ev) {
-    ev.preventDefault();
-    filedrop2.style.display = "none";
-  }
-  async function processDataFile(blob) {
-    const text = await blob.text();
+  function processDataFile(text) {
     const filelinez = text.split("\n");
-    console.log("zomg blob.text() first line:", filelinez[0]);
+    console.log("[processDataFile] zomg first line:", filelinez[0]);
     const out = filelinez.reduce((acc, line) => {
       const [unixts, millis, ...rest] = line.split(" ");
       const rest_str = rest.join(" ");
@@ -69,6 +23,54 @@
       return acc;
     }, {});
     callbackWithData(out);
+  }
+  var callbacks = [];
+  function registerCallback(callback) {
+    callbacks.push(callback);
+  }
+  function callbackWithData(data) {
+    callbacks.forEach((cb) => cb(data));
+  }
+  var filedrop2 = document.getElementById("filedrop");
+  var fileinput = document.getElementById("fileinput");
+  document.addEventListener("drop", dropHandler);
+  document.addEventListener("dragover", dragOverHandler);
+  document.addEventListener("dragLeaveHandler", dragLeaveHandler);
+  fileinput.addEventListener("change", async (event) => {
+    console.log("zomg fileinput change event.target.files:", event.target.files[0]);
+    try {
+      const file = event.target.files[0];
+      console.log(`\u2026FILEINPUT! file[0].name = ${file.name}`);
+      const text = await file.text();
+      processDataFile(text);
+    } catch (e) {
+      console.warn("fileinput change error:", e);
+    }
+  });
+  async function dropHandler(ev) {
+    ev.preventDefault();
+    if (ev.dataTransfer.items) {
+      const item = ev.dataTransfer.items[0];
+      if (item.kind === "file") {
+        const file = item.getAsFile();
+        console.log(`\u2026ITEM! file[0].name = ${file.name}`);
+        const text = await file.text();
+        processDataFile(text);
+      }
+    } else {
+      const file = ev.dataTransfer.files[0];
+      console.log(`\u2026FILE! file[0].name = ${file.name}`);
+      const text = await file.text();
+      processDataFile(text);
+    }
+  }
+  function dragOverHandler(ev) {
+    ev.preventDefault();
+    filedrop2.style.display = "flex";
+  }
+  function dragLeaveHandler(ev) {
+    ev.preventDefault();
+    filedrop2.style.display = "none";
   }
 
   // node_modules/d3-array/src/ascending.js
@@ -4015,6 +4017,9 @@
   function renderLegend(data) {
     const legend = document.getElementById("legend");
     legend.innerHTML = "";
+    const heading = document.createElement("h2");
+    heading.innerText = "graph controls";
+    legend.appendChild(heading);
     Object.keys(data).forEach((k) => {
       const checkboxen = document.createElement("div");
       const checkbox = document.createElement("input");
@@ -4094,7 +4099,9 @@
     const path2 = svg.append("g").attr("fill", "none").attr("stroke", "hotpink").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
     const brush2 = brushX().extent([
       [marginLeft, marginTop],
+      // x0, y0
       [width - marginRight, height - marginBottom]
+      // x1, y1
     ]).on("end", (event) => {
       if (!event.selection) return;
       const [x0, x1] = event.selection;
@@ -24540,6 +24547,10 @@ void main() {
   function renderThreeStuff(data) {
     loadQuaternionData(data);
     loadAccelerationData(data);
+    const threeControls = document.getElementById("three-controls");
+    threeControls.style.display = "block";
+    const threeContainer2 = document.getElementById("three-container");
+    threeContainer2.style.display = "block";
   }
   var quaternionData = [
     { time: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
@@ -24748,6 +24759,17 @@ void main() {
   // src/index.js
   registerCallback(renderD3GraphStuff);
   registerCallback(renderThreeStuff);
+  window.BNO08XVIZ = {
+    loadExample: (href) => {
+      console.log("[loadExample] zomg fetch href:", `/example-data/${href}`);
+      fetch(`/example-data/${href}`).then((response) => response.text()).then((text) => {
+        console.log("[loadExample] zomg fetch has text, gonna processDataFile()");
+        processDataFile(text);
+      }).catch((error) => {
+        console.error("[loadExample] zomg error fetching example data:", error);
+      });
+    }
+  };
 })();
 /*! Bundled license information:
 

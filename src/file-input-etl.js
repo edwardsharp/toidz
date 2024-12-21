@@ -3,70 +3,9 @@
 // transform "log format" text file to js obj
 // load data into registered callback functions (in this case: d3 and three stuff).
 
-let callbacks = [];
-export function registerCallback(callback) {
-  callbacks.push(callback);
-}
-
-function callbackWithData(data) {
-  callbacks.forEach((cb) => cb(data));
-}
-
-// FILE INPUT STUFF
-
-//ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
-const filedrop = document.getElementById("filedrop");
-const fileinput = document.getElementById("fileinput");
-
-document.addEventListener("drop", dropHandler);
-document.addEventListener("dragover", dragOverHandler);
-document.addEventListener("dragLeaveHandler", dragLeaveHandler);
-fileinput.addEventListener("change", async (event) => {
-  console.log("zomg fileinput change event.target.files:", event.target.files[0]);
-  try {
-    const file = event.target.files[0];
-    console.log(`…FILEINPUT! file[0].name = ${file.name}`);
-    await processDataFile(file);
-  } catch (e) {
-    //o noz!
-    console.warn("fileinput change error:", e);
-  }
-});
-
-async function dropHandler(ev) {
-  // avoid default behavior (e.g. file from being opened)
-  ev.preventDefault();
-
-  // note: only process one file (the first [0] one)
-  if (ev.dataTransfer.items) {
-    const item = ev.dataTransfer.items[0];
-    if (item.kind === "file") {
-      const file = item.getAsFile();
-      console.log(`…ITEM! file[0].name = ${file.name}`);
-      await processDataFile(file);
-    }
-  } else {
-    // DataTransfer interface to access the file(s)
-    const file = ev.dataTransfer.files[0];
-    console.log(`…FILE! file[0].name = ${file.name}`);
-    await processDataFile(firstFile);
-  }
-}
-function dragOverHandler(ev) {
-  // prevent default behavior (e.g. file from being opened with browser)
-  ev.preventDefault();
-
-  filedrop.style.display = "flex";
-}
-function dragLeaveHandler(ev) {
-  ev.preventDefault();
-  filedrop.style.display = "none";
-}
-
-async function processDataFile(blob) {
-  const text = await blob.text();
+export function processDataFile(text) {
   const filelinez = text.split("\n");
-  console.log("zomg blob.text() first line:", filelinez[0]);
+  console.log("[processDataFile] zomg first line:", filelinez[0]);
 
   const out = filelinez.reduce((acc, line) => {
     //first split on spacez
@@ -105,4 +44,67 @@ async function processDataFile(blob) {
   }, {});
 
   callbackWithData(out);
+}
+
+let callbacks = [];
+export function registerCallback(callback) {
+  callbacks.push(callback);
+}
+
+function callbackWithData(data) {
+  callbacks.forEach((cb) => cb(data));
+}
+
+// FILE INPUT STUFF
+
+//ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
+const filedrop = document.getElementById("filedrop");
+const fileinput = document.getElementById("fileinput");
+
+document.addEventListener("drop", dropHandler);
+document.addEventListener("dragover", dragOverHandler);
+document.addEventListener("dragLeaveHandler", dragLeaveHandler);
+fileinput.addEventListener("change", async (event) => {
+  console.log("zomg fileinput change event.target.files:", event.target.files[0]);
+  try {
+    const file = event.target.files[0];
+    console.log(`…FILEINPUT! file[0].name = ${file.name}`);
+    const text = await file.text();
+    processDataFile(text);
+  } catch (e) {
+    //o noz!
+    console.warn("fileinput change error:", e);
+  }
+});
+
+async function dropHandler(ev) {
+  // avoid default behavior (e.g. file from being opened)
+  ev.preventDefault();
+
+  // note: only process one file (the first [0] one)
+  if (ev.dataTransfer.items) {
+    const item = ev.dataTransfer.items[0];
+    if (item.kind === "file") {
+      const file = item.getAsFile();
+      console.log(`…ITEM! file[0].name = ${file.name}`);
+      const text = await file.text();
+      processDataFile(text);
+    }
+  } else {
+    // DataTransfer interface to access the file(s)
+    const file = ev.dataTransfer.files[0];
+    console.log(`…FILE! file[0].name = ${file.name}`);
+    const text = await file.text();
+    processDataFile(text);
+  }
+}
+function dragOverHandler(ev) {
+  // prevent default behavior (e.g. file from being opened with browser)
+  ev.preventDefault();
+
+  filedrop.style.display = "flex";
+}
+function dragLeaveHandler(ev) {
+  ev.preventDefault();
+  filedrop.style.display = "none";
 }
