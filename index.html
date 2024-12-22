@@ -104,6 +104,8 @@
 
   #sound {
     padding: 0 2em;
+    display: flex;
+    gap: 1em;
   }
 
   #three-controls,
@@ -202,7 +204,8 @@
   <div id="legend"></div>
   <div id="linez"></div>
   <div id="sound">
-    <button onclick="BNO08XVIZ.fft()">FFT EXAMPLE</button>
+    <div id="sound-fft-keys"></div>
+    <button onclick="BNO08XVIZ.fft()" id="generate-sound">GENERATE SOUND</button>
   </div>
   <div id="three-controls">
     <h2>three.js animation controls</h2>

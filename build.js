@@ -4507,6 +4507,7 @@
       [width - marginRight, height - marginBottom]
       // x1, y1
     ]).on("end", (event) => {
+      window.BNO08XVIZ.selectedData = {};
       if (!event.selection) return;
       const [x0, x1] = event.selection;
       const timeRange = [x2.invert(x0), x2.invert(x1)];
@@ -4514,6 +4515,17 @@
         "selected range:",
         `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`
       );
+      Object.entries(data).forEach(([title, values]) => {
+        if (linesToDraw.has(title)) {
+          values.forEach((v) => {
+            if (v.millis >= timeRange[0] && v.millis <= timeRange[1]) {
+              if (!window.BNO08XVIZ.selectedData[title]) window.BNO08XVIZ.selectedData[title] = [];
+              window.BNO08XVIZ.selectedData[title].push(v.v);
+            }
+          });
+        }
+      });
+      window.BNO08XVIZ.renderDataKeysSelect();
     });
     svg.append("g").attr("class", "brush").call(brush2);
     const dot = svg.append("g").attr("display", "none");
@@ -25162,6 +25174,24 @@ void main() {
 
   // src/fft-stuff.js
   var import_fft = __toESM(require_fft());
+  function renderDataKeysSelect() {
+    const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
+    const selectElement = document.createElement("select");
+    selectElement.addEventListener("change", (event) => {
+      window.BNO08XVIZ.selectedKey = event.target.value;
+      document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
+    });
+    window.BNO08XVIZ.selectedKey = selectedKeys[0];
+    document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
+    selectedKeys.forEach((k) => {
+      const optionElement = document.createElement("option");
+      optionElement.value = k;
+      optionElement.textContent = k;
+      selectElement.appendChild(optionElement);
+    });
+    document.getElementById("sound-fft-keys").innerHTML = "";
+    document.getElementById("sound-fft-keys").appendChild(selectElement);
+  }
   async function processAndPlayFFT(timeSeriesData) {
     const data = adjustToPowerOfTwo(timeSeriesData);
     const fftSize = data.length;
@@ -25217,10 +25247,21 @@ void main() {
   registerCallback(renderD3GraphStuff);
   registerCallback(renderThreeStuff);
   window.BNO08XVIZ = {
+    selectedData: {},
+    selectedKey: "",
+    renderDataKeysSelect,
     fft: () => {
-      console.log("[fft]");
-      const exampleTimeSeriesData = [0, 2, 3, 4, 0, -1, -2, -3, -5, 4, 2, 4, 0, 1, 0, -1, 33, 66, 99];
-      processAndPlayFFT(exampleTimeSeriesData);
+      if (!window.BNO08XVIZ.selectedKey) {
+        console.warn("no data key selected!");
+        return;
+      }
+      console.log(
+        "gonna fft data key:",
+        window.BNO08XVIZ.selectedKey,
+        " data:",
+        window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]
+      );
+      processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
     },
     loadExample: (href) => {
       console.log("[loadExample] zomg fetch href:", `/example-data/${href}`);

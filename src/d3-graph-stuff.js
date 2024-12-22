@@ -186,7 +186,10 @@ function renderLinez(data) {
       [width - marginRight, height - marginBottom], // x1, y1
     ]) // confine brush to the chart area
     .on("end", (event) => {
-      if (!event.selection) return; // bail if the brush is cleared
+      window.BNO08XVIZ.selectedData = {};
+
+      // bail if the brush is cleared
+      if (!event.selection) return;
 
       // selected range in pixels
       const [x0, x1] = event.selection;
@@ -199,7 +202,21 @@ function renderLinez(data) {
         `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`,
       );
 
-      // #TODO: something meaningful
+      // collect data from selected range and store it to window.BNO08XVIZ.selectedData
+      Object.entries(data).forEach(([title, values]) => {
+        if (linesToDraw.has(title)) {
+          values.forEach((v) => {
+            if (v.millis >= timeRange[0] && v.millis <= timeRange[1]) {
+              //. init array for key (title)
+              if (!window.BNO08XVIZ.selectedData[title]) window.BNO08XVIZ.selectedData[title] = [];
+              window.BNO08XVIZ.selectedData[title].push(v.v);
+            }
+          });
+        }
+      });
+
+      // callback ui update.
+      window.BNO08XVIZ.renderDataKeysSelect();
     });
 
   svg.append("g").attr("class", "brush").call(brush);

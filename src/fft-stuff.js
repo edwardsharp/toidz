@@ -1,5 +1,29 @@
 import FFT from "fft.js";
 
+export function renderDataKeysSelect() {
+  const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
+
+  const selectElement = document.createElement("select");
+  selectElement.addEventListener("change", (event) => {
+    window.BNO08XVIZ.selectedKey = event.target.value;
+    document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
+  });
+
+  window.BNO08XVIZ.selectedKey = selectedKeys[0];
+  document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
+
+  // gen <option> elements from the array
+  selectedKeys.forEach((k) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = k;
+    optionElement.textContent = k;
+    selectElement.appendChild(optionElement);
+  });
+
+  document.getElementById("sound-fft-keys").innerHTML = "";
+  document.getElementById("sound-fft-keys").appendChild(selectElement);
+}
+
 export async function processAndPlayFFT(timeSeriesData) {
   const data = adjustToPowerOfTwo(timeSeriesData);
 
