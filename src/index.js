@@ -1,7 +1,7 @@
 import { registerCallback, processDataFile } from "./file-input-etl.js";
 import { renderD3GraphStuff } from "./d3-graph-stuff.js";
 import { renderThreeStuff } from "./three-stuff.js";
-import { processAndPlayFFT, renderDataKeysSelect } from "./fft-stuff.js";
+import { renderFFTStuff, processAndPlayFFT, renderDataKeysSelect } from "./fft-stuff.js";
 
 // hey, so this file just rollz up a buncha other stuff
 // spread out across the js filez above☝️
@@ -25,6 +25,7 @@ import { processAndPlayFFT, renderDataKeysSelect } from "./fft-stuff.js";
 
 registerCallback(renderD3GraphStuff);
 registerCallback(renderThreeStuff);
+registerCallback(renderFFTStuff);
 
 // some global functions for use with index.html elements
 window.BNO08XVIZ = {

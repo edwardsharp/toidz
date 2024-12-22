@@ -1,5 +1,9 @@
 import FFT from "fft.js";
 
+export function renderFFTStuff() {
+  document.getElementById("sound").style.display = "flex";
+}
+
 export function renderDataKeysSelect() {
   const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
 

@@ -25174,6 +25174,9 @@ void main() {
 
   // src/fft-stuff.js
   var import_fft = __toESM(require_fft());
+  function renderFFTStuff() {
+    document.getElementById("sound").style.display = "flex";
+  }
   function renderDataKeysSelect() {
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
     const selectElement = document.createElement("select");
@@ -25246,6 +25249,7 @@ void main() {
   // src/index.js
   registerCallback(renderD3GraphStuff);
   registerCallback(renderThreeStuff);
+  registerCallback(renderFFTStuff);
   window.BNO08XVIZ = {
     selectedData: {},
     selectedKey: "",
