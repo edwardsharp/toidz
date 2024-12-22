@@ -15,7 +15,7 @@ function renderLegend(data) {
   legend.innerHTML = "";
 
   const heading = document.createElement("h2");
-  heading.innerText = "graph controls";
+  heading.innerText = "d3 graph controls";
   legend.appendChild(heading);
 
   // create checkboxes with labels with data keys

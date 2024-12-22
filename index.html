@@ -9,6 +9,18 @@
     width: 100dvw;
     background: black;
     color: white;
+    font-family: sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  blockquote,
+  button,
+  label {
+    font-family: monospace;
   }
 
   #intro {
@@ -34,11 +46,13 @@
     margin-top: 1em;
     display: block;
   }
-  toidz-imgz {
+  #toidz-imgz {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   img {
-    max-height: 100dvh;
     max-width: 32%;
   }
 
@@ -88,6 +102,10 @@
     max-width: 200px;
   }
 
+  #sound {
+    padding: 0 2em;
+  }
+
   #three-controls,
   #three-container {
     /* initialy hidden */
@@ -118,8 +136,9 @@
     <p>...and so now i have a bunch of adafruit stuff, stuffed inna altoids tin!</p>
 
     <p>
-      on the top is an oled display and rotary encoder knob & button for ui stuff. inside is a adafruit feather rp2040,
-      the bno08x sensor, a battery (not in the picture below), a sd card for sensor logz, and a real time clock.
+      on the top of the tin is: an oled display, a power button/switch, and rotary encoder knob (also has a push button)
+      for ui stuff. inside is a adafruit feather rp2040, the bno08x sensor, a battery (not in the picture below), a sd
+      card for sensor logz, and a real time clock.
     </p>
 
     <p>
@@ -182,8 +201,11 @@
 
   <div id="legend"></div>
   <div id="linez"></div>
+  <div id="sound">
+    <button onclick="BNO08XVIZ.fft()">FFT EXAMPLE</button>
+  </div>
   <div id="three-controls">
-    <h2>animation controls</h2>
+    <h2>three.js animation controls</h2>
     <div>
       <button id="three-start-animate">animate!</button>
       <button id="three-stop-animate">stop!</button>

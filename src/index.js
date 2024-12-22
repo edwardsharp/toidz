@@ -1,6 +1,7 @@
 import { registerCallback, processDataFile } from "./file-input-etl.js";
 import { renderD3GraphStuff } from "./d3-graph-stuff.js";
 import { renderThreeStuff } from "./three-stuff.js";
+import { processAndPlayFFT } from "./fft-stuff.js";
 
 // hey, so this file just rollz up a buncha other stuff
 // spread out across the js filez above☝️
@@ -27,6 +28,12 @@ registerCallback(renderThreeStuff);
 
 // some global functions for use with index.html elements
 window.BNO08XVIZ = {
+  fft: () => {
+    console.log("[fft]");
+    // Example usage
+    const exampleTimeSeriesData = [0, 2, 3, 4, 0, -1, -2, -3, -5, 4, 2, 4, 0, 1, 0, -1, 33, 66, 99]; // Replace with your data
+    processAndPlayFFT(exampleTimeSeriesData);
+  },
   loadExample: (href) => {
     console.log("[loadExample] zomg fetch href:", `/example-data/${href}`);
     fetch(`/example-data/${href}`)
