@@ -1,10 +1,30 @@
 import FFT from "fft.js";
 
+// some shared stuff
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let oscillator = audioContext.createOscillator();
+
 export function renderFFTStuff() {
   document.getElementById("sound").style.display = "flex";
+
+  // add button events
+  const button = document.getElementById("generate-sound");
+  button.addEventListener("mousedown", BNO08XVIZ.fft);
+  button.addEventListener("mouseup", stopFFT);
+
+  // touch devices :/
+  button.addEventListener("touchstart", (event) => {
+    event.preventDefault(); // prevents touchstart from triggering mousedown
+    BNO08XVIZ.fft();
+  });
+  button.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    stopFFT();
+  });
 }
 
 export function renderDataKeysSelect() {
+  document.getElementById("generate-sound").style.display = "block";
   const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
 
   const selectElement = document.createElement("select");
@@ -28,7 +48,16 @@ export function renderDataKeysSelect() {
   document.getElementById("sound-fft-keys").appendChild(selectElement);
 }
 
+export function stopFFT() {
+  oscillator.stop();
+}
+
 export async function processAndPlayFFT(timeSeriesData) {
+  try {
+    oscillator.stop();
+  } catch (e) {
+    /* 🤷 */
+  }
   const data = adjustToPowerOfTwo(timeSeriesData);
 
   const fftSize = data.length;
@@ -57,7 +86,7 @@ export async function processAndPlayFFT(timeSeriesData) {
   console.log("Imaginary part of FFT:", outputImag);
 
   // Web Audio API Setup
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
   const realInput = new Float32Array(outputReal);
   const imagInput = new Float32Array(outputImag);
 
@@ -71,14 +100,14 @@ export async function processAndPlayFFT(timeSeriesData) {
   imagInput.set(normalize(imagInput));
 
   const wave = audioContext.createPeriodicWave(realInput, imagInput);
-  const oscillator = audioContext.createOscillator();
+  oscillator = audioContext.createOscillator();
   oscillator.setPeriodicWave(wave);
   oscillator.frequency.value = 440; // Set desired frequency
   oscillator.connect(audioContext.destination);
 
   // Play sound
   oscillator.start();
-  oscillator.stop(audioContext.currentTime + 5); // Play for 5 seconds
+  // oscillator.stop(audioContext.currentTime + 5); // Play for 5 seconds
 }
 
 function adjustToPowerOfTwo(data) {

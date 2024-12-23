@@ -4508,6 +4508,8 @@
       // x1, y1
     ]).on("end", (event) => {
       window.BNO08XVIZ.selectedData = {};
+      document.getElementById("generate-sound").style.display = "none";
+      document.getElementById("sound-fft-keys").innerText = "select some data from the d3 line viz above!";
       if (!event.selection) return;
       const [x0, x1] = event.selection;
       const timeRange = [x2.invert(x0), x2.invert(x1)];
@@ -25174,10 +25176,24 @@ void main() {
 
   // src/fft-stuff.js
   var import_fft = __toESM(require_fft());
+  var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  var oscillator = audioContext.createOscillator();
   function renderFFTStuff() {
     document.getElementById("sound").style.display = "flex";
+    const button = document.getElementById("generate-sound");
+    button.addEventListener("mousedown", BNO08XVIZ.fft);
+    button.addEventListener("mouseup", stopFFT);
+    button.addEventListener("touchstart", (event) => {
+      event.preventDefault();
+      BNO08XVIZ.fft();
+    });
+    button.addEventListener("touchend", (event) => {
+      event.preventDefault();
+      stopFFT();
+    });
   }
   function renderDataKeysSelect() {
+    document.getElementById("generate-sound").style.display = "block";
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
     const selectElement = document.createElement("select");
     selectElement.addEventListener("change", (event) => {
@@ -25195,7 +25211,14 @@ void main() {
     document.getElementById("sound-fft-keys").innerHTML = "";
     document.getElementById("sound-fft-keys").appendChild(selectElement);
   }
+  function stopFFT() {
+    oscillator.stop();
+  }
   async function processAndPlayFFT(timeSeriesData) {
+    try {
+      oscillator.stop();
+    } catch (e) {
+    }
     const data = adjustToPowerOfTwo(timeSeriesData);
     const fftSize = data.length;
     const fft = new import_fft.default(fftSize);
@@ -25212,7 +25235,7 @@ void main() {
     }
     console.log("Real part of FFT:", outputReal);
     console.log("Imaginary part of FFT:", outputImag);
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
     const realInput = new Float32Array(outputReal);
     const imagInput = new Float32Array(outputImag);
     const normalize3 = (array2) => {
@@ -25223,12 +25246,11 @@ void main() {
     realInput.set(normalize3(realInput));
     imagInput.set(normalize3(imagInput));
     const wave = audioContext.createPeriodicWave(realInput, imagInput);
-    const oscillator = audioContext.createOscillator();
+    oscillator = audioContext.createOscillator();
     oscillator.setPeriodicWave(wave);
     oscillator.frequency.value = 440;
     oscillator.connect(audioContext.destination);
     oscillator.start();
-    oscillator.stop(audioContext.currentTime + 5);
   }
   function adjustToPowerOfTwo(data) {
     const length = data.length;
