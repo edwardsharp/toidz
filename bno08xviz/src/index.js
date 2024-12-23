@@ -48,8 +48,8 @@ window.BNO08XVIZ = {
     processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
   },
   loadExample: (href) => {
-    console.log("[loadExample] zomg fetch href:", `/example-data/${href}`);
-    fetch(`/example-data/${href}`)
+    console.log("[loadExample] zomg fetch href:", `example-data/${href}`);
+    fetch(`example-data/${href}`)
       .then((response) => response.text())
       .then((text) => {
         console.log("[loadExample] zomg fetch has text, gonna processDataFile()");
