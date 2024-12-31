@@ -6,46 +6,42 @@ let oscillator = audioContext.createOscillator();
 
 export function renderFFTStuff() {
   document.getElementById("sound").style.display = "flex";
-
-  // add button events
-  const button = document.getElementById("generate-sound");
-  button.addEventListener("mousedown", BNO08XVIZ.fft);
-  button.addEventListener("mouseup", stopFFT);
-
-  // touch devices :/
-  button.addEventListener("touchstart", (event) => {
-    event.preventDefault(); // prevents touchstart from triggering mousedown
-    BNO08XVIZ.fft();
-  });
-  button.addEventListener("touchend", (event) => {
-    event.preventDefault();
-    stopFFT();
-  });
 }
 
 export function renderDataKeysSelect() {
-  document.getElementById("generate-sound").style.display = "block";
   const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
+  if (!selectedKeys || selectedKeys.length === 0) return;
 
-  const selectElement = document.createElement("select");
-  selectElement.addEventListener("change", (event) => {
-    window.BNO08XVIZ.selectedKey = event.target.value;
-    document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
-  });
+  const soundButtons = document.getElementById("sound-fft-keys");
+  // clear any existing buttons first.
+  soundButtons.innerHTML = "";
 
-  window.BNO08XVIZ.selectedKey = selectedKeys[0];
-  document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
+  // init window.BNO08XVIZ.selectedKey if one doesn't exist.
+  if (!window.BNO08XVIZ.selectedKey) window.BNO08XVIZ.selectedKey = selectedKeys[0];
 
-  // gen <option> elements from the array
   selectedKeys.forEach((k) => {
-    const optionElement = document.createElement("option");
-    optionElement.value = k;
-    optionElement.textContent = k;
-    selectElement.appendChild(optionElement);
-  });
+    const button = document.createElement("button");
 
-  document.getElementById("sound-fft-keys").innerHTML = "";
-  document.getElementById("sound-fft-keys").appendChild(selectElement);
+    button.innerText = k;
+    button.addEventListener("mousedown", () => {
+      window.BNO08XVIZ.selectedKey = k;
+      BNO08XVIZ.fft();
+    });
+    button.addEventListener("mouseup", stopFFT);
+
+    // touch devices :/
+    button.addEventListener("touchstart", (event) => {
+      event.preventDefault(); // prevents touchstart from triggering mousedown
+      window.BNO08XVIZ.selectedKey = k;
+      BNO08XVIZ.fft();
+    });
+    button.addEventListener("touchend", (event) => {
+      event.preventDefault();
+      stopFFT();
+    });
+
+    soundButtons.appendChild(button);
+  });
 }
 
 export function stopFFT() {

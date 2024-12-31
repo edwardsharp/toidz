@@ -4508,7 +4508,6 @@
       // x1, y1
     ]).on("end", (event) => {
       window.BNO08XVIZ.selectedData = {};
-      document.getElementById("generate-sound").style.display = "none";
       document.getElementById("sound-fft-keys").innerText = "select some data from the d3 line viz above!";
       if (!event.selection) return;
       const [x0, x1] = event.selection;
@@ -25180,36 +25179,32 @@ void main() {
   var oscillator = audioContext.createOscillator();
   function renderFFTStuff() {
     document.getElementById("sound").style.display = "flex";
-    const button = document.getElementById("generate-sound");
-    button.addEventListener("mousedown", BNO08XVIZ.fft);
-    button.addEventListener("mouseup", stopFFT);
-    button.addEventListener("touchstart", (event) => {
-      event.preventDefault();
-      BNO08XVIZ.fft();
-    });
-    button.addEventListener("touchend", (event) => {
-      event.preventDefault();
-      stopFFT();
-    });
   }
   function renderDataKeysSelect() {
-    document.getElementById("generate-sound").style.display = "block";
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
-    const selectElement = document.createElement("select");
-    selectElement.addEventListener("change", (event) => {
-      window.BNO08XVIZ.selectedKey = event.target.value;
-      document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
-    });
-    window.BNO08XVIZ.selectedKey = selectedKeys[0];
-    document.getElementById("generate-sound").innerText = `GENERATE SOUND WITH ${window.BNO08XVIZ.selectedKey}`;
+    if (!selectedKeys || selectedKeys.length === 0) return;
+    const soundButtons = document.getElementById("sound-fft-keys");
+    soundButtons.innerHTML = "";
+    if (!window.BNO08XVIZ.selectedKey) window.BNO08XVIZ.selectedKey = selectedKeys[0];
     selectedKeys.forEach((k) => {
-      const optionElement = document.createElement("option");
-      optionElement.value = k;
-      optionElement.textContent = k;
-      selectElement.appendChild(optionElement);
+      const button = document.createElement("button");
+      button.innerText = k;
+      button.addEventListener("mousedown", () => {
+        window.BNO08XVIZ.selectedKey = k;
+        BNO08XVIZ.fft();
+      });
+      button.addEventListener("mouseup", stopFFT);
+      button.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        window.BNO08XVIZ.selectedKey = k;
+        BNO08XVIZ.fft();
+      });
+      button.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        stopFFT();
+      });
+      soundButtons.appendChild(button);
     });
-    document.getElementById("sound-fft-keys").innerHTML = "";
-    document.getElementById("sound-fft-keys").appendChild(selectElement);
   }
   function stopFFT() {
     oscillator.stop();

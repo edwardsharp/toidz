@@ -188,7 +188,6 @@ function renderLinez(data) {
     .on("end", (event) => {
       window.BNO08XVIZ.selectedData = {};
       // this is more related to fft-stuff.js :/
-      document.getElementById("generate-sound").style.display = "none";
       document.getElementById("sound-fft-keys").innerText = "select some data from the d3 line viz above!";
 
       // bail if the brush is cleared
