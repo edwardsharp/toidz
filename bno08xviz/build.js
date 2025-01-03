@@ -24965,8 +24965,12 @@ void main() {
 
   // src/three-stuff.js
   function renderThreeStuff(data) {
-    loadQuaternionData(data);
-    loadAccelerationData(data);
+    try {
+      loadQuaternionData(data);
+      loadAccelerationData(data);
+    } catch (e) {
+      return;
+    }
     const threeControls = document.getElementById("three-controls");
     threeControls.style.display = "block";
     const threeContainer2 = document.getElementById("three-container");

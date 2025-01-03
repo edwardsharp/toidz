@@ -12,8 +12,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 // so i guess it's kinda broken, dunno, it needz some love :/
 
 export function renderThreeStuff(data) {
-  loadQuaternionData(data);
-  loadAccelerationData(data);
+  try {
+    loadQuaternionData(data);
+    loadAccelerationData(data);
+  } catch (e) {
+    // so there needs to be some special data for this.
+    // if try fails, eh. bail.
+    return;
+  }
 
   const threeControls = document.getElementById("three-controls");
   threeControls.style.display = "block";
