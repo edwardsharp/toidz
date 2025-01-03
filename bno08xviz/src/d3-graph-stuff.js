@@ -107,6 +107,8 @@ function renderLinez(data) {
     }
   });
 
+  window.BNO08XVIZ.dataRange = y_domain;
+
   // x axis horizontal position scale
   const x = d3
     .scaleLinear()
@@ -204,6 +206,8 @@ function renderLinez(data) {
         `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`,
       );
 
+      // window.BNO08XVIZ.selectedData
+
       // collect data from selected range and store it to window.BNO08XVIZ.selectedData
       Object.entries(data).forEach(([title, values]) => {
         if (linesToDraw.has(title)) {
@@ -211,7 +215,8 @@ function renderLinez(data) {
             if (v.millis >= timeRange[0] && v.millis <= timeRange[1]) {
               //. init array for key (title)
               if (!window.BNO08XVIZ.selectedData[title]) window.BNO08XVIZ.selectedData[title] = [];
-              window.BNO08XVIZ.selectedData[title].push(v.v);
+              // #TODO: use full obj here
+              window.BNO08XVIZ.selectedData[title].push(v);
             }
           });
         }

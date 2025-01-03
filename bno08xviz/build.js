@@ -4478,6 +4478,7 @@
         });
       }
     });
+    window.BNO08XVIZ.dataRange = y_domain;
     const x2 = linear2().domain(x_domain).range([marginLeft, width - marginRight]);
     const y2 = linear2().domain(y_domain).range([height - marginBottom, marginTop]);
     const svg = create_default("svg").attr("width", width).attr("height", height);
@@ -4521,7 +4522,7 @@
           values.forEach((v) => {
             if (v.millis >= timeRange[0] && v.millis <= timeRange[1]) {
               if (!window.BNO08XVIZ.selectedData[title]) window.BNO08XVIZ.selectedData[title] = [];
-              window.BNO08XVIZ.selectedData[title].push(v.v);
+              window.BNO08XVIZ.selectedData[title].push(v);
             }
           });
         }
@@ -25176,7 +25177,13 @@ void main() {
   // src/fft-stuff.js
   var import_fft = __toESM(require_fft());
   var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  var oscillator = audioContext.createOscillator();
+  var oscillators = [audioContext.createOscillator()];
+  var gainNode = audioContext.createGain();
+  function mousemove(event) {
+    try {
+    } catch (e) {
+    }
+  }
   function renderFFTStuff() {
     document.getElementById("sound").style.display = "flex";
   }
@@ -25192,29 +25199,31 @@ void main() {
       button.addEventListener("mousedown", () => {
         window.BNO08XVIZ.selectedKey = k;
         BNO08XVIZ.fft();
+        window.addEventListener("mousemove", mousemove);
       });
-      button.addEventListener("mouseup", stopFFT);
       button.addEventListener("touchstart", (event) => {
         event.preventDefault();
         window.BNO08XVIZ.selectedKey = k;
         BNO08XVIZ.fft();
-      });
-      button.addEventListener("touchend", (event) => {
-        event.preventDefault();
-        stopFFT();
+        window.addEventListener("mousemove", mousemove);
       });
       soundButtons.appendChild(button);
     });
   }
   function stopFFT() {
-    oscillator.stop();
+    console.log("gonna try to stop ", oscillators.length, " oscillators...");
+    oscillators.forEach((oscillator) => {
+      try {
+        oscillator.stop();
+      } catch (e) {
+        console.warn("Oscillator already stopped or invalid:", e);
+      }
+    });
+    oscillators.length = 0;
+    window.removeEventListener("mousemove", mousemove);
   }
   async function processAndPlayFFT(timeSeriesData) {
-    try {
-      oscillator.stop();
-    } catch (e) {
-    }
-    const data = adjustToPowerOfTwo(timeSeriesData);
+    const data = adjustToPowerOfTwo(timeSeriesData.map((d) => d.v));
     const fftSize = data.length;
     const fft = new import_fft.default(fftSize);
     const input = new Float32Array(fftSize);
@@ -25228,8 +25237,6 @@ void main() {
       outputReal[i] = result[2 * i];
       outputImag[i] = result[2 * i + 1];
     }
-    console.log("Real part of FFT:", outputReal);
-    console.log("Imaginary part of FFT:", outputImag);
     audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
     const realInput = new Float32Array(outputReal);
     const imagInput = new Float32Array(outputImag);
@@ -25241,11 +25248,15 @@ void main() {
     realInput.set(normalize3(realInput));
     imagInput.set(normalize3(imagInput));
     const wave = audioContext.createPeriodicWave(realInput, imagInput);
-    oscillator = audioContext.createOscillator();
+    const oscillator = audioContext.createOscillator();
     oscillator.setPeriodicWave(wave);
     oscillator.frequency.value = 440;
-    oscillator.connect(audioContext.destination);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    gainNode.gain.value = 0.75;
     oscillator.start();
+    oscillators.push(oscillator);
+    loadOscFreqSeq(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey], oscillator);
   }
   function adjustToPowerOfTwo(data) {
     const length = data.length;
@@ -25262,12 +25273,53 @@ void main() {
   function isPowerOfTwo2(n) {
     return (n & n - 1) === 0 && n > 0;
   }
+  function loadOscFreqSeq(data, oscillator) {
+    console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
+    let prevMillis = null;
+    let runningTime = audioContext.currentTime;
+    const [min2, max2] = window.BNO08XVIZ.dataRange;
+    console.log("zomg so window.BNO08XVIZ.dataRange", { min: min2, max: max2 });
+    data.forEach((d) => {
+      const { millis, v } = d;
+      if (prevMillis === null) prevMillis = millis;
+      runningTime += (millis - prevMillis) / 1e3;
+      const note = toMidi(v, min2, max2);
+      const freq = mtof(note);
+      oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime);
+      prevMillis = millis;
+    });
+    oscillator.stop(runningTime + 1);
+    function updateCurrentTime() {
+      const currentTime = audioContext.currentTime;
+      document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
+    }
+    const intervalId = setInterval(updateCurrentTime, 100);
+    setTimeout(
+      () => {
+        clearInterval(intervalId);
+      },
+      (runningTime + 1) * 1e3
+    );
+  }
+  function toMidi(value, fromMin, fromMax) {
+    const toMin = 0;
+    const toMax = 127;
+    if (fromMin === fromMax) {
+      throw new Error("Input range cannot be zero.");
+    }
+    return (value - fromMin) / (fromMax - fromMin) * (toMax - toMin) + toMin;
+  }
+  function mtof(midiNote) {
+    const A440 = 440;
+    return A440 * Math.pow(2, (midiNote - 69) / 12);
+  }
 
   // src/index.js
   registerCallback(renderD3GraphStuff);
   registerCallback(renderThreeStuff);
   registerCallback(renderFFTStuff);
   window.BNO08XVIZ = {
+    dataRange: [0, 1],
     selectedData: {},
     selectedKey: "",
     renderDataKeysSelect,
@@ -25284,6 +25336,10 @@ void main() {
       );
       processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
     },
+    allYourFFTAreBelongToUs: () => {
+      Object.values(window.BNO08XVIZ.selectedData).forEach(processAndPlayFFT);
+    },
+    stopFFT,
     loadExample: (href) => {
       console.log("[loadExample] zomg fetch href:", `example-data/${href}`);
       fetch(`example-data/${href}`).then((response) => response.text()).then((text) => {

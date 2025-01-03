@@ -1,7 +1,7 @@
 import { registerCallback, processDataFile } from "./file-input-etl.js";
 import { renderD3GraphStuff } from "./d3-graph-stuff.js";
 import { renderThreeStuff } from "./three-stuff.js";
-import { renderFFTStuff, processAndPlayFFT, renderDataKeysSelect } from "./fft-stuff.js";
+import { renderFFTStuff, processAndPlayFFT, renderDataKeysSelect, stopFFT } from "./fft-stuff.js";
 
 // hey, so this file just rollz up a buncha other stuff
 // spread out across the js filez above☝️
@@ -29,6 +29,7 @@ registerCallback(renderFFTStuff);
 
 // some global functions for use with index.html elements
 window.BNO08XVIZ = {
+  dataRange: [0, 1],
   selectedData: {},
   selectedKey: "",
   renderDataKeysSelect,
@@ -47,6 +48,10 @@ window.BNO08XVIZ = {
     );
     processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
   },
+  allYourFFTAreBelongToUs: () => {
+    Object.values(window.BNO08XVIZ.selectedData).forEach(processAndPlayFFT);
+  },
+  stopFFT: stopFFT,
   loadExample: (href) => {
     console.log("[loadExample] zomg fetch href:", `example-data/${href}`);
     fetch(`example-data/${href}`)
