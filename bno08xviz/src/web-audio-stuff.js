@@ -7,6 +7,12 @@ let oscillators = [];
 let oscillatorsConfig = [];
 // let gainNode = audioContext.createGain();
 let gainNodes = [];
+// the audio context clock will keep ticking along even if the sequence is over.
+// lastPlayCurrentTime will track the currentTime every time sequence is started.
+// used to keep track of the current position/time in the selected data sequence.
+let lastPlayCurrentTime = 0;
+// setInterval to update time ui display and d3 playhead line.
+let updateTimeInterval = null;
 
 export function renderWebAudioStuff() {
   // show the ui stuff
@@ -108,6 +114,8 @@ export function renderWebAudioDataKeysSelect() {
 export function stopEmAll() {
   console.log("gonna try to stop ", oscillators.length, " oscillators...");
 
+  updateTimeInterval && clearInterval(updateTimeInterval);
+
   oscillators.forEach((oscillator) => {
     try {
       oscillator.stop();
@@ -124,10 +132,21 @@ export function stopEmAll() {
 
 export async function playEmAll() {
   if (!window.BNO08XVIZ.selectedData) return;
+
+  lastPlayCurrentTime = audioContext.currentTime;
   Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, data], idx) => {
     // console.log("gonna play key:", key);
     playSeq(data, idx);
   });
+
+  function updateCurrentTime() {
+    const currentTime = audioContext.currentTime - lastPlayCurrentTime;
+    document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
+    window.BNO08XVIZ.updatePlayhead(currentTime);
+  }
+
+  // update the current time every 100 milliseconds
+  updateTimeInterval = setInterval(updateCurrentTime, 100);
 }
 
 async function playSeq(data, idx) {
@@ -155,8 +174,9 @@ async function playSeq(data, idx) {
 
 function loadOscFreqSeq(data, oscillator) {
   // data here is window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]
-  // console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
-  let prevMillis = 0;
+
+  // OKAY, THIS IS IMPORTANT: the data rarely starts at zero. so have to back up the time based on the first millis timestamp in the series
+  let prevMillis = data[0].millis;
   // so the audioContext will just be running away.. so start from whereever it's currently at.
   let runningTime = audioContext.currentTime;
 
@@ -209,22 +229,6 @@ function loadOscFreqSeq(data, oscillator) {
 
   // stop it after it's done.
   oscillator.stop(runningTime + 1);
-
-  function updateCurrentTime() {
-    const currentTime = audioContext.currentTime;
-    document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
-  }
-
-  // update the current time every 100 milliseconds
-  const intervalId = setInterval(updateCurrentTime, 100);
-
-  setTimeout(
-    () => {
-      clearInterval(intervalId);
-      stopEmAll();
-    },
-    (runningTime + 1) * 1000,
-  );
 }
 
 function toMidi(value, fromMin, fromMax) {

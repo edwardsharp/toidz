@@ -50,4 +50,6 @@ window.BNO08XVIZ = {
         console.error("[loadExample] zomg error fetching example data:", error);
       });
   },
+  // note, updatePlayhead is just a stub, here. actual impl in d3-graph-stuff.js
+  updatePlayhead: (x) => {},
 };

@@ -3316,6 +3316,10 @@
   function empty2(extent) {
     return extent[0][0] === extent[1][0] || extent[0][1] === extent[1][1];
   }
+  function brushSelection(node) {
+    var state = node.__brush;
+    return state ? state.dim.output(state.selection) : null;
+  }
   function brushX() {
     return brush(X);
   }
@@ -4500,6 +4504,17 @@
       (d) => d[2]
     );
     svg.append("line").attr("x1", marginLeft).attr("x2", width - (marginLeft + marginRight)).attr("y1", y2(0)).attr("y2", y2(0)).style("stroke", "dimgray");
+    const playhead = svg.append("line").attr("x1", 0).attr("x2", 0).attr("y1", height - marginBottom).attr("y2", marginTop).style("stroke", "transparent");
+    function updatePlayhead(seconds) {
+      const selection2 = brushSelection(brushGroup.node());
+      if (!selection2) return;
+      const milliseconds = seconds * 1e3;
+      if (milliseconds > x2.invert(selection2[1])) return;
+      playhead.style("stroke", "orange");
+      const xpos = x2(milliseconds + x2.invert(selection2[0]));
+      playhead.attr("x1", xpos).attr("x2", xpos);
+    }
+    window.BNO08XVIZ.updatePlayhead = updatePlayhead;
     const line = line_default().curve(stepAfter);
     const path2 = svg.append("g").attr("fill", "none").attr("stroke", "hotpink").attr("stroke-width", 1.5).attr("stroke-linejoin", "round").attr("stroke-linecap", "round").selectAll("path").data(groups2.values()).join("path").style("mix-blend-mode", "lighten").attr("d", line);
     const brush2 = brushX().extent([
@@ -4516,7 +4531,11 @@
       const [x0, x1] = event.selection;
       const timeRange = [x2.invert(x0), x2.invert(x1)];
       console.log(
-        "selected range:",
+        "selected event.selection:",
+        event.selection,
+        "timeRange:",
+        timeRange,
+        " format",
         `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`
       );
       Object.entries(data).forEach(([title, values]) => {
@@ -25303,6 +25322,8 @@ void main() {
   var oscillators = [];
   var oscillatorsConfig = [];
   var gainNodes = [];
+  var lastPlayCurrentTime = 0;
+  var updateTimeInterval = null;
   function renderWebAudioStuff() {
     document.getElementById("web-audio-stuff").style.display = "flex";
     document.getElementById("prompt-x-selection").style.display = "block";
@@ -25377,6 +25398,7 @@ void main() {
   }
   function stopEmAll() {
     console.log("gonna try to stop ", oscillators.length, " oscillators...");
+    updateTimeInterval && clearInterval(updateTimeInterval);
     oscillators.forEach((oscillator) => {
       try {
         oscillator.stop();
@@ -25389,9 +25411,16 @@ void main() {
   }
   async function playEmAll() {
     if (!window.BNO08XVIZ.selectedData) return;
+    lastPlayCurrentTime = audioContext2.currentTime;
     Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, data], idx) => {
       playSeq(data, idx);
     });
+    function updateCurrentTime() {
+      const currentTime = audioContext2.currentTime - lastPlayCurrentTime;
+      document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
+      window.BNO08XVIZ.updatePlayhead(currentTime);
+    }
+    updateTimeInterval = setInterval(updateCurrentTime, 100);
   }
   async function playSeq(data, idx) {
     const oscillator = audioContext2.createOscillator();
@@ -25411,7 +25440,7 @@ void main() {
     loadOscFreqSeq(data, oscillator);
   }
   function loadOscFreqSeq(data, oscillator) {
-    let prevMillis = 0;
+    let prevMillis = data[0].millis;
     let runningTime = audioContext2.currentTime;
     const [min2, max2] = window.BNO08XVIZ.dataRange;
     data.forEach((d, idx) => {
@@ -25429,18 +25458,6 @@ void main() {
       prevMillis = millis;
     });
     oscillator.stop(runningTime + 1);
-    function updateCurrentTime() {
-      const currentTime = audioContext2.currentTime;
-      document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
-    }
-    const intervalId = setInterval(updateCurrentTime, 100);
-    setTimeout(
-      () => {
-        clearInterval(intervalId);
-        stopEmAll();
-      },
-      (runningTime + 1) * 1e3
-    );
   }
   function toMidi(value, fromMin, fromMax) {
     const toMin = 0;
@@ -25476,6 +25493,9 @@ void main() {
       }).catch((error) => {
         console.error("[loadExample] zomg error fetching example data:", error);
       });
+    },
+    // note, updatePlayhead is just a stub, here. actual impl in d3-graph-stuff.js
+    updatePlayhead: (x2) => {
     }
   };
 })();

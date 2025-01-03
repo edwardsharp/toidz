@@ -255,7 +255,7 @@
       <h3>fft stuff</h3>
       <p>
         generates a fast fourier transform with the selected datum. press &amp; hold to hear it; move yr mouse to change
-        frequency and gain.
+        frequency and gain. <i>if the sound gets stuck on, tap a button to stop it.</i>
       </p>
       <div id="sound-fft-keys"></div>
     </div>
@@ -272,7 +272,9 @@
         <button onclick="BNO08XVIZ.stopEmAll()" id="sound-stop">stop</button>
       </div>
       <div>
-        <div>time: <span id="currentTimeDisplay">0.00</span>s</div>
+        <div title="PLEASE NOTE: this is AudioContext time, not the time as it would be on the x-axis of the graph!">
+          time: <span id="currentTimeDisplay">0.00</span>s
+        </div>
       </div>
       <div>
         <label for="gain">gain:</label>

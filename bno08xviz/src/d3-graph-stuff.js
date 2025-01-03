@@ -163,6 +163,31 @@ function renderLinez(data) {
     .attr("y2", y(0))
     .style("stroke", "dimgray");
 
+  // playhead line.
+  const playhead = svg
+    .append("line")
+    .attr("x1", 0)
+    .attr("x2", 0)
+    .attr("y1", height - marginBottom)
+    .attr("y2", marginTop)
+    .style("stroke", "transparent");
+
+  function updatePlayhead(seconds) {
+    const selection = d3.brushSelection(brushGroup.node());
+    if (!selection) return;
+    const milliseconds = seconds * 1000;
+    if (milliseconds > x.invert(selection[1])) return;
+
+    playhead.style("stroke", "orange");
+
+    // offset xpost with both current millis plus the millis of selection[0]
+    const xpos = x(milliseconds + x.invert(selection[0]));
+
+    playhead.attr("x1", xpos).attr("x2", xpos);
+  }
+
+  window.BNO08XVIZ.updatePlayhead = updatePlayhead;
+
   // draw the data lines
   // note: .curve(d3.curveStepAfter) makes the lines more like a square wave
   // (vs. without, which is more sawtooth)
@@ -205,7 +230,11 @@ function renderLinez(data) {
       const timeRange = [x.invert(x0), x.invert(x1)];
 
       console.log(
-        "selected range:",
+        "selected event.selection:",
+        event.selection,
+        "timeRange:",
+        timeRange,
+        " format",
         `${formatMillisecondsToMinSec(timeRange[0])} -> ${formatMillisecondsToMinSec(timeRange[1])}`,
       );
 
