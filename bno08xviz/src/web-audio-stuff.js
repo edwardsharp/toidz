@@ -135,7 +135,7 @@ async function playSeq(data, idx) {
   gainNode.connect(audioContext.destination);
 
   // set the initial gain (volume)
-  gainNode.gain.value = 0.1; // more-quite-is-more
+  gainNode.gain.value = 0.05; // more-quite-is-more
 
   // play sound
   oscillator.start();
@@ -147,10 +147,12 @@ async function playSeq(data, idx) {
 function loadOscFreqSeq(data, oscillator) {
   // data here is window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]
   // console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
-  let prevMillis = null;
+  let prevMillis = 0;
   // so the audioContext will just be running away.. so start from whereever it's currently at.
   let runningTime = audioContext.currentTime;
 
+  // #TODO: should each voice datum have min/max scale config?
+  // .reduce below scale to the datum
   // const { min, max } = data.reduce(
   //   (acc, v) => {
   //     if (v.v < acc.min) acc.min = v.v;
@@ -159,17 +161,16 @@ function loadOscFreqSeq(data, oscillator) {
   //   },
   //   { min: 0, max: 0 },
   // );
-
+  // otherwise: scale values to entire range of dataset (which is the y-axis from the d3 line plot).
   const [min, max] = window.BNO08XVIZ.dataRange;
 
   // console.log("zomg so window.BNO08XVIZ.dataRange", { min, max });
   data.forEach((d, idx) => {
     const { millis, v } = d;
-    if (prevMillis === null) prevMillis = millis;
-    runningTime += (millis - prevMillis) / 1000;
 
     const note = toMidi(v, min, max);
     const freq = mtof(note);
+
     // console.log(
     //   "so current millis:",
     //   millis,
@@ -182,9 +183,15 @@ function loadOscFreqSeq(data, oscillator) {
     // );
 
     if (oscillatorsConfig[idx] && oscillatorsConfig[idx].ramp) {
-      console.log("gonna RAMP! >>>>>>>>>>>>>>");
+      // set runningTime first, to ramp for the entire note duration
+      runningTime += (millis - prevMillis) / 1000;
       oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime);
     } else {
+      // still ramp, but just a very smol (0.1 sec) ramp [ATTACK]
+      oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime + 0.1);
+      // then increment running time after.
+      runningTime += (millis - prevMillis) / 1000;
+      // also .setValueAtTime so the next .exponentialRampToValueAtTime will have a small window of time for the [ATTACK] ramp
       oscillator.frequency.setValueAtTime(freq, runningTime);
     }
 

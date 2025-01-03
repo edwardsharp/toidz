@@ -25388,26 +25388,26 @@ void main() {
     const gainNode = audioContext2.createGain();
     oscillator.connect(gainNode);
     gainNode.connect(audioContext2.destination);
-    gainNode.gain.value = 0.1;
+    gainNode.gain.value = 0.05;
     oscillator.start();
     oscillators.push(oscillator);
     gainNodes.push(gainNode);
     loadOscFreqSeq(data, oscillator);
   }
   function loadOscFreqSeq(data, oscillator) {
-    let prevMillis = null;
+    let prevMillis = 0;
     let runningTime = audioContext2.currentTime;
     const [min2, max2] = window.BNO08XVIZ.dataRange;
     data.forEach((d, idx) => {
       const { millis, v } = d;
-      if (prevMillis === null) prevMillis = millis;
-      runningTime += (millis - prevMillis) / 1e3;
       const note = toMidi(v, min2, max2);
       const freq = mtof(note);
       if (oscillatorsConfig[idx] && oscillatorsConfig[idx].ramp) {
-        console.log("gonna RAMP! >>>>>>>>>>>>>>");
+        runningTime += (millis - prevMillis) / 1e3;
         oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime);
       } else {
+        oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime + 0.1);
+        runningTime += (millis - prevMillis) / 1e3;
         oscillator.frequency.setValueAtTime(freq, runningTime);
       }
       prevMillis = millis;
