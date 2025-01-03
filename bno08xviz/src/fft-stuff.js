@@ -16,6 +16,8 @@ export function renderDataKeysSelect() {
   if (!selectedKeys || selectedKeys.length === 0) return;
 
   document.querySelectorAll(".sound-wait-for-select").forEach((el) => (el.style.display = "block"));
+  document.getElementById("prompt-x-selection").style.display = "none";
+
   const soundButtons = document.getElementById("sound-fft-keys");
   // clear any existing buttons first.
   soundButtons.innerHTML = "";

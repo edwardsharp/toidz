@@ -11,6 +11,7 @@ let gainNodes = [];
 export function renderWebAudioStuff() {
   // show the ui stuff
   document.getElementById("web-audio-stuff").style.display = "flex";
+  document.getElementById("prompt-x-selection").style.display = "block";
 
   document.getElementById("sound-gain").addEventListener("input", (event) => {
     // console.log("zomg gain now:", event.target.value);

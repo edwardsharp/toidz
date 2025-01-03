@@ -4510,7 +4510,7 @@
     ]).on("end", (event) => {
       window.BNO08XVIZ.selectedData = {};
       document.querySelectorAll(".sound-wait-for-select").forEach((el) => el.style.display = "none");
-      document.getElementById("sound-fft-keys").innerText = "select some data from the d3 line viz above!";
+      document.getElementById("prompt-x-selection").style.display = "block";
       if (!event.selection) return;
       const [x0, x1] = event.selection;
       const timeRange = [x2.invert(x0), x2.invert(x1)];
@@ -4531,7 +4531,8 @@
       window.BNO08XVIZ.renderDataKeysSelect();
       window.BNO08XVIZ.renderWebAudioDataKeysSelect();
     });
-    svg.append("g").attr("class", "brush").call(brush2);
+    const brushGroup = svg.append("g").attr("class", "brush").call(brush2);
+    select_default2("#prompt-x-selection").append("button").text("select everything!").on("click", () => brushGroup.call(brush2.move, [x2.range()[0], x2.range()[1]]));
     const dot = svg.append("g").attr("display", "none");
     dot.append("circle").attr("r", 2.5).attr("fill", "white");
     dot.append("text").attr("text-anchor", "middle").attr("y", -8);
@@ -25192,6 +25193,7 @@ void main() {
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
     if (!selectedKeys || selectedKeys.length === 0) return;
     document.querySelectorAll(".sound-wait-for-select").forEach((el) => el.style.display = "block");
+    document.getElementById("prompt-x-selection").style.display = "none";
     const soundButtons = document.getElementById("sound-fft-keys");
     soundButtons.innerHTML = "";
     if (!window.BNO08XVIZ.selectedKey) window.BNO08XVIZ.selectedKey = selectedKeys[0];
@@ -25300,6 +25302,7 @@ void main() {
   var gainNodes = [];
   function renderWebAudioStuff() {
     document.getElementById("web-audio-stuff").style.display = "flex";
+    document.getElementById("prompt-x-selection").style.display = "block";
     document.getElementById("sound-gain").addEventListener("input", (event) => {
       gainNodes.forEach((gainNode) => gainNode.gain.value = event.target.value);
     });

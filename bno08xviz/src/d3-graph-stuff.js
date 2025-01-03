@@ -191,7 +191,7 @@ function renderLinez(data) {
       window.BNO08XVIZ.selectedData = {};
       // this is more related to fft-stuff.js :/
       document.querySelectorAll(".sound-wait-for-select").forEach((el) => (el.style.display = "none"));
-      document.getElementById("sound-fft-keys").innerText = "select some data from the d3 line viz above!";
+      document.getElementById("prompt-x-selection").style.display = "block";
 
       // bail if the brush is cleared
       if (!event.selection) return;
@@ -228,7 +228,13 @@ function renderLinez(data) {
       window.BNO08XVIZ.renderWebAudioDataKeysSelect();
     });
 
-  svg.append("g").attr("class", "brush").call(brush);
+  const brushGroup = svg.append("g").attr("class", "brush").call(brush);
+
+  // select entire x-range
+  d3.select("#prompt-x-selection")
+    .append("button")
+    .text("select everything!")
+    .on("click", () => brushGroup.call(brush.move, [x.range()[0], x.range()[1]]));
 
   // invisible layer for the interactive tip.
   const dot = svg.append("g").attr("display", "none");
