@@ -18,6 +18,11 @@ export function renderWebAudioStuff() {
     gainNodes.forEach((gainNode) => (gainNode.gain.value = event.target.value));
     // gainNode.gain.value = event.target.value;
   });
+
+  document.getElementById("turn-off-all-voices").addEventListener("click", () => {
+    document.querySelectorAll("#web-audio-keys input[type='range']").forEach((el) => (el.value = 0));
+    gainNodes.forEach((gainNode) => (gainNode.gain.value = 0));
+  });
 }
 
 export function renderWebAudioDataKeysSelect() {
@@ -112,6 +117,9 @@ export function stopEmAll() {
   });
   // Clear the array after stopping all oscillators
   oscillators.length = 0;
+
+  gainNodes.forEach((gainNode) => gainNode.disconnect());
+  gainNodes.length = 0;
 }
 
 export async function playEmAll() {
@@ -213,6 +221,7 @@ function loadOscFreqSeq(data, oscillator) {
   setTimeout(
     () => {
       clearInterval(intervalId);
+      stopEmAll();
     },
     (runningTime + 1) * 1000,
   );

@@ -193,6 +193,8 @@ function renderLinez(data) {
       document.querySelectorAll(".sound-wait-for-select").forEach((el) => (el.style.display = "none"));
       document.getElementById("prompt-x-selection").style.display = "block";
 
+      // stop and reset web-audio-stuff
+      window.BNO08XVIZ.stopEmAll();
       // bail if the brush is cleared
       if (!event.selection) return;
 
@@ -230,11 +232,15 @@ function renderLinez(data) {
 
   const brushGroup = svg.append("g").attr("class", "brush").call(brush);
 
-  // select entire x-range
-  d3.select("#prompt-x-selection")
-    .append("button")
-    .text("select everything!")
-    .on("click", () => brushGroup.call(brush.move, [x.range()[0], x.range()[1]]));
+  // !getElementById to check if this button has already been added
+  if (!document.getElementById("select-everything-btn")) {
+    // select entire x-range
+    d3.select("#prompt-x-selection")
+      .append("button")
+      .text("select everything!")
+      .attr("id", "select-everything-btn")
+      .on("click", () => brushGroup.call(brush.move, [x.range()[0], x.range()[1]]));
+  }
 
   // invisible layer for the interactive tip.
   const dot = svg.append("g").attr("display", "none");

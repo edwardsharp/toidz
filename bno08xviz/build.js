@@ -4511,6 +4511,7 @@
       window.BNO08XVIZ.selectedData = {};
       document.querySelectorAll(".sound-wait-for-select").forEach((el) => el.style.display = "none");
       document.getElementById("prompt-x-selection").style.display = "block";
+      window.BNO08XVIZ.stopEmAll();
       if (!event.selection) return;
       const [x0, x1] = event.selection;
       const timeRange = [x2.invert(x0), x2.invert(x1)];
@@ -4532,7 +4533,9 @@
       window.BNO08XVIZ.renderWebAudioDataKeysSelect();
     });
     const brushGroup = svg.append("g").attr("class", "brush").call(brush2);
-    select_default2("#prompt-x-selection").append("button").text("select everything!").on("click", () => brushGroup.call(brush2.move, [x2.range()[0], x2.range()[1]]));
+    if (!document.getElementById("select-everything-btn")) {
+      select_default2("#prompt-x-selection").append("button").text("select everything!").attr("id", "select-everything-btn").on("click", () => brushGroup.call(brush2.move, [x2.range()[0], x2.range()[1]]));
+    }
     const dot = svg.append("g").attr("display", "none");
     dot.append("circle").attr("r", 2.5).attr("fill", "white");
     dot.append("text").attr("text-anchor", "middle").attr("y", -8);
@@ -25306,6 +25309,10 @@ void main() {
     document.getElementById("sound-gain").addEventListener("input", (event) => {
       gainNodes.forEach((gainNode) => gainNode.gain.value = event.target.value);
     });
+    document.getElementById("turn-off-all-voices").addEventListener("click", () => {
+      document.querySelectorAll("#web-audio-keys input[type='range']").forEach((el) => el.value = 0);
+      gainNodes.forEach((gainNode) => gainNode.gain.value = 0);
+    });
   }
   function renderWebAudioDataKeysSelect() {
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
@@ -25377,6 +25384,8 @@ void main() {
       }
     });
     oscillators.length = 0;
+    gainNodes.forEach((gainNode) => gainNode.disconnect());
+    gainNodes.length = 0;
   }
   async function playEmAll() {
     if (!window.BNO08XVIZ.selectedData) return;
@@ -25428,6 +25437,7 @@ void main() {
     setTimeout(
       () => {
         clearInterval(intervalId);
+        stopEmAll();
       },
       (runningTime + 1) * 1e3
     );
