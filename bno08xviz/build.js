@@ -4509,6 +4509,7 @@
       // x1, y1
     ]).on("end", (event) => {
       window.BNO08XVIZ.selectedData = {};
+      document.querySelectorAll(".sound-wait-for-select").forEach((el) => el.style.display = "none");
       document.getElementById("sound-fft-keys").innerText = "select some data from the d3 line viz above!";
       if (!event.selection) return;
       const [x0, x1] = event.selection;
@@ -25177,10 +25178,13 @@ void main() {
   // src/fft-stuff.js
   var import_fft = __toESM(require_fft());
   var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  var oscillators = [audioContext.createOscillator()];
+  var testOscillator = audioContext.createOscillator();
+  var oscillators = [];
   var gainNode = audioContext.createGain();
   function mousemove(event) {
     try {
+      testOscillator.frequency.value = event.clientX;
+      gainNode.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
     } catch (e) {
     }
   }
@@ -25190,6 +25194,7 @@ void main() {
   function renderDataKeysSelect() {
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
     if (!selectedKeys || selectedKeys.length === 0) return;
+    document.querySelectorAll(".sound-wait-for-select").forEach((el) => el.style.display = "block");
     const soundButtons = document.getElementById("sound-fft-keys");
     soundButtons.innerHTML = "";
     if (!window.BNO08XVIZ.selectedKey) window.BNO08XVIZ.selectedKey = selectedKeys[0];
@@ -25201,11 +25206,24 @@ void main() {
         BNO08XVIZ.fft();
         window.addEventListener("mousemove", mousemove);
       });
+      button.addEventListener("mouseup", () => {
+        try {
+          testOscillator.stop();
+        } catch (e) {
+        }
+      });
       button.addEventListener("touchstart", (event) => {
         event.preventDefault();
         window.BNO08XVIZ.selectedKey = k;
         BNO08XVIZ.fft();
         window.addEventListener("mousemove", mousemove);
+      });
+      button.addEventListener("touchend", (event) => {
+        event.preventDefault();
+        try {
+          testOscillator.stop();
+        } catch (e) {
+        }
       });
       soundButtons.appendChild(button);
     });
@@ -25216,13 +25234,32 @@ void main() {
       try {
         oscillator.stop();
       } catch (e) {
-        console.warn("Oscillator already stopped or invalid:", e);
       }
     });
     oscillators.length = 0;
     window.removeEventListener("mousemove", mousemove);
   }
+  async function playEmAll() {
+    Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, d]) => {
+      playSeq(d);
+    });
+  }
+  async function playSeq(data) {
+    const oscillator = audioContext.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.value = 440;
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    gainNode.gain.value = 0.5;
+    oscillator.start();
+    oscillators.push(oscillator);
+    loadOscFreqSeq(data, oscillator);
+  }
   async function processAndPlayFFT(timeSeriesData) {
+    try {
+      testOscillator.stop();
+    } catch (e) {
+    }
     const data = adjustToPowerOfTwo(timeSeriesData.map((d) => d.v));
     const fftSize = data.length;
     const fft = new import_fft.default(fftSize);
@@ -25248,15 +25285,14 @@ void main() {
     realInput.set(normalize3(realInput));
     imagInput.set(normalize3(imagInput));
     const wave = audioContext.createPeriodicWave(realInput, imagInput);
-    const oscillator = audioContext.createOscillator();
-    oscillator.setPeriodicWave(wave);
-    oscillator.frequency.value = 440;
-    oscillator.connect(gainNode);
+    testOscillator = audioContext.createOscillator();
+    testOscillator.setPeriodicWave(wave);
+    testOscillator.frequency.value = 440;
+    testOscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
     gainNode.gain.value = 0.75;
-    oscillator.start();
-    oscillators.push(oscillator);
-    loadOscFreqSeq(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey], oscillator);
+    testOscillator.start();
+    oscillators.push(testOscillator);
   }
   function adjustToPowerOfTwo(data) {
     const length = data.length;
@@ -25274,11 +25310,9 @@ void main() {
     return (n & n - 1) === 0 && n > 0;
   }
   function loadOscFreqSeq(data, oscillator) {
-    console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
     let prevMillis = null;
     let runningTime = audioContext.currentTime;
     const [min2, max2] = window.BNO08XVIZ.dataRange;
-    console.log("zomg so window.BNO08XVIZ.dataRange", { min: min2, max: max2 });
     data.forEach((d) => {
       const { millis, v } = d;
       if (prevMillis === null) prevMillis = millis;
@@ -25336,9 +25370,7 @@ void main() {
       );
       processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
     },
-    allYourFFTAreBelongToUs: () => {
-      Object.values(window.BNO08XVIZ.selectedData).forEach(processAndPlayFFT);
-    },
+    playEmAll,
     stopFFT,
     loadExample: (href) => {
       console.log("[loadExample] zomg fetch href:", `example-data/${href}`);

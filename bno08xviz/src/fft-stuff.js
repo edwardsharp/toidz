@@ -2,13 +2,16 @@ import FFT from "fft.js";
 
 // some shared stuff
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-let oscillators = [audioContext.createOscillator()];
+let testOscillator = audioContext.createOscillator();
+let oscillators = [];
 let gainNode = audioContext.createGain();
 
 function mousemove(event) {
   // fn defined here to .addEventListener and .removeEventListener
   try {
-    // gainNode.gain.value = Math.abs(event.clientY / window.innerHeight);
+    testOscillator.frequency.value = event.clientX;
+    // (1 - ) invert
+    gainNode.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
   } catch (e) {
     // 🤷
   }
@@ -24,6 +27,7 @@ export function renderDataKeysSelect() {
   const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
   if (!selectedKeys || selectedKeys.length === 0) return;
 
+  document.querySelectorAll(".sound-wait-for-select").forEach((el) => (el.style.display = "block"));
   const soundButtons = document.getElementById("sound-fft-keys");
   // clear any existing buttons first.
   soundButtons.innerHTML = "";
@@ -41,7 +45,13 @@ export function renderDataKeysSelect() {
       window.addEventListener("mousemove", mousemove);
     });
     // #TODO: disabling mouseup for now
-    // button.addEventListener("mouseup", stopFFT);
+    button.addEventListener("mouseup", () => {
+      try {
+        testOscillator.stop();
+      } catch (e) {
+        // 🤷
+      }
+    });
 
     // touch devices :/
     button.addEventListener("touchstart", (event) => {
@@ -51,10 +61,14 @@ export function renderDataKeysSelect() {
       window.addEventListener("mousemove", mousemove);
     });
     // #TODO: disabling mouseup for now
-    // button.addEventListener("touchend", (event) => {
-    //   event.preventDefault();
-    //   stopFFT();
-    // });
+    button.addEventListener("touchend", (event) => {
+      event.preventDefault();
+      try {
+        testOscillator.stop();
+      } catch (e) {
+        // 🤷
+      }
+    });
 
     soundButtons.appendChild(button);
   });
@@ -67,7 +81,7 @@ export function stopFFT() {
     try {
       oscillator.stop();
     } catch (e) {
-      console.warn("Oscillator already stopped or invalid:", e);
+      // 🤷
     }
   });
   // Clear the array after stopping all oscillators
@@ -76,12 +90,38 @@ export function stopFFT() {
   window.removeEventListener("mousemove", mousemove);
 }
 
+export async function playEmAll() {
+  // if(!window.BNO08XVIZ.selectedData)
+  Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, d]) => {
+    // console.log("gonna play key:", key);
+    playSeq(d);
+  });
+}
+
+async function playSeq(data) {
+  const oscillator = audioContext.createOscillator();
+  // #TODO: ui for oscillator.type?
+  oscillator.type = "sine";
+  oscillator.frequency.value = 440; // Set desired frequency
+  // re-use the same gainNode, i guess.
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  // set the initial gain (volume)
+  gainNode.gain.value = 0.5; // half volume
+
+  // play sound
+  oscillator.start();
+  oscillators.push(oscillator);
+  loadOscFreqSeq(data, oscillator);
+}
+
 export async function processAndPlayFFT(timeSeriesData) {
-  // try {
-  //   oscillator.stop();
-  // } catch (e) {
-  //   /* 🤷 */
-  // }
+  try {
+    testOscillator.stop();
+  } catch (e) {
+    /* 🤷 */
+  }
 
   const data = adjustToPowerOfTwo(timeSeriesData.map((d) => d.v));
 
@@ -125,12 +165,12 @@ export async function processAndPlayFFT(timeSeriesData) {
   imagInput.set(normalize(imagInput));
 
   const wave = audioContext.createPeriodicWave(realInput, imagInput);
-  const oscillator = audioContext.createOscillator();
+  testOscillator = audioContext.createOscillator();
 
-  oscillator.setPeriodicWave(wave);
-  oscillator.frequency.value = 440; // Set desired frequency
+  testOscillator.setPeriodicWave(wave);
+  testOscillator.frequency.value = 440; // Set desired frequency
 
-  oscillator.connect(gainNode);
+  testOscillator.connect(gainNode);
 
   gainNode.connect(audioContext.destination);
 
@@ -138,9 +178,8 @@ export async function processAndPlayFFT(timeSeriesData) {
   gainNode.gain.value = 0.75; // 75% volume
 
   // play sound
-  oscillator.start();
-  oscillators.push(oscillator);
-  loadOscFreqSeq(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey], oscillator);
+  testOscillator.start();
+  oscillators.push(testOscillator);
 }
 
 function adjustToPowerOfTwo(data) {
@@ -167,7 +206,7 @@ function isPowerOfTwo(n) {
 
 function loadOscFreqSeq(data, oscillator) {
   // data here is window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]
-  console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
+  // console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
   let prevMillis = null;
   // so the audioContext will just be running away.. so start from whereever it's currently at.
   let runningTime = audioContext.currentTime;
@@ -183,7 +222,7 @@ function loadOscFreqSeq(data, oscillator) {
 
   const [min, max] = window.BNO08XVIZ.dataRange;
 
-  console.log("zomg so window.BNO08XVIZ.dataRange", { min, max });
+  // console.log("zomg so window.BNO08XVIZ.dataRange", { min, max });
   data.forEach((d) => {
     const { millis, v } = d;
     if (prevMillis === null) prevMillis = millis;

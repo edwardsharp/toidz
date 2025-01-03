@@ -102,12 +102,23 @@
     max-width: 200px;
   }
 
+  #sound-heading {
+    padding: 0 2em;
+  }
   #sound {
     /* initial display:none, otherwise flex */
+    align-items: baseline;
     display: none;
     padding: 0 2em;
     gap: 1em;
-    align-items: center;
+  }
+  #sound-stop {
+    margin-top: 1em;
+  }
+
+  .sound-wait-for-select {
+    /* initial display:none, otherwise block */
+    display: none;
   }
 
   #three-controls,
@@ -208,18 +219,29 @@
 
   <div id="legend"></div>
   <div id="linez"></div>
+  <div id="sound-heading">
+    <h2 class="sound-wait-for-select">web audio controls</h2>
+  </div>
   <div id="sound">
     <div>
-      <h2>web audio controls</h2>
-      <div>
-        <strong>AudioContext time:</strong>
-        <span id="currentTimeDisplay">0.00</span>s
+      <div class="sound-wait-for-select">
+        <h3>AudioContext</h3>
+        <div>time: <span id="currentTimeDisplay">0.00</span>s</div>
       </div>
-      <button onclick="BNO08XVIZ.allYourFFTAreBelongToUs()">PLAY 'EM ALL!</button>
-      <button onclick="BNO08XVIZ.stopFFT()">stop</button>
+      <div class="sound-wait-for-select">
+        <button onclick="BNO08XVIZ.stopFFT()" id="sound-stop">stop</button>
+      </div>
     </div>
 
-    <div id="sound-fft-keys">select some data from the d3 line viz above!</div>
+    <div class="sound-wait-for-select">
+      <h3>sequence</h3>
+      <button onclick="BNO08XVIZ.playEmAll()" class="sound-wait-for-select">PLAY THEM ALL!</button>
+    </div>
+
+    <div>
+      <h3 class="sound-wait-for-select">fft stuff</h3>
+      <div id="sound-fft-keys">select some data from the d3 line viz above!</div>
+    </div>
   </div>
   <div id="three-controls">
     <h2>three.js animation controls</h2>
