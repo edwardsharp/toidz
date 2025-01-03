@@ -225,6 +225,7 @@ function renderLinez(data) {
 
       // callback ui update.
       window.BNO08XVIZ.renderDataKeysSelect();
+      window.BNO08XVIZ.renderWebAudioDataKeysSelect();
     });
 
   svg.append("g").attr("class", "brush").call(brush);

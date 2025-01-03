@@ -4,17 +4,10 @@ import FFT from "fft.js";
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let testOscillator = audioContext.createOscillator();
 let testOscGain = audioContext.createGain();
-let oscillators = [];
-let gainNode = audioContext.createGain();
 
 export function renderFFTStuff() {
   // show the ui stuff
   document.getElementById("sound").style.display = "flex";
-
-  document.getElementById("sound-gain").addEventListener("input", (event) => {
-    console.log("zomg gain now:", event.target.value);
-    gainNode.gain.value = event.target.value;
-  });
 }
 
 export function renderDataKeysSelect() {
@@ -36,7 +29,7 @@ export function renderDataKeysSelect() {
     button.innerText = k;
     button.addEventListener("mousedown", () => {
       window.BNO08XVIZ.selectedKey = k;
-      BNO08XVIZ.fft();
+      processAndPlayFFT();
       window.addEventListener("mousemove", mousemove);
     });
     // #TODO: disabling mouseup for now
@@ -52,7 +45,7 @@ export function renderDataKeysSelect() {
     button.addEventListener("touchstart", (event) => {
       event.preventDefault(); // prevents touchstart from triggering mousedown
       window.BNO08XVIZ.selectedKey = k;
-      BNO08XVIZ.fft();
+      processAndPlayFFT();
       window.addEventListener("mousemove", mousemove);
     });
     // #TODO: disabling mouseup for now
@@ -69,36 +62,20 @@ export function renderDataKeysSelect() {
   });
 }
 
-export function stopFFT() {
-  console.log("gonna try to stop ", oscillators.length, " oscillators...");
-
-  oscillators.forEach((oscillator) => {
-    try {
-      oscillator.stop();
-    } catch (e) {
-      // 🤷
-    }
-  });
-  // Clear the array after stopping all oscillators
-  oscillators.length = 0;
-
-  window.removeEventListener("mousemove", mousemove);
-}
-
-export async function playEmAll() {
-  // if(!window.BNO08XVIZ.selectedData)
-  Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, d]) => {
-    // console.log("gonna play key:", key);
-    playSeq(d);
-  });
-}
-
-export async function processAndPlayFFT(timeSeriesData) {
+export async function processAndPlayFFT() {
   try {
     testOscillator.stop();
   } catch (e) {
     /* 🤷 */
   }
+
+  if (!window.BNO08XVIZ.selectedKey) {
+    console.warn("no data key selected!");
+    return;
+  }
+  const timeSeriesData = window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey];
+
+  console.log("gonna fft data key:", window.BNO08XVIZ.selectedKey, " timeSeriesData:", timeSeriesData);
 
   const data = adjustToPowerOfTwo(timeSeriesData.map((d) => d.v));
 
@@ -156,7 +133,6 @@ export async function processAndPlayFFT(timeSeriesData) {
 
   // play sound
   testOscillator.start();
-  oscillators.push(testOscillator);
 }
 
 function mousemove(event) {
@@ -168,24 +144,6 @@ function mousemove(event) {
   } catch (e) {
     // 🤷
   }
-}
-
-async function playSeq(data) {
-  const oscillator = audioContext.createOscillator();
-  // #TODO: ui for oscillator.type?
-  oscillator.type = "sine";
-  oscillator.frequency.value = 0; // init freq to 0, i guess.
-  // re-use the same gainNode, i guess.
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-
-  // set the initial gain (volume)
-  gainNode.gain.value = 0.1; // more-quite-is-more
-
-  // play sound
-  oscillator.start();
-  oscillators.push(oscillator);
-  loadOscFreqSeq(data, oscillator);
 }
 
 function adjustToPowerOfTwo(data) {
@@ -208,81 +166,4 @@ function adjustToPowerOfTwo(data) {
 }
 function isPowerOfTwo(n) {
   return (n & (n - 1)) === 0 && n > 0;
-}
-
-function loadOscFreqSeq(data, oscillator) {
-  // data here is window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]
-  // console.log("[loadOscFreqSeq] ", { key: window.BNO08XVIZ.selectedKey, data });
-  let prevMillis = null;
-  // so the audioContext will just be running away.. so start from whereever it's currently at.
-  let runningTime = audioContext.currentTime;
-
-  // const { min, max } = data.reduce(
-  //   (acc, v) => {
-  //     if (v.v < acc.min) acc.min = v.v;
-  //     if (v.v > acc.max) acc.max = v.v;
-  //     return acc;
-  //   },
-  //   { min: 0, max: 0 },
-  // );
-
-  const [min, max] = window.BNO08XVIZ.dataRange;
-
-  // console.log("zomg so window.BNO08XVIZ.dataRange", { min, max });
-  data.forEach((d) => {
-    const { millis, v } = d;
-    if (prevMillis === null) prevMillis = millis;
-    runningTime += (millis - prevMillis) / 1000;
-
-    const note = toMidi(v, min, max);
-    const freq = mtof(note);
-    // console.log(
-    //   "so current millis:",
-    //   millis,
-    //   " midi-note:",
-    //   note,
-    //   "set value:",
-    //   freq,
-    //   "at endTimeSeconds:",
-    //   runningTime,
-    // );
-
-    // #TODO: config to switch between ramp & step osc.freq values
-    oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime);
-    // oscillator.frequency.setValueAtTime(freq, runningTime);
-
-    prevMillis = millis;
-  });
-
-  // stop it after it's done.
-  oscillator.stop(runningTime + 1);
-
-  function updateCurrentTime() {
-    const currentTime = audioContext.currentTime;
-    document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
-  }
-
-  // update the current time every 100 milliseconds
-  const intervalId = setInterval(updateCurrentTime, 100);
-
-  setTimeout(
-    () => {
-      clearInterval(intervalId);
-    },
-    (runningTime + 1) * 1000,
-  );
-}
-
-function toMidi(value, fromMin, fromMax) {
-  const toMin = 0;
-  const toMax = 127;
-  if (fromMin === fromMax) {
-    throw new Error("Input range cannot be zero.");
-  }
-  return ((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin) + toMin;
-}
-function mtof(midiNote) {
-  // midi note to frequency (in Hz)
-  const A440 = 440; // frequency of A4
-  return A440 * Math.pow(2, (midiNote - 69) / 12);
 }

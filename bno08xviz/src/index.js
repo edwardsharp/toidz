@@ -1,8 +1,8 @@
 import { registerCallback, processDataFile } from "./file-input-etl.js";
 import { renderD3GraphStuff } from "./d3-graph-stuff.js";
 import { renderThreeStuff } from "./three-stuff.js";
-import { renderFFTStuff, processAndPlayFFT, renderDataKeysSelect, stopFFT, playEmAll } from "./fft-stuff.js";
-
+import { renderFFTStuff, processAndPlayFFT, renderDataKeysSelect } from "./fft-stuff.js";
+import { renderWebAudioStuff, renderWebAudioDataKeysSelect, playEmAll, stopEmAll } from "./web-audio-stuff.js";
 // hey, so this file just rollz up a buncha other stuff
 // spread out across the js filez above☝️
 //
@@ -26,6 +26,7 @@ import { renderFFTStuff, processAndPlayFFT, renderDataKeysSelect, stopFFT, playE
 registerCallback(renderD3GraphStuff);
 registerCallback(renderThreeStuff);
 registerCallback(renderFFTStuff);
+registerCallback(renderWebAudioStuff);
 
 // some global functions for use with index.html elements
 window.BNO08XVIZ = {
@@ -33,23 +34,9 @@ window.BNO08XVIZ = {
   selectedData: {},
   selectedKey: "",
   renderDataKeysSelect,
-  fft: () => {
-    if (!window.BNO08XVIZ.selectedKey) {
-      console.warn("no data key selected!");
-      return;
-    }
-    // console.log("[fft] for selectedData:", selectedData);
-    // const exampleTimeSeriesData = [0, 2, 3, 4, 0, -1, -2, -3, -5, 4, 2, 4, 0, 1, 0, -1, 33, 66, 99]; // Replace with your data
-    console.log(
-      "gonna fft data key:",
-      window.BNO08XVIZ.selectedKey,
-      " data:",
-      window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey],
-    );
-    processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
-  },
+  renderWebAudioDataKeysSelect,
   playEmAll: playEmAll,
-  stopFFT: stopFFT,
+  stopEmAll: stopEmAll,
   loadExample: (href) => {
     console.log("[loadExample] zomg fetch href:", `example-data/${href}`);
     fetch(`example-data/${href}`)

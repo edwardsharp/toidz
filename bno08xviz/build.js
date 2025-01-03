@@ -29,7 +29,7 @@
   var require_fft = __commonJS({
     "node_modules/fft.js/lib/fft.js"(exports, module) {
       "use strict";
-      function FFT2(size) {
+      function FFT3(size) {
         this.size = size | 0;
         if (this.size <= 1 || (this.size & this.size - 1) !== 0)
           throw new Error("FFT size must be a power of two and bigger than 1");
@@ -57,20 +57,20 @@
         this._data = null;
         this._inv = 0;
       }
-      module.exports = FFT2;
-      FFT2.prototype.fromComplexArray = function fromComplexArray(complex, storage) {
+      module.exports = FFT3;
+      FFT3.prototype.fromComplexArray = function fromComplexArray(complex, storage) {
         var res = storage || new Array(complex.length >>> 1);
         for (var i = 0; i < complex.length; i += 2)
           res[i >>> 1] = complex[i];
         return res;
       };
-      FFT2.prototype.createComplexArray = function createComplexArray() {
+      FFT3.prototype.createComplexArray = function createComplexArray() {
         const res = new Array(this._csize);
         for (var i = 0; i < res.length; i++)
           res[i] = 0;
         return res;
       };
-      FFT2.prototype.toComplexArray = function toComplexArray(input, storage) {
+      FFT3.prototype.toComplexArray = function toComplexArray(input, storage) {
         var res = storage || this.createComplexArray();
         for (var i = 0; i < res.length; i += 2) {
           res[i] = input[i >>> 1];
@@ -78,7 +78,7 @@
         }
         return res;
       };
-      FFT2.prototype.completeSpectrum = function completeSpectrum(spectrum) {
+      FFT3.prototype.completeSpectrum = function completeSpectrum(spectrum) {
         var size = this._csize;
         var half = size >>> 1;
         for (var i = 2; i < half; i += 2) {
@@ -86,7 +86,7 @@
           spectrum[size - i + 1] = -spectrum[i + 1];
         }
       };
-      FFT2.prototype.transform = function transform2(out, data) {
+      FFT3.prototype.transform = function transform2(out, data) {
         if (out === data)
           throw new Error("Input and output buffers must be different");
         this._out = out;
@@ -96,7 +96,7 @@
         this._out = null;
         this._data = null;
       };
-      FFT2.prototype.realTransform = function realTransform(out, data) {
+      FFT3.prototype.realTransform = function realTransform(out, data) {
         if (out === data)
           throw new Error("Input and output buffers must be different");
         this._out = out;
@@ -106,7 +106,7 @@
         this._out = null;
         this._data = null;
       };
-      FFT2.prototype.inverseTransform = function inverseTransform(out, data) {
+      FFT3.prototype.inverseTransform = function inverseTransform(out, data) {
         if (out === data)
           throw new Error("Input and output buffers must be different");
         this._out = out;
@@ -118,7 +118,7 @@
         this._out = null;
         this._data = null;
       };
-      FFT2.prototype._transform4 = function _transform4() {
+      FFT3.prototype._transform4 = function _transform4() {
         var out = this._out;
         var size = this._csize;
         var width = this._width;
@@ -200,7 +200,7 @@
           }
         }
       };
-      FFT2.prototype._singleTransform2 = function _singleTransform2(outOff, off, step) {
+      FFT3.prototype._singleTransform2 = function _singleTransform2(outOff, off, step) {
         const out = this._out;
         const data = this._data;
         const evenR = data[off];
@@ -216,7 +216,7 @@
         out[outOff + 2] = rightR;
         out[outOff + 3] = rightI;
       };
-      FFT2.prototype._singleTransform4 = function _singleTransform4(outOff, off, step) {
+      FFT3.prototype._singleTransform4 = function _singleTransform4(outOff, off, step) {
         const out = this._out;
         const data = this._data;
         const inv = this._inv ? -1 : 1;
@@ -255,7 +255,7 @@
         out[outOff + 6] = FDr;
         out[outOff + 7] = FDi;
       };
-      FFT2.prototype._realTransform4 = function _realTransform4() {
+      FFT3.prototype._realTransform4 = function _realTransform4() {
         var out = this._out;
         var size = this._csize;
         var width = this._width;
@@ -357,7 +357,7 @@
           }
         }
       };
-      FFT2.prototype._singleRealTransform2 = function _singleRealTransform2(outOff, off, step) {
+      FFT3.prototype._singleRealTransform2 = function _singleRealTransform2(outOff, off, step) {
         const out = this._out;
         const data = this._data;
         const evenR = data[off];
@@ -369,7 +369,7 @@
         out[outOff + 2] = rightR;
         out[outOff + 3] = 0;
       };
-      FFT2.prototype._singleRealTransform4 = function _singleRealTransform4(outOff, off, step) {
+      FFT3.prototype._singleRealTransform4 = function _singleRealTransform4(outOff, off, step) {
         const out = this._out;
         const data = this._data;
         const inv = this._inv ? -1 : 1;
@@ -4529,6 +4529,7 @@
         }
       });
       window.BNO08XVIZ.renderDataKeysSelect();
+      window.BNO08XVIZ.renderWebAudioDataKeysSelect();
     });
     svg.append("g").attr("class", "brush").call(brush2);
     const dot = svg.append("g").attr("display", "none");
@@ -25180,14 +25181,8 @@ void main() {
   var audioContext = new (window.AudioContext || window.webkitAudioContext)();
   var testOscillator = audioContext.createOscillator();
   var testOscGain = audioContext.createGain();
-  var oscillators = [];
-  var gainNode = audioContext.createGain();
   function renderFFTStuff() {
     document.getElementById("sound").style.display = "flex";
-    document.getElementById("sound-gain").addEventListener("input", (event) => {
-      console.log("zomg gain now:", event.target.value);
-      gainNode.gain.value = event.target.value;
-    });
   }
   function renderDataKeysSelect() {
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
@@ -25201,7 +25196,7 @@ void main() {
       button.innerText = k;
       button.addEventListener("mousedown", () => {
         window.BNO08XVIZ.selectedKey = k;
-        BNO08XVIZ.fft();
+        processAndPlayFFT();
         window.addEventListener("mousemove", mousemove);
       });
       button.addEventListener("mouseup", () => {
@@ -25213,7 +25208,7 @@ void main() {
       button.addEventListener("touchstart", (event) => {
         event.preventDefault();
         window.BNO08XVIZ.selectedKey = k;
-        BNO08XVIZ.fft();
+        processAndPlayFFT();
         window.addEventListener("mousemove", mousemove);
       });
       button.addEventListener("touchend", (event) => {
@@ -25226,27 +25221,17 @@ void main() {
       soundButtons.appendChild(button);
     });
   }
-  function stopFFT() {
-    console.log("gonna try to stop ", oscillators.length, " oscillators...");
-    oscillators.forEach((oscillator) => {
-      try {
-        oscillator.stop();
-      } catch (e) {
-      }
-    });
-    oscillators.length = 0;
-    window.removeEventListener("mousemove", mousemove);
-  }
-  async function playEmAll() {
-    Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, d]) => {
-      playSeq(d);
-    });
-  }
-  async function processAndPlayFFT(timeSeriesData) {
+  async function processAndPlayFFT() {
     try {
       testOscillator.stop();
     } catch (e) {
     }
+    if (!window.BNO08XVIZ.selectedKey) {
+      console.warn("no data key selected!");
+      return;
+    }
+    const timeSeriesData = window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey];
+    console.log("gonna fft data key:", window.BNO08XVIZ.selectedKey, " timeSeriesData:", timeSeriesData);
     const data = adjustToPowerOfTwo(timeSeriesData.map((d) => d.v));
     const fftSize = data.length;
     const fft = new import_fft.default(fftSize);
@@ -25279,7 +25264,6 @@ void main() {
     testOscGain.connect(audioContext.destination);
     testOscGain.gain.value = 0.75;
     testOscillator.start();
-    oscillators.push(testOscillator);
   }
   function mousemove(event) {
     try {
@@ -25287,17 +25271,6 @@ void main() {
       testOscGain.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
     } catch (e) {
     }
-  }
-  async function playSeq(data) {
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = "sine";
-    oscillator.frequency.value = 0;
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    gainNode.gain.value = 0.1;
-    oscillator.start();
-    oscillators.push(oscillator);
-    loadOscFreqSeq(data, oscillator);
   }
   function adjustToPowerOfTwo(data) {
     const length = data.length;
@@ -25314,22 +25287,134 @@ void main() {
   function isPowerOfTwo2(n) {
     return (n & n - 1) === 0 && n > 0;
   }
+
+  // src/web-audio-stuff.js
+  var import_fft2 = __toESM(require_fft());
+  var audioContext2 = new (window.AudioContext || window.webkitAudioContext)();
+  var oscillators = [];
+  var oscillatorsConfig = [];
+  var gainNodes = [];
+  function renderWebAudioStuff() {
+    document.getElementById("web-audio-stuff").style.display = "flex";
+    document.getElementById("sound-gain").addEventListener("input", (event) => {
+      gainNodes.forEach((gainNode) => gainNode.gain.value = event.target.value);
+    });
+  }
+  function renderWebAudioDataKeysSelect() {
+    const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
+    if (!selectedKeys || selectedKeys.length === 0) return;
+    document.querySelectorAll(".sound-wait-for-select").forEach((el) => el.style.display = "block");
+    const webAudioKeys = document.getElementById("web-audio-keys");
+    webAudioKeys.innerHTML = "";
+    if (!window.BNO08XVIZ.selectedKey) window.BNO08XVIZ.selectedKey = selectedKeys[0];
+    oscillatorsConfig.length = 0;
+    selectedKeys.forEach((k, idx) => {
+      oscillatorsConfig.push({ wave: "sine", ramp: false });
+      const div = document.createElement("div");
+      const title = document.createElement("span");
+      title.innerText = k;
+      div.appendChild(title);
+      const waveSelect = document.createElement("select");
+      ["sine", "sawtooth", "square", "triangle"].forEach((wave) => {
+        const option = document.createElement("option");
+        option.innerText = wave;
+        option.value = wave;
+        waveSelect.appendChild(option);
+      });
+      waveSelect.addEventListener("input", (event) => {
+        if (oscillators[idx]) {
+          oscillators[idx].type = event.target.value;
+          if (oscillatorsConfig[idx]) oscillatorsConfig[idx].wave = event.target.value;
+        }
+      });
+      div.appendChild(waveSelect);
+      const rampLabel = document.createElement("label");
+      const rampInput = document.createElement("input");
+      rampInput.type = "checkbox";
+      rampInput.addEventListener("input", (event) => {
+        if (oscillatorsConfig[idx]) {
+          oscillatorsConfig[idx].ramp = event.target.checked;
+        }
+      });
+      rampLabel.appendChild(rampInput);
+      const rampTitle = document.createElement("span");
+      rampTitle.innerText = "ramp";
+      rampTitle.title = "check for exponential ramps. need to restart playback.";
+      rampLabel.appendChild(rampTitle);
+      div.appendChild(rampLabel);
+      const gainInput = document.createElement("input");
+      gainInput.type = "range";
+      gainInput.min = 0;
+      gainInput.max = 0.1;
+      gainInput.step = 1e-3;
+      gainInput.value = 0.1;
+      gainInput.addEventListener("input", (event) => {
+        if (!gainNodes[idx]) return;
+        gainNodes[idx].gain.value = event.target.value;
+      });
+      const gainInputLabel = document.createElement("label");
+      gainInputLabel.appendChild(gainInput);
+      const gainInputTitle = document.createElement("span");
+      gainInputTitle.innerText = "gain";
+      gainInputLabel.appendChild(gainInputTitle);
+      div.appendChild(gainInputLabel);
+      webAudioKeys.appendChild(div);
+    });
+  }
+  function stopEmAll() {
+    console.log("gonna try to stop ", oscillators.length, " oscillators...");
+    oscillators.forEach((oscillator) => {
+      try {
+        oscillator.stop();
+      } catch (e) {
+      }
+    });
+    oscillators.length = 0;
+  }
+  async function playEmAll() {
+    if (!window.BNO08XVIZ.selectedData) return;
+    Object.entries(window.BNO08XVIZ.selectedData).forEach(([key, data], idx) => {
+      playSeq(data, idx);
+    });
+  }
+  async function playSeq(data, idx) {
+    const oscillator = audioContext2.createOscillator();
+    if (oscillatorsConfig[idx] && oscillatorsConfig[idx].wave) {
+      oscillator.type = oscillatorsConfig[idx].wave;
+    } else {
+      oscillator.type = "sine";
+    }
+    oscillator.frequency.value = 0;
+    const gainNode = audioContext2.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext2.destination);
+    gainNode.gain.value = 0.1;
+    oscillator.start();
+    oscillators.push(oscillator);
+    gainNodes.push(gainNode);
+    loadOscFreqSeq(data, oscillator);
+  }
   function loadOscFreqSeq(data, oscillator) {
     let prevMillis = null;
-    let runningTime = audioContext.currentTime;
+    let runningTime = audioContext2.currentTime;
     const [min2, max2] = window.BNO08XVIZ.dataRange;
-    data.forEach((d) => {
+    data.forEach((d, idx) => {
       const { millis, v } = d;
       if (prevMillis === null) prevMillis = millis;
       runningTime += (millis - prevMillis) / 1e3;
       const note = toMidi(v, min2, max2);
       const freq = mtof(note);
-      oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime);
+      if (oscillatorsConfig[idx] && oscillatorsConfig[idx].ramp) {
+        console.log("gonna RAMP! >>>>>>>>>>>>>>");
+        oscillator.frequency.exponentialRampToValueAtTime(freq, runningTime);
+      } else {
+        oscillator.frequency.setValueAtTime(freq, runningTime);
+      }
       prevMillis = millis;
     });
     oscillator.stop(runningTime + 1);
     function updateCurrentTime() {
-      const currentTime = audioContext.currentTime;
+      const currentTime = audioContext2.currentTime;
       document.getElementById("currentTimeDisplay").textContent = currentTime.toFixed(2);
     }
     const intervalId = setInterval(updateCurrentTime, 100);
@@ -25357,26 +25442,15 @@ void main() {
   registerCallback(renderD3GraphStuff);
   registerCallback(renderThreeStuff);
   registerCallback(renderFFTStuff);
+  registerCallback(renderWebAudioStuff);
   window.BNO08XVIZ = {
     dataRange: [0, 1],
     selectedData: {},
     selectedKey: "",
     renderDataKeysSelect,
-    fft: () => {
-      if (!window.BNO08XVIZ.selectedKey) {
-        console.warn("no data key selected!");
-        return;
-      }
-      console.log(
-        "gonna fft data key:",
-        window.BNO08XVIZ.selectedKey,
-        " data:",
-        window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]
-      );
-      processAndPlayFFT(window.BNO08XVIZ.selectedData[window.BNO08XVIZ.selectedKey]);
-    },
+    renderWebAudioDataKeysSelect,
     playEmAll,
-    stopFFT,
+    stopEmAll,
     loadExample: (href) => {
       console.log("[loadExample] zomg fetch href:", `example-data/${href}`);
       fetch(`example-data/${href}`).then((response) => response.text()).then((text) => {
