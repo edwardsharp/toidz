@@ -3,23 +3,18 @@ import FFT from "fft.js";
 // some shared stuff
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let testOscillator = audioContext.createOscillator();
+let testOscGain = audioContext.createGain();
 let oscillators = [];
 let gainNode = audioContext.createGain();
-
-function mousemove(event) {
-  // fn defined here to .addEventListener and .removeEventListener
-  try {
-    testOscillator.frequency.value = event.clientX;
-    // (1 - ) invert
-    gainNode.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
-  } catch (e) {
-    // 🤷
-  }
-}
 
 export function renderFFTStuff() {
   // show the ui stuff
   document.getElementById("sound").style.display = "flex";
+
+  document.getElementById("sound-gain").addEventListener("input", (event) => {
+    console.log("zomg gain now:", event.target.value);
+    gainNode.gain.value = event.target.value;
+  });
 }
 
 export function renderDataKeysSelect() {
@@ -98,24 +93,6 @@ export async function playEmAll() {
   });
 }
 
-async function playSeq(data) {
-  const oscillator = audioContext.createOscillator();
-  // #TODO: ui for oscillator.type?
-  oscillator.type = "sine";
-  oscillator.frequency.value = 440; // Set desired frequency
-  // re-use the same gainNode, i guess.
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-
-  // set the initial gain (volume)
-  gainNode.gain.value = 0.5; // half volume
-
-  // play sound
-  oscillator.start();
-  oscillators.push(oscillator);
-  loadOscFreqSeq(data, oscillator);
-}
-
 export async function processAndPlayFFT(timeSeriesData) {
   try {
     testOscillator.stop();
@@ -170,16 +147,45 @@ export async function processAndPlayFFT(timeSeriesData) {
   testOscillator.setPeriodicWave(wave);
   testOscillator.frequency.value = 440; // Set desired frequency
 
-  testOscillator.connect(gainNode);
+  testOscillator.connect(testOscGain);
 
-  gainNode.connect(audioContext.destination);
+  testOscGain.connect(audioContext.destination);
 
   // set the initial gain (volume)
-  gainNode.gain.value = 0.75; // 75% volume
+  testOscGain.gain.value = 0.75; // 75% volume
 
   // play sound
   testOscillator.start();
   oscillators.push(testOscillator);
+}
+
+function mousemove(event) {
+  // fn defined here to .addEventListener and .removeEventListener
+  try {
+    testOscillator.frequency.value = event.clientX;
+    // (1 - ) invert
+    testOscGain.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
+  } catch (e) {
+    // 🤷
+  }
+}
+
+async function playSeq(data) {
+  const oscillator = audioContext.createOscillator();
+  // #TODO: ui for oscillator.type?
+  oscillator.type = "sine";
+  oscillator.frequency.value = 0; // init freq to 0, i guess.
+  // re-use the same gainNode, i guess.
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+
+  // set the initial gain (volume)
+  gainNode.gain.value = 0.1; // more-quite-is-more
+
+  // play sound
+  oscillator.start();
+  oscillators.push(oscillator);
+  loadOscFreqSeq(data, oscillator);
 }
 
 function adjustToPowerOfTwo(data) {

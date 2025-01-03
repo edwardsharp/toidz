@@ -25179,17 +25179,15 @@ void main() {
   var import_fft = __toESM(require_fft());
   var audioContext = new (window.AudioContext || window.webkitAudioContext)();
   var testOscillator = audioContext.createOscillator();
+  var testOscGain = audioContext.createGain();
   var oscillators = [];
   var gainNode = audioContext.createGain();
-  function mousemove(event) {
-    try {
-      testOscillator.frequency.value = event.clientX;
-      gainNode.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
-    } catch (e) {
-    }
-  }
   function renderFFTStuff() {
     document.getElementById("sound").style.display = "flex";
+    document.getElementById("sound-gain").addEventListener("input", (event) => {
+      console.log("zomg gain now:", event.target.value);
+      gainNode.gain.value = event.target.value;
+    });
   }
   function renderDataKeysSelect() {
     const selectedKeys = Object.keys(window.BNO08XVIZ.selectedData);
@@ -25244,17 +25242,6 @@ void main() {
       playSeq(d);
     });
   }
-  async function playSeq(data) {
-    const oscillator = audioContext.createOscillator();
-    oscillator.type = "sine";
-    oscillator.frequency.value = 440;
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    gainNode.gain.value = 0.5;
-    oscillator.start();
-    oscillators.push(oscillator);
-    loadOscFreqSeq(data, oscillator);
-  }
   async function processAndPlayFFT(timeSeriesData) {
     try {
       testOscillator.stop();
@@ -25288,11 +25275,29 @@ void main() {
     testOscillator = audioContext.createOscillator();
     testOscillator.setPeriodicWave(wave);
     testOscillator.frequency.value = 440;
-    testOscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    gainNode.gain.value = 0.75;
+    testOscillator.connect(testOscGain);
+    testOscGain.connect(audioContext.destination);
+    testOscGain.gain.value = 0.75;
     testOscillator.start();
     oscillators.push(testOscillator);
+  }
+  function mousemove(event) {
+    try {
+      testOscillator.frequency.value = event.clientX;
+      testOscGain.gain.value = Math.abs(1 - event.clientY / window.innerHeight);
+    } catch (e) {
+    }
+  }
+  async function playSeq(data) {
+    const oscillator = audioContext.createOscillator();
+    oscillator.type = "sine";
+    oscillator.frequency.value = 0;
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    gainNode.gain.value = 0.1;
+    oscillator.start();
+    oscillators.push(oscillator);
+    loadOscFreqSeq(data, oscillator);
   }
   function adjustToPowerOfTwo(data) {
     const length = data.length;
